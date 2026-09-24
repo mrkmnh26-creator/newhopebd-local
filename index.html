@@ -1,361 +1,299 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEW HOPE FEED</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Hope Feed</title>
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#00a651">
+    <meta name="theme-color" content="#f8f9fb">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
 
     <style>
-      :root { --brand-primary: #00a651; --brand-secondary: #80c343; --brand-accent: #ffc233; --bg-color: #f4f7f6; }
-      html { scroll-behavior: smooth; }
-      body { font-family: 'Liberation Sans', Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; }
+      :root { 
+        --brand-primary: #00a651; 
+        --brand-secondary: #f05a28; 
+        --bg-color: #f8f9fb; 
+        --card-bg: #ffffff;
+        --text-main: #2b2b2b;
+        --text-muted: #888888;
+      }
+      
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); }
 
       /* Loader */
-      #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
-      .lds-spinner { color: official; display: inline-block; position: relative; width: 80px; height: 80px; }
-      .lds-spinner div { transform-origin: 40px 40px; animation: lds-spinner 1.2s linear infinite; }
-      .lds-spinner div:after { content: " "; display: block; position: absolute; top: 3px; left: 37px; width: 7px; height: 18px; border-radius: 20%; background: var(--brand-primary); }
-      .lds-spinner div:nth-child(1) { transform: rotate(0deg); animation-delay: -1.1s; } .lds-spinner div:nth-child(2) { transform: rotate(30deg); animation-delay: -1s; } .lds-spinner div:nth-child(3) { transform: rotate(60deg); animation-delay: -0.9s; } .lds-spinner div:nth-child(4) { transform: rotate(90deg); animation-delay: -0.8s; } .lds-spinner div:nth-child(5) { transform: rotate(120deg); animation-delay: -0.7s; } .lds-spinner div:nth-child(6) { transform: rotate(150deg); animation-delay: -0.6s; } .lds-spinner div:nth-child(7) { transform: rotate(180deg); animation-delay: -0.5s; } .lds-spinner div:nth-child(8) { transform: rotate(210deg); animation-delay: -0.4s; } .lds-spinner div:nth-child(9) { transform: rotate(240deg); animation-delay: -0.3s; } .lds-spinner div:nth-child(10) { transform: rotate(270deg); animation-delay: -0.2s; } .lds-spinner div:nth-child(11) { transform: rotate(300deg); animation-delay: -0.1s; } .lds-spinner div:nth-child(12) { transform: rotate(330deg); animation-delay: 0s; }
-      @keyframes lds-spinner { 0% { opacity: 1; } 100% { opacity: 0.15; } }
-      .loading-text { margin-top: 15px; font-size: 18px; color: var(--brand-primary); font-weight: bold; }
+      #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-      /* Navbar */
-      .navbar { background: #ffffff; position: sticky; top: 0; z-index: 10000; display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-      .nav-logo { display: flex; flex-direction: column; text-decoration: none; }
-      .nav-logo-title { font-size: 24px; font-weight: bold; color: var(--brand-primary); margin: 0; line-height: 1; }
-      .nav-logo-sub { font-size: 11px; color: var(--brand-accent); font-weight: bold; margin-top: 3px; letter-spacing: 1px;}
-      .nav-links { display: flex; gap: 20px; align-items: center; margin: 0; padding: 0; list-style: none; }
-      .nav-links a { text-decoration: none; color: #555; font-size: 13px; font-weight: bold; text-transform: uppercase; transition: color 0.3s; }
-      .nav-links a:hover, .nav-links a.active-link { color: var(--brand-primary); }
-      .mrp-nav-link { color: #d32f2f !important; border-bottom: 2px solid #d32f2f; padding-bottom: 2px; }
-      .mrp-nav-link:hover { color: #b71c1c !important; border-color: #b71c1c; }
-      .nav-phone-btn { background-color: var(--brand-accent); color: white; padding: 8px 12px; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; }
-      .nav-phone-btn:hover { background-color: #e6a000; }
-      .nav-phone-btn svg { width: 18px; height: 18px; fill: white; }
-      .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--brand-primary); }
+      /* App Header */
+      .app-header { padding: 25px 20px 15px 20px; background: var(--bg-color); position: sticky; top: 0; z-index: 100; }
+      .greeting { font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
+      .app-title { font-size: 22px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+      
+      /* Search Bar */
+      .search-box { display: flex; align-items: center; background: var(--card-bg); border-radius: 16px; padding: 12px 18px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f0f0f0; }
+      .search-box svg { width: 18px; height: 18px; fill: #aaa; margin-right: 12px; }
+      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-main); }
+      .search-box input::placeholder { color: #bbb; }
 
-      /* Hero Section */
-      .hero-section { position: relative; width: 100%; height: 80vh; min-height: 500px; background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('https://drive.google.com/thumbnail?id=1iv06hVG49Ffcb1VRlIeqx3R_OfqIs-1w&sz=w1920') no-repeat center center/cover; display: flex; align-items: center; padding-left: 10%; }
-      .hero-content { max-width: 600px; }
-      .hero-slogan { font-size: 55px; font-weight: bold; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); line-height: 1.2; margin-bottom: 20px; }
-      .hero-sub { font-size: 20px; color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
+      /* Horizontal Categories */
+      .category-scroll { display: flex; overflow-x: auto; gap: 12px; padding: 0 20px 5px 20px; scrollbar-width: none; margin-top: 20px; }
+      .category-scroll::-webkit-scrollbar { display: none; }
+      .cat-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--card-bg); border-radius: 25px; border: 1px solid #eaeaea; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; white-space: nowrap; transition: 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+      .cat-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); box-shadow: 0 6px 15px rgba(0,166,81,0.2); }
+      .cat-btn span { font-size: 16px; }
 
-      /* Products Section */
-      .products-section, .depots-section, .market-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
-      .section-title { text-align: center; color: var(--brand-primary); font-size: 32px; margin-bottom: 40px; text-transform: uppercase; }
+      /* Section Layout */
+      .section-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 20px 15px 20px; }
+      .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); }
+      .app-section { padding-bottom: 90px; } /* Space for bottom nav */
 
-      .product-nav-bar { background: white; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 30px; border-radius: 4px; overflow: hidden; }
-      .tab-bar { display: flex; flex: 1; }
-      .tab-btn { flex: 1; background: none; border: none; padding: 18px 15px; font-size: 14px; font-weight: bold; color: #666; cursor: pointer; text-transform: uppercase; border-bottom: 4px solid transparent; transition: 0.3s; }
-      .tab-btn:hover { color: var(--brand-primary); background-color: #f9f9f9; }
-      .tab-btn.active { background-color: var(--brand-primary); color: white; border-bottom: 4px solid var(--brand-accent); }
-      .search-container { padding: 0 20px; display: flex; align-items: center; }
-      .search-input { padding: 10px 15px; border: 1px solid #ccc; border-radius: 20px; outline: none; width: 250px; font-size: 14px; transition: 0.3s; }
-      .search-input:focus { border-color: var(--brand-primary); box-shadow: 0 0 5px rgba(0, 166, 81, 0.3); }
+      /* Product Grid */
+      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 20px; }
+      .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f9f9f9; }
+      .product-card:active { transform: scale(0.98); }
+      .card-img-box { background: #fdfdfd; border-radius: 15px; padding: 10px; display: flex; justify-content: center; align-items: center; height: 130px; margin-bottom: 12px; }
+      .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      .product-card h3 { font-size: 13px; font-weight: 700; margin: 0 0 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; }
+      .card-pack { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+      .card-action { background: var(--brand-primary); color: #fff; width: 28px; height: 28px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: bold; border: none; }
 
-      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-      .card { background: white; border: 1px solid #e0e0e0; padding: 20px 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease; border-radius: 6px; }
-      .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 166, 81, 0.15); border-color: var(--brand-primary); }
-      .card img { max-width: 100%; height: 210px; object-fit: contain; margin-bottom: 15px; transition: transform 0.3s ease; }
-      .card:hover img { transform: scale(1.06); }
-      .card h3 { font-size: 15px; color: #222; margin: 0 0 15px 0; min-height: 40px; }
-      .details-btn { background-color: var(--brand-primary); color: white; border: none; padding: 12px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; transition: 0.3s; border-radius: 4px; }
-      .details-btn:hover { background-color: var(--brand-accent); color: #222; }
+      /* Bottom Navigation */
+      .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 10px 20px 10px; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 25px; border-top-right-radius: 25px; z-index: 1000; }
+      .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #a0a0a0; text-decoration: none; font-weight: 600; gap: 4px; border: none; background: none; cursor: pointer; }
+      .nav-item svg { width: 24px; height: 24px; fill: currentColor; transition: 0.3s; }
+      .nav-item.active { color: var(--brand-primary); }
+      .nav-item.active svg { transform: translateY(-2px); }
 
-      .pagination-controls { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 40px; flex-wrap: wrap; }
-      .page-btn { background: white; border: 1px solid #ccc; color: #333; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
-      .page-btn:hover:not(:disabled) { border-color: var(--brand-primary); color: var(--brand-primary); }
-      .page-btn.active { background-color: var(--brand-primary); color: white; border-color: var(--brand-primary); }
-      .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      /* Modals (Product Details & Others) */
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 10000; justify-content: center; align-items: flex-end; }
+      .modal-sheet { background: #fff; width: 100%; max-height: 90vh; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 30px 25px; overflow-y: auto; position: relative; animation: slideUp 0.3s ease-out; display: flex; flex-direction: column; }
+      @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      
+      .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .back-btn { background: #f0f0f0; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+      .back-btn svg { width: 20px; height: 20px; fill: var(--text-main); }
+      .admin-edit-btn { background: #fff; border: 1px solid #ddd; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+      .admin-edit-btn svg { width: 18px; height: 18px; fill: var(--text-main); }
+      
+      .detail-img-box { background: var(--bg-color); border-radius: 50%; width: 200px; height: 200px; margin: 0 auto 30px auto; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; }
+      .detail-img-box::after { content: ''; position: absolute; width: 240px; height: 240px; border-radius: 50%; border: 2px dashed #eaeaea; z-index: -1; }
+      .detail-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      
+      .detail-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+      .detail-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 25px; }
 
-      /* Depot Cards */
-      .depots-section { background-color: #eef2f0; }
-      .depot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-      .depot-card { background: #fff; border-radius: 8px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--brand-primary); transition: 0.3s; text-align: left; }
-      .depot-card:hover { box-shadow: 0 10px 25px rgba(0,166,81,0.15); transform: translateY(-5px); }
-      .depot-name { font-size: 18px; font-weight: bold; color: var(--brand-primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-      .depot-info { font-size: 14px; color: #555; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
-      .depot-info strong { color: #333; min-width: 75px; }
-      .depot-phone-btn { display: inline-flex; align-items: center; gap: 8px; background: #fdf3d8; color: #d68900; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 14px; margin-top: 15px; transition: 0.3s; border: 1px solid #fce8b2; cursor: pointer; outline: none; }
-      .depot-phone-btn:hover { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+      /* Clean Nutrition Data Layout */
+      .nutrition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 16px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; }
+      .nutri-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
+      .nutri-value { font-size: 15px; font-weight: 700; color: var(--text-main); }
+      .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 5px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
+      
+      .main-action-btn { background: var(--text-main); color: #fff; border: none; width: 100%; padding: 18px; border-radius: 20px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: auto; }
+      .main-action-btn.save-mode { background: var(--brand-primary); }
 
-      /* Market Coverage Section */
-      .market-section { background-color: #ffffff; }
-      .market-table { width: 100%; border-collapse: collapse; min-width: 800px; font-family: 'Liberation Sans', Arial, sans-serif; }
-      .market-table th, .market-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-      .market-table th { background-color: var(--brand-primary); color: white; text-transform: uppercase; font-size: 13px; font-weight: bold; }
-      .market-table tbody tr { transition: 0.3s; }
-      .market-table tbody tr:hover { background-color: #f0fdf4; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transform: scale(1.005); border-radius: 4px; }
-      .market-table td { font-size: 14px; color: #444; }
-      .market-table td:first-child { font-weight: bold; color: var(--brand-primary); }
-      .phone-copy-btn { background: #fdf3d8; color: #d68900; padding: 8px 15px; border-radius: 20px; font-weight: bold; display: inline-block; transition: 0.3s; border: 1px solid #fce8b2; font-size: 13px; cursor: pointer; outline: none; }
-      .phone-copy-btn:hover { background: var(--brand-primary); color: white; border-color: var(--brand-primary); }
+      /* List Layouts (Depots & Market) */
+      .list-card { background: var(--card-bg); border-radius: 16px; padding: 18px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f4f4f4; }
+      .list-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+      .list-text { font-size: 13px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;}
+      .list-text strong { color: #555; min-width: 60px; }
+      .action-pill { background: #fdf3d8; color: var(--brand-secondary); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; border: none; align-self: flex-start; margin-top: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; outline: none; }
+      
+      /* PIN & SMS Modal Boxes */
+      .center-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100000; justify-content: center; align-items: center; padding: 20px; }
+      .dialog-box { background: #fff; width: 100%; max-width: 380px; border-radius: 24px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; }
+      @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+      .dialog-title { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+      
+      .pin-input { width: 100%; background: #f5f5f5; border: 1px solid #ddd; padding: 15px; border-radius: 12px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 10px; outline: none; }
+      .pin-input:focus { border-color: var(--brand-primary); background: #fff; }
+      .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+      .dialog-btn { flex: 1; padding: 14px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; }
+      .btn-cancel { background: #f0f0f0; color: var(--text-main); }
+      .btn-confirm { background: var(--brand-primary); color: #fff; }
 
-      /* Modals */
-      .modal { display: none; position: fixed; z-index: 100000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.65); overflow-y: auto; padding-top: 20px; }
-      .modal-content { background-color: #fff; margin: 2% auto; padding: 20px 30px 40px 30px; border: none; width: 95%; max-width: 1150px; border-radius: 6px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-top: 5px solid var(--brand-primary); }
-      .close-btn { color: #aaa; position: absolute; right: 20px; top: 10px; font-size: 28px; font-weight: bold; cursor: pointer; transition: 0.3s; z-index: 10; }
-      .close-btn:hover { color: #333; }
-      .modal-header { font-size: 22px; font-weight: bold; color: var(--brand-primary); text-align: center; margin-bottom: 30px; border-bottom: 1px solid #eaeaea; padding-bottom: 15px; padding-right: 20px; }
-      .modal-body { display: flex; gap: 30px; align-items: center; }
-      .modal-body img { width: 220px; max-height: 380px; object-fit: contain; flex-shrink: 0; }
-      .table-container { flex: 1; position: relative; width: 100%; max-width: 100%; }
-      .table-scroll-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #dcdcdc; border-radius: 4px; }
-      .edit-icon-wrapper { position: absolute; right: 0; top: -35px; display: flex; align-items: center; gap: 15px; }
-      .edit-svg { width: 20px; height: 20px; fill: #999; cursor: pointer; transition: 0.3s; }
-      .edit-svg:hover { fill: var(--brand-accent); } 
-      .nutrition-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-      .nutrition-table th, .nutrition-table td { border: 1px solid #dcdcdc; border-top: none; padding: 20px 5px; text-align: center; font-size: 13px; color: #444; }
-      .nutrition-table th { background-color: #f9f9f9; font-weight: bold; color: var(--brand-primary); }
-      .nutrition-table input { width: 90%; min-width: 50px; padding: 8px 5px; text-align: center; border: 1px solid var(--brand-primary); border-radius: 3px; outline: none; }
-      .nutrition-table input:focus { box-shadow: 0 0 5px rgba(0, 166, 81, 0.3); }
-      .save-btn { background-color: var(--brand-primary); color: white; border: none; padding: 6px 15px; font-size: 13px; font-weight: bold; cursor: pointer; border-radius: 4px; display: none; transition: 0.3s; }
-      .save-btn:hover { background-color: var(--brand-accent); color: #222; }
-      #modal-status { font-size: 13px; font-weight: bold; }
+      .mrp-result { text-align: left; padding: 12px; background: #f9f9f9; border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; font-weight: 600; border: 1px solid #eee; }
+      .mrp-result:hover { border-color: var(--brand-primary); }
+      textarea.sms-box { width: 100%; height: 150px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 12px; padding: 15px; font-size: 13px; margin-top: 15px; resize: none; outline: none; font-family: inherit;}
 
-      .pin-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000000; align-items: center; justify-content: center; }
-      .pin-modal-box { background: #fff; width: 350px; padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: scaleUp 0.3s ease; }
-      @keyframes scaleUp { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-      .pin-modal-icon { background: #e6f6eb; color: var(--brand-primary); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
-      .pin-modal-icon svg { width: 30px; height: 30px; fill: currentColor; }
-      .pin-modal-title { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 10px; }
-      .pin-input { width: 100%; box-sizing: border-box; padding: 12px; font-size: 18px; text-align: center; border: 2px solid #ddd; border-radius: 4px; outline: none; margin-bottom: 5px; transition: 0.3s; letter-spacing: 5px; }
-      .pin-input:focus { border-color: var(--brand-primary); }
-      .pin-error { color: #d32f2f; font-size: 13px; min-height: 20px; margin-bottom: 15px; font-weight: bold; }
-      .pin-btn { flex: 1; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; border: none; transition: 0.3s; width: 45%; margin: 5px; }
-      .btn-cancel { background: #f0f0f0; color: #555; }
-      .btn-cancel:hover { background: #e0e0e0; }
-      .btn-verify { background: var(--brand-primary); color: #fff; }
-      .btn-verify:hover { background: var(--brand-secondary); }
-
-      /* MRP SMS Custom Styles */
-      .mrp-result-item { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; font-size: 14px; color: #333; text-align: left; }
-      .mrp-result-item:hover { background-color: #f0fdf4; border-left: 4px solid var(--brand-primary); font-weight: bold; }
-      .mrp-textarea { width: 100%; height: 260px; margin-top: 15px; padding: 12px; box-sizing: border-box; border: 2px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 14px; resize: none; line-height: 1.5; }
-      .mrp-textarea:focus { border-color: var(--brand-primary); outline: none; }
-
-      @media (max-width: 850px) {
-        .nav-links { display: none; flex-direction: column; width: 100%; position: absolute; top: 100%; left: 0; background: #fff; padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
-        .nav-links.active { display: flex; }
-        .menu-toggle { display: block; }
-        .hero-slogan { font-size: 35px; }
-        .product-nav-bar { flex-direction: column; }
-        .search-container { padding: 15px; width: 100%; box-sizing: border-box; background: #f9f9f9; border-top: 1px solid #eaeaea; }
-        .search-input { width: 100%; }
-        .modal-body { flex-direction: column; align-items: center; }
-        .modal-content { padding: 15px 15px 30px 15px; width: 95%; margin: 5% auto; }
-        .table-container { width: 100%; margin-top: 40px; }
-        .nutrition-table th, .nutrition-table td { padding: 15px 5px; font-size: 12px; }
-        .edit-icon-wrapper { top: -35px; right: 5px; }
-        .tab-btn { padding: 12px 5px; font-size: 12px; }
-      }
     </style>
   </head>
   <body>
 
-    <!-- Loading Overlay -->
     <div id="loader-overlay">
-      <div class="lds-spinner">
-        <div></div><div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div><div></div>
-      </div>
-      <div class="loading-text" id="loading-msg">Loading Website...</div>
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-msg">Loading App...</div>
     </div>
 
-    <!-- Smart PIN Modal -->
-    <div id="smart-pin-modal" class="pin-modal-overlay">
-      <div class="pin-modal-box">
-        <div class="pin-modal-icon">
-          <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
-        </div>
-        <div class="pin-modal-title" style="color: var(--brand-primary);">Admin Authentication</div>
-        <div style="font-size: 14px; color: #666; margin-bottom: 25px;">Enter your secure PIN to edit values.</div>
-        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="10">
-        <div id="pinErrorMsg" class="pin-error"></div>
-        <div>
-          <button class="pin-btn btn-cancel" onclick="closePinModal()">Cancel</button>
-          <button class="pin-btn btn-verify" onclick="verifyPin()">Verify</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MRP / SMS Modal -->
-    <div id="mrp-modal" class="pin-modal-overlay">
-      <div class="pin-modal-box" style="width: 450px; max-width: 95%;">
-        <span class="close-btn" style="position: absolute; right: 15px; top: 10px;" onclick="closeMrpModal()">&times;</span>
-        <div class="pin-modal-title" style="color: #d32f2f;">Price / MRP SMS Generator</div>
-        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Search by Product Code or Name</p>
-        
-        <input type="text" id="mrpSearchInput" class="search-input" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;" placeholder="e.g. 611 or Titan Beef">
-        <button class="save-btn" style="display: block; width: 100%; padding: 12px; background-color: #d32f2f;" onclick="searchMrpBtnClick()">🔍 Search Price</button>
-        
-        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 10px; font-weight:bold;">Searching...</div>
-        <div id="mrpResults" style="margin-top: 15px; max-height: 150px; overflow-y: auto; border-radius: 4px;"></div>
-
-        <textarea id="smsText" class="mrp-textarea" placeholder="SMS format will auto-generate here..."></textarea>
-        <button id="copySmsBtn" class="details-btn" style="margin-top: 15px; background-color: var(--brand-primary);" onclick="copySms()">📋 Copy SMS</button>
-      </div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-      <a href="#" class="nav-logo">
-        <h1 class="nav-logo-title">NEW HOPE FEED</h1>
-        <span class="nav-logo-sub">Poultry | Fish | Cattle</span>
-      </a>
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper">
       
-      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-      
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#products" class="active-link">Products</a></li>
-        <li><a href="javascript:void(0)" class="mrp-nav-link" onclick="openMrpModal()">Price / MRP</a></li>
-        <li><a href="#depots">Depots</a></li>
-        <li><a href="#market">Market Coverage</a></li> 
-        <li><a href="#about">About</a></li>
-        <li>
-          <a href="tel:+880123456789" class="nav-phone-btn" title="Call Us">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          </a>
-        </li>
-      </ul>
+      <!-- ==============================
+           1. PRODUCTS SECTION (HOME)
+           ============================== -->
+      <div id="sec-products" class="app-section">
+        <header class="app-header">
+          <div class="greeting">Hello, Welcome to</div>
+          <div class="app-title">New Hope Feed</div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="searchInput" placeholder="Search product name or code..." onkeyup="searchProducts()">
+          </div>
+        </header>
+
+        <div class="category-scroll" id="cat-container">
+          <div class="cat-btn active" onclick="filterProducts('Poultry Feed', this)"><span>🐔</span> Poultry</div>
+          <div class="cat-btn" onclick="filterProducts('Fish Feed', this)"><span>🐟</span> Fish</div>
+          <div class="cat-btn" onclick="filterProducts('Cattle Feed', this)"><span>🐄</span> Cattle</div>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Popular Products</div>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <!-- Grid items inject via JS -->
+        </div>
+      </div>
+
+      <!-- ==============================
+           2. DEPOTS SECTION
+           ============================== -->
+      <div id="sec-depots" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="greeting">Find Locations</div>
+          <div class="app-title">Company Depots</div>
+        </header>
+        <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Depots...</div>
+        <div id="depot-list"></div>
+      </div>
+
+      <!-- ==============================
+           3. MARKET COVERAGE SECTION
+           ============================== -->
+      <div id="sec-market" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="greeting">Market Areas</div>
+          <div class="app-title">Coverage & Contacts</div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="marketSearchInput" placeholder="Search upazila, district..." onkeyup="searchMarket()">
+          </div>
+        </header>
+        <div id="market-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Market Data...</div>
+        <div id="market-list"></div>
+      </div>
+
+    </div> <!-- End App Wrapper -->
+
+    <!-- ==============================
+         BOTTOM NAVIGATION BAR
+         ============================== -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchSection('sec-products', this)">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Home
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-depots', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Depots
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-market', this)">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        Market
+      </button>
+      <button class="nav-item" onclick="openMrpModal()">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+        SMS MRP
+      </button>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero-section" id="home">
-      <div class="hero-content">
-        <h1 class="hero-slogan">নিউ হোপ<br>নিউ লাইফ</h1>
-        <p class="hero-sub">উন্নত প্রযুক্তি ও সঠিক পুষ্টিগুণ সম্পন্ন আধুনিক ফিড।</p>
-      </div>
-    </header>
 
-    <!-- Products Section -->
-    <section class="products-section" id="products">
-      <h2 class="section-title">Our Products</h2>
-      <div class="product-nav-bar">
-        <div class="tab-bar">
-          <button class="tab-btn active" onclick="filterProducts('Poultry Feed', this)">POULTRY FEED</button>
-          <button class="tab-btn" onclick="filterProducts('Fish Feed', this)">FISH FEED</button>
-          <button class="tab-btn" onclick="filterProducts('Cattle Feed', this)">CATTLE FEED</button>
-        </div>
-        <div class="search-container">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search product name or code..." onkeyup="searchProducts()">
-        </div>
-      </div>
-      <div id="product-grid" class="product-grid"></div>
-      <div id="pagination-controls" class="pagination-controls"></div>
-    </section>
-
-    <!-- Depot Information Section -->
-    <section class="depots-section" id="depots">
-      <h2 class="section-title">Depot Information</h2>
-      <div id="depot-loader" style="text-align: center; color: var(--brand-primary); font-weight: bold;">Loading Depots...</div>
-      <div id="depot-grid" class="depot-grid"></div>
-    </section>
-
-    <!-- Market Coverage Section -->
-    <section class="market-section" id="market">
-      <h2 class="section-title">Market Coverage</h2>
-
-      <div id="market-loader" style="text-align: center; color: var(--brand-primary); font-weight: bold;">Loading Market Coverage...</div>
-      
-      <div id="table-container">
-        <div class="search-container" style="justify-content: center; margin-bottom: 20px;">
-          <input type="text" id="marketSearchInput" class="search-input" style="width: 100%; max-width: 500px;" placeholder="🔍 Search Upazila, District or Person..." onkeyup="searchMarket()">
+    <!-- ==============================
+         MODALS & DIALOGS
+         ============================== -->
+    
+    <!-- Product Detail Bottom Sheet -->
+    <div id="product-detail-modal" class="modal-overlay">
+      <div class="modal-sheet">
+        <div class="sheet-header">
+          <button class="back-btn" onclick="closeProductModal()">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          </button>
+          <button class="admin-edit-btn" onclick="openPinModal()">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
         </div>
         
-        <div class="table-scroll-wrapper" style="background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 10px; max-width: 1100px; margin: 0 auto;">
-          <div style="overflow-x: auto;">
-            <table class="market-table">
-              <thead>
-                <tr>
-                  <th>Zone</th>
-                  <th>Responsible Person</th>
-                  <th>Contact Number</th>
-                  <th>District</th>
-                  <th>Upazila</th>
-                </tr>
-              </thead>
-              <tbody id="market-tbody"></tbody>
-            </table>
-          </div>
+        <div class="detail-img-box">
+          <img id="detail-img" src="" alt="Product">
         </div>
-        <div id="market-pagination-controls" class="pagination-controls"></div>
-      </div>
-    </section>
+        
+        <h2 id="detail-title" class="detail-title">Product Name</h2>
+        <div id="detail-category" class="detail-subtitle">Category</div>
+        
+        <div class="section-title" style="margin-bottom: 15px; font-size: 16px;">Nutrition Info</div>
+        <div id="nutrition-view-grid" class="nutrition-grid">
+          <!-- Dynamically populated -->
+        </div>
 
-    <!-- About Section -->
-    <section id="about" style="padding: 80px 20px; text-align: center; background: #eef2f0;">
-      <h2 class="section-title">About Us</h2>
-      <p style="color: #666; max-width: 800px; margin: 0 auto; line-height: 1.6; font-size: 16px;">New Hope Feed Mill Bangladesh Ltd. is committed to providing the best quality feed for Poultry, Fish, and Cattle. We ensure optimal nutrition and growth for your farm assets.</p>
-    </section>
-    
-    <!-- Product Details Modal -->
-    <div id="product-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <div class="modal-header" id="modal-title">Product Name</div>
-        <div class="modal-body">
-          <img id="modal-img" src="" alt="Product Image">
-          <div class="table-container">
-            <div class="edit-icon-wrapper">
-              <span id="modal-status"></span>
-              <button id="save-btn" class="save-btn" onclick="saveUpdatedData()">Save ✔</button>
-              <svg id="edit-icon" class="edit-svg" onclick="openPinModal()" viewBox="0 0 24 24" title="Edit Values"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-            </div>
-            <div class="table-scroll-wrapper">
-              <table class="nutrition-table">
-                <tr>
-                  <th id="th-pack">Packing Size</th>
-                  <th id="th-type">Feed Size/<br>Feed Type</th>
-                  <th id="th-mois">Moisture<br>(Max)</th>
-                  <th id="th-cp">Crude Protein<br>(Min)</th>
-                  <th id="th-fat">Fat<br>(Min)</th>
-                  <th id="th-fib">Fiber<br>(Max)</th>
-                  <th id="th-ash">Ash<br>(Max)</th>
-                  <th id="th-lys">Lysine<br>(Min)</th>
-                  <th id="th-meth">Methionine<br>(Min)</th>
-                  <th id="th-cal">Cal<br>(Min)</th>
-                  <th id="th-pho">Pho<br>(Min)</th>
-                  <th id="th-eng">Energy/TDN<br>(Kcal/Kg)</th>
-                </tr>
-                <tr id="view-row">
-                  <td id="v-pack"></td><td id="v-type"></td><td id="v-mois"></td><td id="v-cp"></td><td id="v-fat"></td>
-                  <td id="v-fib"></td><td id="v-ash"></td><td id="v-lys"></td><td id="v-meth"></td><td id="v-cal"></td><td id="v-pho"></td><td id="v-eng"></td>
-                </tr>
-                <tr id="edit-row" style="display: none;">
-                  <td id="e-pack"><input type="text" id="i-pack"></td>
-                  <td id="e-type"><input type="text" id="i-type"></td>
-                  <td id="e-mois"><input type="text" id="i-mois"></td>
-                  <td id="e-cp"><input type="text" id="i-cp"></td>
-                  <td id="e-fat"><input type="text" id="i-fat"></td>
-                  <td id="e-fib"><input type="text" id="i-fib"></td>
-                  <td id="e-ash"><input type="text" id="i-ash"></td>
-                  <td id="e-lys"><input type="text" id="i-lys"></td>
-                  <td id="e-meth"><input type="text" id="i-meth"></td>
-                  <td id="e-cal"><input type="text" id="i-cal"></td>
-                  <td id="e-pho"><input type="text" id="i-pho"></td>
-                  <td id="e-eng"><input type="text" id="i-eng"></td>
-                </tr>
-              </table>
-            </div>
-          </div>
+        <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;">
+          <!-- Dynamically populated for editing -->
+        </div>
+
+        <span id="modal-status" style="text-align:center; font-size:13px; margin-bottom:10px; font-weight:bold;"></span>
+        <button id="save-btn" class="main-action-btn save-mode" style="display:none;" onclick="saveUpdatedData()">Save Changes</button>
+        <button id="close-bottom-btn" class="main-action-btn" onclick="closeProductModal()">Close</button>
+      </div>
+    </div>
+
+    <!-- Smart PIN Dialog -->
+    <div id="smart-pin-modal" class="center-modal">
+      <div class="dialog-box">
+        <div class="dialog-title">Admin Access</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Enter secure PIN to edit values.</p>
+        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="10">
+        <div id="pinErrorMsg" style="color:red; font-size:12px; min-height:15px; font-weight:bold;"></div>
+        <div class="btn-group">
+          <button class="dialog-btn btn-cancel" onclick="closePinModal()">Cancel</button>
+          <button class="dialog-btn btn-confirm" onclick="verifyPin()">Verify</button>
         </div>
       </div>
     </div>
 
+    <!-- MRP / SMS Dialog -->
+    <div id="mrp-modal" class="center-modal">
+      <div class="dialog-box" style="max-width: 90%; padding: 25px 20px;">
+        <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px;" onclick="closeMrpModal()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div class="dialog-title">Price / SMS Generator</div>
+        <div class="search-box" style="margin-top: 15px;">
+          <input type="text" id="mrpSearchInput" placeholder="Product Code or Name..." onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
+        </div>
+        <button class="main-action-btn" style="padding: 12px; margin-top: 10px; border-radius: 12px;" onclick="searchMrpBtnClick()">Search Price</button>
+        
+        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 10px; font-weight:bold; font-size:13px;">Searching...</div>
+        <div id="mrpResults" style="margin-top: 15px; max-height: 120px; overflow-y: auto;"></div>
+
+        <textarea id="smsText" class="sms-box" placeholder="SMS format will auto-generate here..."></textarea>
+        <button id="copySmsBtn" class="main-action-btn save-mode" style="padding: 12px; border-radius: 12px; margin-top: 15px;" onclick="copySms()">Copy SMS</button>
+      </div>
+    </div>
+
+    <!-- ==============================
+         JAVASCRIPT LOGIC
+         ============================== -->
     <script>
-      // ==========================================
       // API CONFIGURATION (GURUTTOPURNO)
-      // ==========================================
       // Step 1 theke pawa "Web App URL" ti ekhane bosiye din:
       const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfhAh8yH3Ik5ddJ0zZI1wulphhGNtaKYbRXm4WTCakRTvV_QS-4BXOe4XefgJr4kCy/exec';
 
@@ -363,471 +301,282 @@
       let currentCategory = 'Poultry Feed';
       let currentFilteredProducts = []; 
       let currentEditingId = null;
-      let currentPage = 1;
-      const itemsPerPage = 10;
       const ADMIN_PIN = "1234";
-      
       let allMarketData = []; 
-      let currentFilteredMarket = [];
-      let currentMarketPage = 1;
-      const marketItemsPerPage = 20;
 
-      const columnKeys = ['pack', 'type', 'mois', 'cp', 'fat', 'fib', 'ash', 'lys', 'meth', 'cal', 'pho', 'eng'];
+      const columnDefs = [
+        {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Type'}, 
+        {key: 'mois', label: 'Moisture (Max)'}, {key: 'cp', label: 'Crude Protein'},
+        {key: 'fat', label: 'Fat (Min)'}, {key: 'fib', label: 'Fiber (Max)'},
+        {key: 'ash', label: 'Ash (Max)'}, {key: 'lys', label: 'Lysine (Min)'},
+        {key: 'meth', label: 'Methionine'}, {key: 'cal', label: 'Cal (Min)'},
+        {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'}
+      ];
 
-      // Mobile Menu Toggle
-      function toggleMenu() { document.getElementById('nav-links').classList.toggle('active'); }
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-          document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active-link'));
-          this.classList.add('active-link');
-          document.getElementById('nav-links').classList.remove('active');
-        });
-      });
+      // ==========================
+      // UI Navigation Logic
+      // ==========================
+      function switchSection(sectionId, btnElem) {
+        document.querySelectorAll('.app-section').forEach(sec => sec.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
+        btnElem.classList.add('active');
+        window.scrollTo(0,0);
+      }
 
-      // ==========================================
-      // API FETCH FUNCTIONS (GITHUB COMPATIBLE)
-      // ==========================================
-
-      // 1. Fetch Products
+      // ==========================
+      // Fetch Initial Data
+      // ==========================
       fetch(SCRIPT_URL + '?action=getProducts')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
           allProducts = data;
-          const loader = document.getElementById('loader-overlay');
-          loader.style.opacity = '0';
-          setTimeout(() => loader.style.display = 'none', 500); 
-          filterProducts('Poultry Feed', document.querySelector('.tab-btn.active'));
-        })
-        .catch(error => {
-           document.getElementById('loading-msg').innerHTML = `<span style="color:red;">Error loading products. Please check Web App URL.</span>`;
-           document.querySelector('.lds-spinner').style.display = 'none';
+          document.getElementById('loader-overlay').style.display = 'none';
+          filterProducts('Poultry Feed', document.querySelector('.cat-btn.active'));
+        }).catch(err => {
+           document.getElementById('loading-msg').innerHTML = `<span style="color:red;">Error loading app. Web App URL check korun.</span>`;
         });
 
-      // 2. Fetch Depots
       fetch(SCRIPT_URL + '?action=getDepots')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(depots => {
           document.getElementById('depot-loader').style.display = 'none';
-          const container = document.getElementById('depot-grid');
-          if(!depots || depots.length === 0) {
-            container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#777;">No Depot Information Found.</div>`;
-            return;
-          }
+          const container = document.getElementById('depot-list');
           let html = '';
           depots.forEach(depot => {
             html += `
-              <div class="depot-card">
-                <div class="depot-name">🏢 ${depot.name}</div>
-                <div class="depot-info"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
-                <div class="depot-info"><strong>👤 Contact:</strong> <span>${depot.person}</span></div>
-                <button onclick="copyNumber(this, '${depot.phone}')" class="depot-phone-btn" style="border:1px solid #fce8b2; cursor:pointer; outline:none;">📞 ${depot.phone}</button>
-              </div>
-            `;
+              <div class="list-card">
+                <div class="list-title">🏢 ${depot.name}</div>
+                <div class="list-text"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
+                <div class="list-text"><strong>👤 Person:</strong> <span>${depot.person}</span></div>
+                <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">📞 ${depot.phone}</button>
+              </div>`;
           });
           container.innerHTML = html;
         });
 
-      // 3. Fetch Market Coverage
       fetch(SCRIPT_URL + '?action=getMarket')
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
           document.getElementById('market-loader').style.display = 'none';
-          if(data && data.length > 0) {
-            allMarketData = data;
-            currentFilteredMarket = data;
-            displayMarketPage();
-          } else {
-             document.getElementById('market-tbody').innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:#777;">No Data Found</td></tr>`;
-          }
-        })
-        .catch(error => {
-          document.getElementById('market-loader').innerText = "Failed to load market data.";
+          allMarketData = data || [];
+          renderMarketData(allMarketData);
         });
 
-
-      // Click to Copy Number
-      function copyNumber(btnElement, phoneNumber) {
-        navigator.clipboard.writeText(phoneNumber).then(function() {
-          const originalText = btnElement.innerHTML;
-          const originalBg = btnElement.style.backgroundColor;
-          const originalColor = btnElement.style.color;
-
-          btnElement.innerHTML = '✅ Copied!';
-          btnElement.style.backgroundColor = 'var(--brand-primary)'; 
-          btnElement.style.color = '#ffffff';
-
-          setTimeout(function() {
-            btnElement.innerHTML = originalText;
-            btnElement.style.backgroundColor = originalBg;
-            btnElement.style.color = originalColor;
-          }, 2000);
-        }).catch(function(err) {
-          console.error('Failed to copy text: ', err);
-          alert('Copy failed!');
-        });
-      }
-
-      // ==================================
-      // MARKET COVERAGE TABLE FUNCTIONS
-      // ==================================
-      function displayMarketPage() {
-        const startIndex = (currentMarketPage - 1) * marketItemsPerPage;
-        const endIndex = startIndex + marketItemsPerPage;
-        const paginatedItems = currentFilteredMarket.slice(startIndex, endIndex);
-        renderMarketData(paginatedItems);
-        renderMarketPagination(currentFilteredMarket.length);
-      }
-
-      function renderMarketData(data) {
-        const tbody = document.getElementById('market-tbody');
-        if(data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:#777;">No Data Found</td></tr>`;
-          return;
-        }
-        let html = '';
-        data.forEach(item => {
-          html += `
-            <tr>
-              <td>${item.zone}</td>
-              <td>${item.person}</td>
-              <td>${item.phone !== '-' ? `<button class="phone-copy-btn" onclick="copyNumber(this, '${item.phone}')">📞 ${item.phone}</button>` : '-'}</td>
-              <td>${item.district}</td>
-              <td>${item.upazila_bn} (${item.upazila_en})</td>
-            </tr>
-          `;
-        });
-        tbody.innerHTML = html;
-      }
-
-      function renderMarketPagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / marketItemsPerPage);
-        const container = document.getElementById('market-pagination-controls');
-        if (totalPages <= 1) { container.innerHTML = ''; return; }
-        
-        let html = `<button class="page-btn" ${currentMarketPage === 1 ? 'disabled' : ''} onclick="changeMarketPage(${currentMarketPage - 1})">Previous</button>`;
-        let startP = Math.max(1, currentMarketPage - 2);
-        let endP = Math.min(totalPages, currentMarketPage + 2);
-        
-        if(startP > 1) html += `<button class="page-btn" onclick="changeMarketPage(1)">1</button>${startP > 2 ? '<span style="padding:5px;">...</span>' : ''}`;
-        for (let i = startP; i <= endP; i++) {
-          html += `<button class="page-btn ${currentMarketPage === i ? 'active' : ''}" onclick="changeMarketPage(${i})">${i}</button>`;
-        }
-        if(endP < totalPages) html += `${endP < totalPages - 1 ? '<span style="padding:5px;">...</span>' : ''}<button class="page-btn" onclick="changeMarketPage(${totalPages})">${totalPages}</button>`;
-        
-        html += `<button class="page-btn" ${currentMarketPage === totalPages ? 'disabled' : ''} onclick="changeMarketPage(${currentMarketPage + 1})">Next</button>`;
-        container.innerHTML = html;
-      }
-
-      function changeMarketPage(page) {
-        currentMarketPage = page;
-        displayMarketPage();
-        document.getElementById('market').scrollIntoView({ behavior: 'smooth' });
-      }
-
-      function searchMarket() {
-        const query = document.getElementById('marketSearchInput').value.toLowerCase();
-        currentFilteredMarket = allMarketData.filter(item => 
-          item.zone.toLowerCase().includes(query) ||
-          item.person.toLowerCase().includes(query) ||
-          item.district.toLowerCase().includes(query) ||
-          item.upazila_bn.toLowerCase().includes(query) ||
-          item.upazila_en.toLowerCase().includes(query) ||
-          item.phone.toLowerCase().includes(query)
-        );
-        currentMarketPage = 1;
-        displayMarketPage();
-      }
-
-      // ==================================
-      // PRODUCT & UI FUNCTIONS
-      // ==================================
+      // ==========================
+      // Products Rendering
+      // ==========================
       function filterProducts(category, btnElement) {
         currentCategory = category;
         document.getElementById('searchInput').value = ''; 
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        if(btnElement) {
-          btnElement.classList.add('active');
-        } else {
-          document.querySelectorAll('.tab-btn').forEach(btn => {
-            if (btn.innerText.trim() === category.toUpperCase()) btn.classList.add('active');
-          });
-        }
+        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+        if(btnElement) btnElement.classList.add('active');
         currentFilteredProducts = allProducts.filter(p => p.category === category);
-        currentPage = 1; 
-        displayCurrentPage();
+        renderProductGrid(currentFilteredProducts);
       }
 
       function searchProducts() {
         const query = document.getElementById('searchInput').value.toLowerCase();
         if (query.trim() === '') {
           currentFilteredProducts = allProducts.filter(p => p.category === currentCategory);
-          document.querySelectorAll('.tab-btn').forEach(btn => {
-            if (btn.innerText.trim() === currentCategory.toUpperCase()) {
-              btn.classList.add('active');
-            } else { btn.classList.remove('active'); }
-          });
         } else {
           currentFilteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(query));
-          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
         }
-        currentPage = 1; 
-        displayCurrentPage();
+        renderProductGrid(currentFilteredProducts);
       }
 
-      function displayCurrentPage() {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const paginatedItems = currentFilteredProducts.slice(startIndex, endIndex);
-        renderGrid(paginatedItems);
-        renderPagination(currentFilteredProducts.length);
-      }
-
-      function renderGrid(products) {
+      function renderProductGrid(products) {
         const container = document.getElementById('product-grid');
         if(products.length === 0) {
-          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#777; padding: 40px; font-size:16px;">কোনো প্রোডাক্ট পাওয়া যায়নি।</div>`;
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#aaa;">No products found.</div>`;
           return;
         }
         let html = '';
-        products.forEach(product => {
+        products.forEach(p => {
           html += `
-            <div class="card">
-              <img src="${product.imgUrl}" alt="${product.name}">
-              <h3>${product.name}</h3>
-              <button class="details-btn" onclick="openModal('${product.id}')">DETAILS</button>
-            </div>
-          `;
+            <div class="product-card" onclick="openProductModal('${p.id}')">
+              <div class="card-img-box"><img src="${p.imgUrl}" alt=""></div>
+              <h3>${p.name}</h3>
+              <div class="card-bottom">
+                <div class="card-pack">${p.pack !== '-' ? p.pack : 'Bag'}</div>
+                <button class="card-action">+</button>
+              </div>
+            </div>`;
         });
         container.innerHTML = html;
       }
 
-      function renderPagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const container = document.getElementById('pagination-controls');
-        if (totalPages <= 1) { container.innerHTML = ''; return; }
-        let html = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">Previous</button>`;
-        for (let i = 1; i <= totalPages; i++) {
-          html += `<button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-        }
-        html += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>`;
+      // ==========================
+      // Market Rendering
+      // ==========================
+      function renderMarketData(data) {
+        const container = document.getElementById('market-list');
+        let html = '';
+        data.slice(0, 50).forEach(item => { // Limit to 50 for mobile smoothness initially
+          html += `
+            <div class="list-card">
+              <div class="list-title">${item.district} ➔ ${item.upazila_bn}</div>
+              <div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-primary); font-weight:bold;">${item.zone}</span></div>
+              <div class="list-text"><strong>Person:</strong> <span>${item.person}</span></div>
+              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')">📞 ${item.phone}</button>` : ''}
+            </div>`;
+        });
         container.innerHTML = html;
       }
 
-      function changePage(page) {
-        currentPage = page; displayCurrentPage();
-        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+      function searchMarket() {
+        const query = document.getElementById('marketSearchInput').value.toLowerCase();
+        const filtered = allMarketData.filter(item => 
+          item.zone.toLowerCase().includes(query) || item.district.toLowerCase().includes(query) ||
+          item.upazila_bn.toLowerCase().includes(query) || item.upazila_en.toLowerCase().includes(query)
+        );
+        renderMarketData(filtered);
       }
 
-      function applyColumnVisibility(productObj) {
-        columnKeys.forEach(key => {
-          const val = productObj[key];
-          const th = document.getElementById('th-' + key);
-          const vTd = document.getElementById('v-' + key);
-          const eTd = document.getElementById('e-' + key);
-          vTd.innerText = val;
-          if (!val || val.trim() === '-' || val.trim() === '') {
-            th.style.display = 'none'; vTd.style.display = 'none'; eTd.style.display = 'none';
-          } else {
-            th.style.display = 'table-cell'; vTd.style.display = 'table-cell'; eTd.style.display = 'table-cell';
+      // ==========================
+      // Product Detail Modal
+      // ==========================
+      function openProductModal(productId) {
+        const p = allProducts.find(x => x.id === productId);
+        if (!p) return;
+        currentEditingId = p.id;
+        
+        document.getElementById('detail-img').src = p.imgUrl;
+        document.getElementById('detail-title').innerText = p.name;
+        document.getElementById('detail-category').innerText = p.category;
+        
+        let viewHtml = '';
+        let editHtml = '';
+        
+        columnDefs.forEach(col => {
+          let val = p[col.key];
+          if(val && val.trim() !== '-' && val.trim() !== '') {
+            viewHtml += `<div class="nutri-item"><div class="nutri-label">${col.label}</div><div class="nutri-value">${val}</div></div>`;
           }
+          editHtml += `<div class="nutri-item"><div class="nutri-label">${col.label}</div><input type="text" id="edit-${col.key}" value="${val}"></div>`;
         });
+        
+        document.getElementById('nutrition-view-grid').innerHTML = viewHtml;
+        document.getElementById('nutrition-edit-grid').innerHTML = editHtml;
+        
+        document.getElementById('nutrition-view-grid').style.display = 'grid';
+        document.getElementById('nutrition-edit-grid').style.display = 'none';
+        document.getElementById('save-btn').style.display = 'none';
+        document.getElementById('close-bottom-btn').style.display = 'block';
+        document.querySelector('.admin-edit-btn').style.display = 'flex';
+        document.getElementById('modal-status').innerText = '';
+
+        document.getElementById('product-detail-modal').style.display = 'flex';
       }
 
-      function showAllColumnsForEdit() {
-        columnKeys.forEach(key => {
-          document.getElementById('th-' + key).style.display = 'table-cell';
-          document.getElementById('e-' + key).style.display = 'table-cell';
-        });
+      function closeProductModal() {
+        document.getElementById('product-detail-modal').style.display = 'none';
       }
 
-      function openModal(productId) {
-        const product = allProducts.find(p => p.id === productId);
-        if (product) {
-          currentEditingId = product.id;
-          document.getElementById('modal-title').innerText = product.name;
-          document.getElementById('modal-img').src = product.imgUrl;
-          applyColumnVisibility(product);
-          document.getElementById('view-row').style.display = 'table-row';
-          document.getElementById('edit-row').style.display = 'none';
-          document.getElementById('edit-icon').style.display = 'block';
-          document.getElementById('save-btn').style.display = 'none';
-          document.getElementById('modal-status').innerText = "";
-          document.getElementById('product-modal').style.display = 'block';
-        }
-      }
-
-      function closeModal() { document.getElementById('product-modal').style.display = 'none'; }
-      
-      window.onclick = function(event) {
-        const productModal = document.getElementById('product-modal');
-        const mrpModal = document.getElementById('mrp-modal');
-        if (event.target == productModal) { productModal.style.display = "none"; }
-        if (event.target == mrpModal) { mrpModal.style.display = "none"; }
-      }
-
+      // ==========================
+      // PIN & Editing
+      // ==========================
       function openPinModal() {
         document.getElementById('pinInput').value = '';
         document.getElementById('pinErrorMsg').innerText = '';
         document.getElementById('smart-pin-modal').style.display = 'flex';
-        setTimeout(() => { document.getElementById('pinInput').focus(); }, 100);
       }
       function closePinModal() { document.getElementById('smart-pin-modal').style.display = 'none'; }
-      document.getElementById("pinInput").addEventListener("keyup", function(event) { if (event.key === "Enter") verifyPin(); });
-
+      
       function verifyPin() {
-        const pin = document.getElementById('pinInput').value;
-        if (pin === ADMIN_PIN) {
+        if (document.getElementById('pinInput').value === ADMIN_PIN) {
           closePinModal();
-          columnKeys.forEach(key => { document.getElementById('i-' + key).value = document.getElementById('v-' + key).innerText; });
-          showAllColumnsForEdit();
-          document.getElementById('view-row').style.display = 'none';
-          document.getElementById('edit-row').style.display = 'table-row';
-          document.getElementById('edit-icon').style.display = 'none';
+          document.getElementById('nutrition-view-grid').style.display = 'none';
+          document.getElementById('nutrition-edit-grid').style.display = 'grid';
           document.getElementById('save-btn').style.display = 'block';
+          document.getElementById('close-bottom-btn').style.display = 'none';
+          document.querySelector('.admin-edit-btn').style.display = 'none';
         } else {
-          document.getElementById('pinErrorMsg').innerText = "Incorrect PIN! Access Denied.";
+          document.getElementById('pinErrorMsg').innerText = "Incorrect PIN!";
         }
       }
 
       function saveUpdatedData() {
         const statusEl = document.getElementById('modal-status');
-        statusEl.innerText = "Saving..."; statusEl.style.color = "blue";
-        const updatedData = { id: currentEditingId, name: document.getElementById('modal-title').innerText };
-        columnKeys.forEach(key => { updatedData[key] = document.getElementById('i-' + key).value; });
+        statusEl.innerText = "Saving data..."; statusEl.style.color = "var(--brand-secondary)";
+        
+        let updatedData = { id: currentEditingId, name: document.getElementById('detail-title').innerText };
+        columnDefs.forEach(col => { updatedData[col.key] = document.getElementById('edit-' + col.key).value; });
 
-        // API POST Request for Save
         fetch(SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify({ action: 'saveNutrition', productData: updatedData })
-        })
-        .then(response => response.json())
-        .then(response => {
+        }).then(res => res.json()).then(response => {
             if(response.success) {
-              const productIndex = allProducts.findIndex(p => p.id === currentEditingId);
-              if (productIndex !== -1) {
-                columnKeys.forEach(key => { allProducts[productIndex][key] = updatedData[key]; });
-              }
-              applyColumnVisibility(updatedData);
-              document.getElementById('edit-row').style.display = 'none';
-              document.getElementById('view-row').style.display = 'table-row';
-              document.getElementById('save-btn').style.display = 'none';
-              document.getElementById('edit-icon').style.display = 'block';
-              statusEl.innerText = "Updated!"; statusEl.style.color = "var(--brand-primary)";
-              setTimeout(() => statusEl.innerText = "", 2500);
-            } else {
-               statusEl.innerText = "Error Saving"; statusEl.style.color = "red";
-            }
-        })
-        .catch(err => {
-            statusEl.innerText = "Connection Failed"; statusEl.style.color = "red";
-        });
+              const idx = allProducts.findIndex(x => x.id === currentEditingId);
+              if (idx !== -1) { columnDefs.forEach(col => { allProducts[idx][col.key] = updatedData[col.key]; }); }
+              statusEl.innerText = "Saved successfully!"; statusEl.style.color = "var(--brand-primary)";
+              setTimeout(() => { openProductModal(currentEditingId); }, 1500); // Reload modal view
+            } else { statusEl.innerText = "Error Saving"; statusEl.style.color = "red"; }
+        }).catch(err => { statusEl.innerText = "Connection Failed"; statusEl.style.color = "red"; });
       }
 
+      // ==========================
+      // MRP SMS Dialog
+      // ==========================
       function openMrpModal() {
-        document.getElementById('nav-links').classList.remove('active');
         document.getElementById('mrpSearchInput').value = '';
         document.getElementById('mrpResults').innerHTML = '';
         document.getElementById('smsText').value = '';
-        document.getElementById('copySmsBtn').innerText = '📋 Copy SMS';
-        document.getElementById('copySmsBtn').style.backgroundColor = 'var(--brand-primary)';
-        
+        document.getElementById('copySmsBtn').innerText = 'Copy SMS';
         document.getElementById('mrp-modal').style.display = 'flex';
-        setTimeout(() => { document.getElementById('mrpSearchInput').focus(); }, 100);
       }
-
       function closeMrpModal() { document.getElementById('mrp-modal').style.display = 'none'; }
-      document.getElementById("mrpSearchInput").addEventListener("keyup", function(event) { if (event.key === "Enter") searchMrpBtnClick(); });
 
       function searchMrpBtnClick() {
-        const query = document.getElementById('mrpSearchInput').value;
-        if(!query || query.trim() === '') return;
+        const q = document.getElementById('mrpSearchInput').value;
+        if(!q) return;
         document.getElementById('mrp-loading').style.display = 'block';
-        document.getElementById('mrpResults').innerHTML = '';
-        document.getElementById('smsText').value = '';
-
-        // API GET Request for MRP
-        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(query))
-          .then(response => response.json())
+        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(q))
+          .then(res => res.json())
           .then(results => {
             document.getElementById('mrp-loading').style.display = 'none';
-            if(results.error) {
-               document.getElementById('mrpResults').innerHTML = `<div style="color:red;">Error: ${results.error}</div>`;
+            if(results.error || results.length === 0) {
+               document.getElementById('mrpResults').innerHTML = `<div style="color:#aaa;">No product found.</div>`;
                return;
             }
-            if(results.length === 0) {
-               document.getElementById('mrpResults').innerHTML = `<div style="color:#777; padding:10px;">কোনো প্রোডাক্ট পাওয়া যায়নি। কোড বা নাম চেক করুন।</div>`;
-               return;
-            }
-            renderMrpResults(results);
-          })
-          .catch(err => {
-             document.getElementById('mrp-loading').style.display = 'none';
-             document.getElementById('mrpResults').innerHTML = `<div style="color:red;">API Fetch Error</div>`;
-          });
+            let html = '';
+            results.forEach(m => {
+              let name = m.rowData[28] ? m.rowData[28].trim() : "পণ্য";
+              let price = m.rowData[11] ? m.rowData[11].trim() : "---";
+              html += `<div class="mrp-result" onclick='selectMrpMatch("${name}", "${price}")'>${name} - MRP: ${price} TK</div>`;
+            });
+            document.getElementById('mrpResults').innerHTML = html;
+          }).catch(e => { document.getElementById('mrp-loading').style.display = 'none'; });
       }
 
-      function renderMrpResults(results) {
-        let html = '';
-        results.forEach((match) => {
-          let rowData = match.rowData;
-          let prodName = rowData[28] ? rowData[28].trim() : "Unknown Product";
-          let price = rowData[11] ? rowData[11].trim() : "---";
-          let rowText = `${prodName} - MRP: ${price} TK`;
-          html += `<div class="mrp-result-item" onclick='selectMrpMatch(${JSON.stringify(match.rowData)})'>${rowText}</div>`;
+      function selectMrpMatch(name, price) {
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লি:`;
+      }
+
+      // ==========================
+      // Global Utilities
+      // ==========================
+      function copyNumber(btn, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const origText = btn.innerHTML;
+          btn.innerHTML = '✅ Copied!';
+          setTimeout(() => btn.innerHTML = origText, 2000);
         });
-        document.getElementById('mrpResults').innerHTML = html;
       }
-
-      function selectMrpMatch(rowData) {
-        let prodName = rowData[28] ? rowData[28].trim() : "";
-        let name = prodName;
-        if (!name || name.trim() === "-") { name = "পণ্য"; }
-        let price = rowData[11] ? rowData[11].trim() : "---";
-
-        const sms = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।
-আমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!
-
-পণ্য: ${name}
-সর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ও ডিলার ভেদে দামের সামান্য তারতম্য হতে পারে)
-
-ফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল-এর ডিলার পয়েন্টে যোগাযোগ করুন।
-
-বিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।
-📞 হটলাইন: +880 1742-510889
-
-ধন্যবাদান্তে,
-নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
-        
-        document.getElementById('smsText').value = sms;
-        const copyBtn = document.getElementById('copySmsBtn');
-        copyBtn.innerText = '📋 Copy SMS';
-        copyBtn.style.backgroundColor = 'var(--brand-primary)';
-      }
-
       function copySms() {
-        const smsBox = document.getElementById('smsText');
-        if(!smsBox.value) return;
-        smsBox.select();
-        smsBox.setSelectionRange(0, 99999); 
-        navigator.clipboard.writeText(smsBox.value);
-        const copyBtn = document.getElementById('copySmsBtn');
-        copyBtn.innerText = '✔ Copied!';
-        copyBtn.style.backgroundColor = 'var(--brand-secondary)';
+        const box = document.getElementById('smsText');
+        if(!box.value) return;
+        box.select(); navigator.clipboard.writeText(box.value);
+        document.getElementById('copySmsBtn').innerText = '✔ Copied!';
       }
     </script>
-
-    <!-- PWA Service Worker Registration Script -->
+    
+    <!-- Service Worker for PWA -->
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js')
-            .then(registration => {
-              console.log('App is ready for offline use. Registration successful.');
-            })
-            .catch(err => {
-              console.log('ServiceWorker registration failed: ', err);
-            });
-        });
+        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); });
       }
     </script>
 
