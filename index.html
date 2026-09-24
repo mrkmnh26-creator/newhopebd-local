@@ -3,28 +3,33 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>New Hope Feed Mill Bangladesh Ltd.</title>
+    <title>New Hope Feed</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="icon-192.png">
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f8f9fb">
+    <meta name="theme-color" content="#00a651">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
 
     <style>
-      /* COOL MODE (Default) */
+      /* =======================================
+         COLOR VARIABLES (Brand Colors)
+         ======================================= */
       :root { 
-        --brand-primary: #00a651; 
-        --brand-secondary: #f05a28; 
+        --brand-primary: #00a651; /* Logo Green */
+        --brand-secondary: #f05a28; /* Logo Orange */
         --bg-color: #f8f9fb; 
         --card-bg: #ffffff;
         --text-main: #2b2b2b;
         --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #1f222a; /* Dark floating nav */
+        --icon-bg: #e8f5e9;
       }
       
       /* WARM MODE */
@@ -35,112 +40,148 @@
         --card-bg: #ffffff;
         --text-main: #3e2723;
         --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #2d1b15;
+        --icon-bg: #fbe9e7;
       }
       
       * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-      html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); transition: background-color 0.4s ease, color 0.4s ease; }
+      html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); transition: 0.4s ease; }
 
       /* Loader */
       #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
       .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
       @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-      /* App Header */
-      .app-header { padding: 25px 20px 15px 20px; background: var(--bg-color); position: sticky; top: 0; z-index: 100; transition: background-color 0.4s ease; }
-      .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-      .greeting { font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
-      .app-title { font-size: 22px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+      /* =======================================
+         MOCKUP STYLE HEADER
+         ======================================= */
+      .app-header { 
+        background: var(--brand-primary); 
+        padding: 30px 20px 40px 20px; 
+        border-bottom-left-radius: 35px; 
+        border-bottom-right-radius: 35px; 
+        position: relative; 
+        z-index: 10; 
+        transition: 0.4s ease;
+        margin-bottom: 20px;
+      }
+      .header-top { display: flex; justify-content: space-between; align-items: flex-start; color: var(--header-text); }
+      .greeting { font-size: 13px; opacity: 0.9; margin-bottom: 5px; }
+      .app-title { font-size: 24px; font-weight: 800; line-height: 1.2; display: flex; align-items: center; gap: 8px;}
       
-      .theme-toggle { background: var(--card-bg); border: 1px solid #eaeaea; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
+      .theme-toggle { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.3s; color: #fff; }
       .theme-toggle:active { transform: scale(0.9); }
 
-      /* Search Bar */
-      .search-box { display: flex; align-items: center; background: var(--card-bg); border-radius: 16px; padding: 12px 18px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #eaeaea; transition: 0.4s ease; }
-      .search-box svg { width: 18px; height: 18px; fill: #aaa; margin-right: 12px; }
-      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-main); }
-      .search-box input::placeholder { color: #bbb; }
+      /* Search Bar (Inside Header) */
+      .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 14px; padding: 14px 18px; margin-top: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+      .search-box svg { width: 20px; height: 20px; fill: var(--brand-primary); margin-right: 12px; }
+      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 15px; color: #333; }
+      .search-box input::placeholder { color: #aaa; }
 
-      /* Horizontal Categories */
-      .category-scroll { display: flex; overflow-x: auto; gap: 12px; padding: 0 20px 5px 20px; scrollbar-width: none; margin-top: 20px; }
+      /* =======================================
+         CIRCULAR CATEGORIES (Mockup Style)
+         ======================================= */
+      .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0 20px 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+      .see-all { font-size: 13px; color: var(--brand-primary); font-weight: 600; cursor: pointer; }
+
+      .category-scroll { display: flex; overflow-x: auto; gap: 20px; padding: 0 20px 15px 20px; scrollbar-width: none; }
       .category-scroll::-webkit-scrollbar { display: none; }
-      .cat-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--card-bg); border-radius: 25px; border: 1px solid #eaeaea; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; white-space: nowrap; transition: 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-      .cat-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
-      .cat-btn span { font-size: 16px; }
+      
+      .cat-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; border: none; background: transparent; transition: 0.3s; }
+      .cat-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--card-bg); box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; justify-content: center; align-items: center; font-size: 26px; transition: 0.3s; border: 1px solid #f0f0f0; }
+      .cat-text { font-size: 13px; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
+      
+      .cat-btn.active .cat-icon { background: var(--brand-primary); color: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-color: var(--brand-primary); }
+      .cat-btn.active .cat-text { color: var(--text-main); font-weight: 800; }
 
-      /* Section Layout */
-      .section-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 20px 15px 20px; }
-      .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); }
-      .app-section { padding-bottom: 90px; } 
+      /* App Section Padding */
+      .app-section { padding-bottom: 110px; } 
 
-      /* Product Grid */
+      /* =======================================
+         PRODUCT GRID (Clean Mockup Style)
+         ======================================= */
       .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 20px; }
-      .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f9f9f9; }
-      .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); }
-      .product-card:active { transform: scale(0.98); }
-      .card-img-box { background: var(--bg-color); border-radius: 15px; padding: 10px; display: flex; justify-content: center; align-items: center; height: 130px; margin-bottom: 12px; transition: 0.4s ease; }
+      .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f5f5f5; }
+      .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+      
+      .fav-icon { position: absolute; top: 12px; right: 12px; background: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2; font-size: 12px; color: #ccc;}
+      .fav-icon.active { color: #ff4757; }
+
+      .card-img-box { background: var(--icon-bg); border-radius: 15px; padding: 15px; display: flex; justify-content: center; align-items: center; height: 140px; margin-bottom: 15px; transition: 0.4s ease; }
       .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
-      .product-card h3 { font-size: 13px; font-weight: 700; margin: 0 0 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
-      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; }
-      .card-pack { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-      .card-action { background: var(--brand-primary); color: #fff; width: 28px; height: 28px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 16px; font-weight: bold; border: none; transition: 0.4s ease; }
+      
+      .product-card h3 { font-size: 14px; font-weight: 800; margin: 0 0 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; color: var(--text-main); }
+      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+      .card-pack { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+      .card-action { background: var(--brand-primary); color: #fff; width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; border: none; }
 
-      /* Bottom Navigation */
-      .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 10px 20px 10px; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); border-top-left-radius: 25px; border-top-right-radius: 25px; z-index: 1000; }
-      .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #a0a0a0; text-decoration: none; font-weight: 600; gap: 4px; border: none; background: none; cursor: pointer; }
+      /* =======================================
+         FLOATING BOTTOM NAV (Mockup Style)
+         ======================================= */
+      .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; }
+      .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; }
       .nav-item svg { width: 24px; height: 24px; fill: currentColor; transition: 0.3s; }
-      .nav-item.active { color: var(--brand-primary); }
-      .nav-item.active svg { transform: translateY(-2px); }
+      .nav-item span { display: none; font-size: 11px; font-weight: 600; margin-top: 4px; }
+      
+      .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
+      .nav-item.active svg { transform: scale(1.1); }
 
-      /* Modals (Product Details & Others) */
-      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 10000; justify-content: center; align-items: flex-end; }
-      .modal-sheet { background: var(--card-bg); width: 100%; max-height: 90vh; border-top-left-radius: 30px; border-top-right-radius: 30px; padding: 30px 25px; overflow-y: auto; position: relative; animation: slideUp 0.3s ease-out; display: flex; flex-direction: column; transition: 0.4s ease; }
-      @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      /* =======================================
+         PRODUCT DETAILS MODAL
+         ======================================= */
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 10000; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
+      @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
       
-      .sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-      .back-btn, .admin-edit-btn { background: var(--bg-color); border: 1px solid #eaeaea; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.4s ease; }
-      .back-btn svg, .admin-edit-btn svg { width: 20px; height: 20px; fill: var(--text-main); }
+      .detail-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; position: sticky; top: 0; background: #fff; z-index: 10; }
+      .back-btn, .admin-edit-btn { background: var(--bg-color); border: none; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+      .back-btn svg, .admin-edit-btn svg { width: 22px; height: 22px; fill: var(--text-main); }
       
-      .detail-img-box { background: var(--bg-color); border-radius: 50%; width: 200px; height: 200px; margin: 0 auto 30px auto; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; transition: 0.4s ease; }
-      .detail-img-box::after { content: ''; position: absolute; width: 240px; height: 240px; border-radius: 50%; border: 2px dashed #eaeaea; z-index: -1; }
-      .detail-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      .detail-img-box { background: var(--icon-bg); width: 100%; height: 320px; display: flex; justify-content: center; align-items: center; padding: 30px; position: relative; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 25px; transition: 0.4s ease; }
+      .detail-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.1)); }
       
-      .detail-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
-      .detail-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 25px; }
+      .detail-content { padding: 0 25px 120px 25px; }
+      .detail-title { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; line-height: 1.2; }
+      .detail-subtitle { font-size: 14px; color: var(--brand-secondary); font-weight: 700; margin-bottom: 25px; display: inline-block; background: var(--bg-color); padding: 5px 12px; border-radius: 20px;}
 
-      /* Nutrition Data Layout */
-      .nutrition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 16px; display: flex; flex-direction: column; border: 1px solid #eaeaea; transition: 0.4s ease; }
+      .nutrition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 16px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; transition: 0.4s ease; }
       .nutri-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
-      .nutri-value { font-size: 15px; font-weight: 700; color: var(--text-main); }
-      .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 5px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
+      .nutri-value { font-size: 15px; font-weight: 800; color: var(--text-main); }
+      .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
       
-      .main-action-btn { background: var(--text-main); color: #fff; border: none; width: 100%; padding: 18px; border-radius: 20px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: auto; transition: 0.4s ease; }
-      .main-action-btn.save-mode { background: var(--brand-primary); }
+      /* Fixed Bottom Action Bar for Details */
+      .detail-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 20px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top-left-radius: 30px; border-top-right-radius: 30px; z-index: 100; }
+      .price-box { display: flex; flex-direction: column; }
+      .price-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+      .price-value { font-size: 22px; font-weight: 800; color: var(--text-main); }
+      
+      .main-action-btn { flex: 1; background: var(--brand-primary); color: #fff; border: none; padding: 18px; border-radius: 25px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,166,81,0.3); display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.4s ease; }
+      .main-action-btn svg { width: 20px; height: 20px; fill: #fff; }
 
       /* List Layouts (Depots & Market) */
-      .list-card { background: var(--card-bg); border-radius: 16px; padding: 18px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 8px; border: 1px solid #eaeaea; transition: 0.4s ease; }
-      .list-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
+      .list-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f5f5f5; transition: 0.4s ease; }
+      .list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
       .list-text { font-size: 13px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;}
-      .list-text strong { color: #555; min-width: 60px; }
-      .action-pill { background: var(--bg-color); color: var(--brand-primary); padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid var(--brand-primary); align-self: flex-start; margin-top: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; outline: none; transition: 0.4s ease; }
-      .action-pill:active { background: var(--brand-primary); color: #fff; }
+      .list-text strong { color: #444; min-width: 60px; }
+      .action-pill { background: var(--brand-primary); color: #fff; padding: 10px 18px; border-radius: 25px; font-size: 13px; font-weight: 700; border: none; align-self: flex-start; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,166,81,0.2); }
 
       /* PIN & SMS Dialog Boxes */
       .center-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100000; justify-content: center; align-items: center; padding: 20px; }
-      .dialog-box { background: var(--card-bg); width: 100%; max-width: 380px; border-radius: 24px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; transition: 0.4s ease; }
+      .dialog-box { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 30px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; }
       @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-      .dialog-title { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+      .dialog-title { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
       
-      .pin-input { width: 100%; background: var(--bg-color); border: 1px solid #eaeaea; padding: 15px; border-radius: 12px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 10px; outline: none; color: var(--text-main); transition: 0.4s ease; }
+      .pin-input { width: 100%; background: var(--bg-color); border: 1px solid #eaeaea; padding: 15px; border-radius: 15px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 10px; outline: none; color: var(--text-main); }
       .pin-input:focus { border-color: var(--brand-primary); background: var(--card-bg); }
       .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-      .dialog-btn { flex: 1; padding: 14px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.4s ease; }
-      .btn-cancel { background: var(--bg-color); color: var(--text-main); border: 1px solid #eaeaea; }
-      .btn-confirm { background: var(--brand-primary); color: #fff; }
+      .dialog-btn { flex: 1; padding: 15px; border-radius: 15px; font-weight: 700; border: none; cursor: pointer; font-size: 15px;}
+      .btn-cancel { background: var(--bg-color); color: var(--text-main); }
+      .btn-confirm { background: var(--brand-primary); color: #fff; box-shadow: 0 8px 20px rgba(0,166,81,0.2); }
 
-      .mrp-result { text-align: left; padding: 12px; background: var(--bg-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; font-weight: 600; border: 1px solid #eaeaea; color: var(--text-main); transition: 0.4s ease; }
+      .mrp-result { text-align: left; padding: 15px; background: var(--bg-color); border-radius: 12px; margin-bottom: 10px; font-size: 14px; cursor: pointer; font-weight: 700; border: 1px solid #eaeaea; color: var(--text-main); }
       .mrp-result:hover { border-color: var(--brand-primary); }
-      textarea.sms-box { width: 100%; height: 150px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 12px; padding: 15px; font-size: 13px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main); transition: 0.4s ease;}
+      textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
       /* =========================================
          RESPONSIVE WEB DESIGN (DESKTOP/TABLET)
@@ -148,22 +189,27 @@
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
-        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 50px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 40px; background: var(--card-bg); }
-        .nav-item { flex-direction: row; font-size: 14px; gap: 8px; }
-        .nav-item.active svg { transform: translateY(0); }
+        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 50px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 40px; background: var(--card-bg); width: 100%; left: 0; }
+        .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
+        .nav-item span { display: block; font-size: 14px; margin-top: 0; }
+        .nav-item.active { background: transparent; color: var(--brand-primary); box-shadow: none; transform: none; border-bottom: 3px solid var(--brand-primary); border-radius: 0; }
+        .nav-item.active svg { transform: none; }
         
-        .app-header { background: transparent; padding: 0 20px 20px 20px; }
-        .header-top { align-items: center; }
-        .search-box { max-width: 500px; margin-top: 20px; }
+        .app-header { border-radius: 30px; margin: 20px; padding: 40px; }
+        .search-box { max-width: 500px; margin-top: 30px; }
         
-        .category-scroll { justify-content: flex-start; margin-bottom: 30px; }
+        .category-scroll { padding: 0 20px 20px 20px; }
         .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         
         .list-card { max-width: 800px; margin: 0 20px 15px 20px; display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; gap: 15px; }
         .action-pill { margin-top: 0; justify-self: end; }
         
-        .modal-overlay { align-items: center; padding: 20px; }
-        .modal-sheet { max-width: 600px; border-radius: 30px; height: auto; max-height: 90vh; }
+        .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
+        .modal-sheet { max-width: 800px; height: auto; max-height: 90vh; border-radius: 30px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; background: var(--card-bg); }
+        .detail-header { position: absolute; top: 15px; left: 15px; width: calc(100% - 30px); background: transparent; }
+        .detail-img-box { border-radius: 0; height: 100%; margin-bottom: 0; padding: 60px 30px; }
+        .detail-content { padding: 40px 30px; overflow-y: auto; height: 100%; padding-bottom: 120px; }
+        .detail-bottom-bar { position: absolute; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; }
       }
     </style>
   </head>
@@ -171,7 +217,7 @@
 
     <div id="loader-overlay">
       <div class="spinner"></div>
-      <div class="loading-text" id="loading-msg">Loading App...</div>
+      <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--text-main);">Loading App...</div>
     </div>
 
     <!-- MAIN APP WRAPPER -->
@@ -181,29 +227,50 @@
            1. PRODUCTS SECTION (HOME)
            ============================== -->
       <div id="sec-products" class="app-section">
+        
+        <!-- Curved Header -->
         <header class="app-header">
           <div class="header-top">
             <div>
-              <div class="greeting">Hello, Welcome to</div>
-              <div class="app-title">New Hope Feed Mill Bangladesh Ltd.</div>
+              <div class="greeting">Welcome to</div>
+              <div class="app-title">
+                New Hope Feed
+              </div>
             </div>
             <!-- THEME TOGGLE BUTTON -->
-            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Cool/Warm Mode">🌗</button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Cool/Warm Mode">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+            </button>
           </div>
+          <!-- Search Box Inside Header -->
           <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="searchInput" placeholder="Search product name or code..." onkeyup="searchProducts()">
+            <input type="text" id="searchInput" placeholder="Search product or code..." onkeyup="searchProducts()">
           </div>
         </header>
 
+        <div class="section-title">
+          Categories <span class="see-all">See All</span>
+        </div>
+        
+        <!-- Circular Categories -->
         <div class="category-scroll" id="cat-container">
-          <div class="cat-btn active" onclick="filterProducts('Poultry Feed', this)"><span>🐔</span> Poultry</div>
-          <div class="cat-btn" onclick="filterProducts('Fish Feed', this)"><span>🐟</span> Fish</div>
-          <div class="cat-btn" onclick="filterProducts('Cattle Feed', this)"><span>🐄</span> Cattle</div>
+          <button class="cat-btn active" onclick="filterProducts('Poultry Feed', this)">
+            <div class="cat-icon">🐔</div>
+            <div class="cat-text">Poultry</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Fish Feed', this)">
+            <div class="cat-icon">🐟</div>
+            <div class="cat-text">Fish</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Cattle Feed', this)">
+            <div class="cat-icon">🐄</div>
+            <div class="cat-text">Cattle</div>
+          </button>
         </div>
 
-        <div class="section-header">
-          <div class="section-title">Our Products</div>
+        <div class="section-title" style="margin-top: 15px;">
+          Best Seller Products <span class="see-all">See All</span>
         </div>
 
         <div class="product-grid" id="product-grid">
@@ -221,7 +288,6 @@
               <div class="greeting">Find Locations</div>
               <div class="app-title">Company Depots</div>
             </div>
-            <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
           </div>
         </header>
         <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Depots...</div>
@@ -238,7 +304,6 @@
               <div class="greeting">Market Areas</div>
               <div class="app-title">Coverage & Contacts</div>
             </div>
-            <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
           </div>
           <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -252,11 +317,14 @@
     </div> <!-- End App Wrapper -->
 
     <!-- ==============================
-         NAVIGATION BAR (Bottom on Mobile, Top on Web)
+         NAVIGATION BAR (Floating Dark on Mobile, Top on Web)
          ============================== -->
     <nav class="bottom-nav">
-      <!-- Web Logo (Hidden on mobile via flex layout handling) -->
-      <div style="margin-right: auto; font-weight: 800; font-size: 18px; color: var(--brand-primary); display: none;" id="web-logo">NH FEED</div>
+      <!-- Web Logo -->
+      <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; align-items:center; gap:8px;" id="web-logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
+        NH FEED
+      </div>
       
       <button class="nav-item active" onclick="switchSection('sec-products', this)">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -280,32 +348,47 @@
          MODALS & DIALOGS
          ============================== -->
     
-    <!-- Product Detail Bottom/Center Sheet -->
+    <!-- Full Screen Product Detail Modal -->
     <div id="product-detail-modal" class="modal-overlay">
-      <div class="modal-sheet">
-        <div class="sheet-header">
-          <button class="back-btn" onclick="closeProductModal()">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-          </button>
-          <button class="admin-edit-btn" onclick="openPinModal()">
-            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-          </button>
-        </div>
+      <!-- Only for Desktop layout wrapper -->
+      <div class="modal-sheet"> 
         
         <div class="detail-img-box">
+          <div class="detail-header">
+            <button class="back-btn" onclick="closeProductModal()">
+              <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            </button>
+            <button class="admin-edit-btn" onclick="openPinModal()">
+              <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
+          </div>
           <img id="detail-img" src="" alt="Product">
         </div>
         
-        <h2 id="detail-title" class="detail-title">Product Name</h2>
-        <div id="detail-category" class="detail-subtitle">Category</div>
-        
-        <div class="section-title" style="margin-bottom: 15px; font-size: 16px;">Nutrition Info</div>
-        <div id="nutrition-view-grid" class="nutrition-grid"></div>
-        <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;"></div>
+        <div class="detail-content">
+          <h2 id="detail-title" class="detail-title">Product Name</h2>
+          <div id="detail-category" class="detail-subtitle">Category</div>
+          
+          <div class="section-title" style="margin: 10px 0 15px 0;">Nutrition Details</div>
+          <div id="nutrition-view-grid" class="nutrition-grid"></div>
+          <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;"></div>
+        </div>
 
-        <span id="modal-status" style="text-align:center; font-size:13px; margin-bottom:10px; font-weight:bold;"></span>
-        <button id="save-btn" class="main-action-btn save-mode" style="display:none;" onclick="saveUpdatedData()">Save Changes</button>
-        <button id="close-bottom-btn" class="main-action-btn" onclick="closeProductModal()">Close</button>
+        <div class="detail-bottom-bar">
+          <div class="price-box">
+            <span class="price-label">Action</span>
+            <span class="price-value" id="modal-status-text">View Data</span>
+          </div>
+          <button id="save-btn" class="main-action-btn" style="display:none;" onclick="saveUpdatedData()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            Save Changes
+          </button>
+          <button id="close-bottom-btn" class="main-action-btn" onclick="closeProductModal()">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            Close Details
+          </button>
+        </div>
+
       </div>
     </div>
 
@@ -315,7 +398,7 @@
         <div class="dialog-title">Admin Access</div>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Enter secure PIN to edit values.</p>
         <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="10">
-        <div id="pinErrorMsg" style="color:red; font-size:12px; min-height:15px; font-weight:bold;"></div>
+        <div id="pinErrorMsg" style="color:red; font-size:13px; min-height:15px; font-weight:bold; margin-bottom:10px;"></div>
         <div class="btn-group">
           <button class="dialog-btn btn-cancel" onclick="closePinModal()">Cancel</button>
           <button class="dialog-btn btn-confirm" onclick="verifyPin()">Verify</button>
@@ -325,22 +408,21 @@
 
     <!-- MRP / SMS Dialog -->
     <div id="mrp-modal" class="center-modal">
-      <!-- Fixed max-width: 450px so it doesn't take full width on web version -->
-      <div class="dialog-box" style="width: 90%; max-width: 450px; padding: 25px 20px;">
-        <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:30px; height:30px; display:flex; justify-content:center; align-items:center;" onclick="closeMrpModal()">
+      <div class="dialog-box">
+        <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMrpModal()">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </div>
-        <div class="dialog-title" style="margin-top:5px;">Price / SMS Generator</div>
-        <div class="search-box" style="margin-top: 15px;">
+        <div class="dialog-title" style="margin-top:10px;">Price / SMS Generator</div>
+        <div class="search-box" style="margin-top: 20px; box-shadow:none; border:2px solid #eaeaea;">
           <input type="text" id="mrpSearchInput" placeholder="Product Code or Name..." onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
         </div>
-        <button class="main-action-btn" style="padding: 12px; margin-top: 10px; border-radius: 12px;" onclick="searchMrpBtnClick()">Search Price</button>
+        <button class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="searchMrpBtnClick()">Search Price</button>
         
-        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 10px; font-weight:bold; font-size:13px;">Searching...</div>
-        <div id="mrpResults" style="margin-top: 15px; max-height: 120px; overflow-y: auto;"></div>
+        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 15px; font-weight:bold; font-size:14px;">Searching...</div>
+        <div id="mrpResults" style="margin-top: 15px; max-height: 140px; overflow-y: auto;"></div>
 
         <textarea id="smsText" class="sms-box" placeholder="SMS format will auto-generate here..."></textarea>
-        <button id="copySmsBtn" class="main-action-btn save-mode" style="padding: 12px; border-radius: 12px; margin-top: 15px;" onclick="copySms()">Copy SMS</button>
+        <button id="copySmsBtn" class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="copySms()">Copy SMS</button>
       </div>
     </div>
 
@@ -366,12 +448,9 @@
         {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'}
       ];
 
-      // Web View Logo Display Fix
-      if(window.innerWidth >= 768) { document.getElementById('web-logo').style.display = 'block'; }
+      if(window.innerWidth >= 768) { document.getElementById('web-logo').style.display = 'flex'; }
 
-      // ==========================
-      // Cool / Warm Theme Toggle
-      // ==========================
+      // Theme Toggle Logic
       function toggleTheme() {
         document.body.classList.toggle('warm-mode');
         if(document.body.classList.contains('warm-mode')) {
@@ -385,9 +464,7 @@
         document.body.classList.add('warm-mode');
       }
 
-      // ==========================
       // UI Navigation Logic
-      // ==========================
       function switchSection(sectionId, btnElem) {
         document.querySelectorAll('.app-section').forEach(sec => sec.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
@@ -396,9 +473,7 @@
         window.scrollTo(0,0);
       }
 
-      // ==========================
-      // Fetch Initial Data
-      // ==========================
+      // Fetch Data
       fetch(SCRIPT_URL + '?action=getProducts')
         .then(res => res.json())
         .then(data => {
@@ -423,7 +498,10 @@
                   <div class="list-text"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
                   <div class="list-text"><strong>👤 Person:</strong> <span>${depot.person}</span></div>
                 </div>
-                <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">📞 ${depot.phone}</button>
+                <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  ${depot.phone}
+                </button>
               </div>`;
           });
           container.innerHTML = html;
@@ -437,9 +515,7 @@
           renderMarketData(allMarketData);
         });
 
-      // ==========================
       // Products Rendering
-      // ==========================
       function filterProducts(category, btnElement) {
         currentCategory = category;
         document.getElementById('searchInput').value = ''; 
@@ -463,13 +539,14 @@
       function renderProductGrid(products) {
         const container = document.getElementById('product-grid');
         if(products.length === 0) {
-          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted);">No products found.</div>`;
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">No products found.</div>`;
           return;
         }
         let html = '';
         products.forEach(p => {
           html += `
             <div class="product-card" onclick="openProductModal('${p.id}')">
+              <div class="fav-icon">❤</div>
               <div class="card-img-box"><img src="${p.imgUrl}" alt=""></div>
               <h3>${p.name}</h3>
               <div class="card-bottom">
@@ -481,9 +558,7 @@
         container.innerHTML = html;
       }
 
-      // ==========================
       // Market Rendering
-      // ==========================
       function renderMarketData(data) {
         const container = document.getElementById('market-list');
         let html = '';
@@ -492,10 +567,10 @@
             <div class="list-card">
               <div style="flex:1;">
                 <div class="list-title">${item.district} ➔ ${item.upazila_bn}</div>
-                <div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-primary); font-weight:bold;">${item.zone}</span></div>
-                <div class="list-text"><strong>Person:</strong> <span>${item.person}</span></div>
+                <div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-secondary); font-weight:bold;">${item.zone}</span></div>
+                <div class="list-text"><strong>Person:</strong> <span style="font-weight:600; color:var(--text-main);">${item.person}</span></div>
               </div>
-              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')">📞 ${item.phone}</button>` : ''}
+              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${item.phone}</button>` : ''}
             </div>`;
         });
         container.innerHTML = html;
@@ -510,9 +585,7 @@
         renderMarketData(filtered);
       }
 
-      // ==========================
       // Product Detail Modal
-      // ==========================
       function openProductModal(productId) {
         const p = allProducts.find(x => x.id === productId);
         if (!p) return;
@@ -538,10 +611,13 @@
         
         document.getElementById('nutrition-view-grid').style.display = 'grid';
         document.getElementById('nutrition-edit-grid').style.display = 'none';
+        
         document.getElementById('save-btn').style.display = 'none';
-        document.getElementById('close-bottom-btn').style.display = 'block';
+        document.getElementById('close-bottom-btn').style.display = 'flex';
         document.querySelector('.admin-edit-btn').style.display = 'flex';
-        document.getElementById('modal-status').innerText = '';
+        
+        document.getElementById('modal-status-text').innerText = "View Data";
+        document.getElementById('modal-status-text').style.color = "var(--text-main)";
 
         document.getElementById('product-detail-modal').style.display = 'flex';
       }
@@ -550,9 +626,7 @@
         document.getElementById('product-detail-modal').style.display = 'none';
       }
 
-      // ==========================
       // PIN & Editing
-      // ==========================
       function openPinModal() {
         document.getElementById('pinInput').value = '';
         document.getElementById('pinErrorMsg').innerText = '';
@@ -565,17 +639,19 @@
           closePinModal();
           document.getElementById('nutrition-view-grid').style.display = 'none';
           document.getElementById('nutrition-edit-grid').style.display = 'grid';
-          document.getElementById('save-btn').style.display = 'block';
+          document.getElementById('save-btn').style.display = 'flex';
           document.getElementById('close-bottom-btn').style.display = 'none';
           document.querySelector('.admin-edit-btn').style.display = 'none';
+          
+          document.getElementById('modal-status-text').innerText = "Edit Mode";
+          document.getElementById('modal-status-text').style.color = "var(--brand-secondary)";
         } else {
           document.getElementById('pinErrorMsg').innerText = "Incorrect PIN!";
         }
       }
 
       function saveUpdatedData() {
-        const statusEl = document.getElementById('modal-status');
-        statusEl.innerText = "Saving data..."; statusEl.style.color = "var(--brand-secondary)";
+        document.getElementById('modal-status-text').innerText = "Saving...";
         
         let updatedData = { id: currentEditingId, name: document.getElementById('detail-title').innerText };
         columnDefs.forEach(col => { updatedData[col.key] = document.getElementById('edit-' + col.key).value; });
@@ -587,15 +663,14 @@
             if(response.success) {
               const idx = allProducts.findIndex(x => x.id === currentEditingId);
               if (idx !== -1) { columnDefs.forEach(col => { allProducts[idx][col.key] = updatedData[col.key]; }); }
-              statusEl.innerText = "Saved successfully!"; statusEl.style.color = "var(--brand-primary)";
+              document.getElementById('modal-status-text').innerText = "Saved!"; 
+              document.getElementById('modal-status-text').style.color = "var(--brand-primary)";
               setTimeout(() => { openProductModal(currentEditingId); }, 1500); 
-            } else { statusEl.innerText = "Error Saving"; statusEl.style.color = "red"; }
-        }).catch(err => { statusEl.innerText = "Connection Failed"; statusEl.style.color = "red"; });
+            } else { document.getElementById('modal-status-text').innerText = "Error Saving"; }
+        }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
       }
 
-      // ==========================
       // MRP SMS Dialog
-      // ==========================
       function openMrpModal() {
         document.getElementById('mrpSearchInput').value = '';
         document.getElementById('mrpResults').innerHTML = '';
@@ -614,7 +689,7 @@
           .then(results => {
             document.getElementById('mrp-loading').style.display = 'none';
             if(results.error || results.length === 0) {
-               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted);">No product found.</div>`;
+               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No product found.</div>`;
                return;
             }
             let html = '';
@@ -631,14 +706,12 @@
         document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লি:`;
       }
 
-      // ==========================
-      // Global Utilities
-      // ==========================
+      // Utilities
       function copyNumber(btn, text) {
         navigator.clipboard.writeText(text).then(() => {
-          const origText = btn.innerHTML;
+          const origHtml = btn.innerHTML;
           btn.innerHTML = '✅ Copied!';
-          setTimeout(() => btn.innerHTML = origText, 2000);
+          setTimeout(() => btn.innerHTML = origHtml, 2000);
         });
       }
       function copySms() {
@@ -657,4 +730,4 @@
     </script>
 
   </body>
-</html>`
+</html>
