@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEW HOPE FEED</title>
 
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00a651">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <style>
       :root { --brand-primary: #00a651; --brand-secondary: #80c343; --brand-accent: #ffc233; --bg-color: #f4f7f6; }
       html { scroll-behavior: smooth; }
@@ -153,6 +161,7 @@
   </head>
   <body>
 
+    <!-- Loading Overlay -->
     <div id="loader-overlay">
       <div class="lds-spinner">
         <div></div><div></div><div></div><div></div><div></div><div></div>
@@ -806,5 +815,21 @@
         copyBtn.style.backgroundColor = 'var(--brand-secondary)';
       }
     </script>
+
+    <!-- PWA Service Worker Registration Script -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+              console.log('App is ready for offline use. Registration successful.');
+            })
+            .catch(err => {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
+
   </body>
 </html>
