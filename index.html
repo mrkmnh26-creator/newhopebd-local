@@ -53,6 +53,29 @@
       .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
       @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+      /* Copy Toast Notification */
+      #copy-toast {
+        position: fixed;
+        bottom: 95px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--brand-primary);
+        color: #ffffff;
+        padding: 10px 22px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 6px 20px rgba(0, 166, 81, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s ease;
+        z-index: 999999;
+      }
+      #copy-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
       /* App Header */
       .app-header { 
         background: var(--brand-primary); 
@@ -111,14 +134,15 @@
 
       /* FAQ Accordion UI */
       .faq-item { background: var(--card-bg); border-radius: 16px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f5f5f5; overflow: hidden; transition: 0.3s ease; }
-      .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; }
+      .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; user-select: none; }
       .faq-q:hover { color: var(--brand-primary); }
       .faq-q svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 10px; }
       .faq-item.active { border-color: var(--brand-primary); box-shadow: 0 6px 20px rgba(0,166,81,0.1); }
       .faq-item.active .faq-q { color: var(--brand-primary); }
       .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-primary); }
-      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap;}
+      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease, background-color 0.2s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; user-select: none; border-radius: 10px; }
       .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
+      .faq-hint { display: block; font-size: 11px; color: var(--brand-primary); opacity: 0.75; margin-top: 8px; font-weight: 600; }
 
       /* Floating Bottom Nav */
       .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; }
@@ -184,7 +208,9 @@
       .mrp-result:hover { border-color: var(--brand-primary); }
       textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
-      /* Web Responsive */
+      /* =========================================
+         RESPONSIVE WEB DESIGN (DESKTOP/TABLET)
+         ========================================= */
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
@@ -201,10 +227,31 @@
         .category-scroll { padding: 0 20px 20px 20px; }
         .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         
-        .list-card { max-width: 800px; margin: 0 20px 15px 20px; display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; gap: 15px; }
-        .action-pill { margin-top: 0; justify-self: end; }
-        
-        .faq-item { max-width: 800px; margin: 0 20px 15px 20px; }
+        /* FIXED: Grid layout for Depots, Market AND FAQ Lists */
+        #depot-list, #market-list, #faq-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            align-items: start;
+        }
+        .list-card { 
+            margin: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .action-pill { 
+            margin-top: 0; 
+            align-self: center; 
+            flex-shrink: 0;
+        }
+        .faq-item { 
+            margin: 0; 
+            max-width: 100%; 
+        }
 
         .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
         .modal-sheet { 
@@ -231,6 +278,9 @@
       <div class="spinner"></div>
       <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--text-main);">Loading App...</div>
     </div>
+
+    <!-- Copy Notification Toast -->
+    <div id="copy-toast">✅ Answer Copied!</div>
 
     <!-- MAIN APP WRAPPER -->
     <div id="app-wrapper">
@@ -368,7 +418,6 @@
         <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
         <span>SMS MRP</span>
       </button>
-      <!-- NEW FAQ NAV BUTTON -->
       <button class="nav-item" onclick="switchSection('sec-faq', this)">
         <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
         <span>FAQ/Reply</span>
@@ -464,7 +513,7 @@
       let currentEditingId = null;
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
-      let allFaqData = []; // Dynamic Array for FAQ
+      let allFaqData = [];
 
       const columnDefs = [
         {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Type'}, 
@@ -494,7 +543,6 @@
         btnElem.classList.add('active');
         window.scrollTo(0,0);
         
-        // Render FAQ if section is opened
         if(sectionId === 'sec-faq') {
           renderFAQ(allFaqData);
         }
@@ -671,19 +719,61 @@
         renderMarketData(filtered);
       }
 
-      // FAQ Rendering & Logic
+      // ==========================================
+      // FAQ Rendering & Double-Tap / Double-Click Copy Logic
+      // ==========================================
+      let lastTapTime = 0;
+
+      function handleDoubleTapFaq(event, element) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+        if (tapLength < 350 && tapLength > 0) {
+          copyFaqAnswer(element);
+          event.preventDefault();
+        }
+        lastTapTime = currentTime;
+      }
+
+      function copyFaqAnswer(element) {
+        const textToCopy = element.getAttribute('data-answer');
+        if (!textToCopy) return;
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          // Visual highlight inside answer box
+          const origBg = element.style.backgroundColor;
+          element.style.backgroundColor = 'var(--icon-bg)';
+          setTimeout(() => { element.style.backgroundColor = origBg; }, 400);
+
+          // Show Toast Notification
+          const toast = document.getElementById('copy-toast');
+          toast.classList.add('show');
+          setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        });
+      }
+
       function renderFAQ(data) {
         const container = document.getElementById('faq-list');
         if (!data || data.length === 0) {
-          container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
           return;
         }
         let html = '';
         data.forEach((item) => {
+          const safeAnsAttr = item.a.replace(/"/g, '&quot;');
           html += `
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-              <div class="faq-q">${item.q} <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-              <div class="faq-a">${item.a}</div>
+            <div class="faq-item">
+              <div class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                ${item.q} 
+                <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+              </div>
+              <div class="faq-a" 
+                   data-answer="${safeAnsAttr}" 
+                   ondblclick="copyFaqAnswer(this)" 
+                   ontouchend="handleDoubleTapFaq(event, this)"
+                   title="Double click or double tap to copy answer">
+                ${item.a}
+                <span class="faq-hint">💡 Double tap / click to copy</span>
+              </div>
             </div>
           `;
         });
