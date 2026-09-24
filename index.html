@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>New Hope Feed Mill Bangladesh Ltd.</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="icon-192.png">
-
-    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#00a651">
     <link rel="apple-touch-icon" href="icon-192.png">
@@ -17,9 +14,6 @@
     <meta name="mobile-web-app-capable" content="yes">
 
     <style>
-      /* =======================================
-         COLOR VARIABLES (Brand Colors)
-         ======================================= */
       :root { 
         --brand-primary: #00a651; 
         --brand-secondary: #f05a28; 
@@ -32,7 +26,6 @@
         --icon-bg: #e8f5e9;
       }
       
-      /* WARM MODE */
       body.warm-mode {
         --brand-primary: #f05a28; 
         --brand-secondary: #00a651; 
@@ -48,35 +41,10 @@
       * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
       html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); transition: 0.4s ease; }
 
-      /* Loader */
       #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
       .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
       @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-      /* Copy Toast Notification */
-      #copy-toast {
-        position: fixed;
-        bottom: 95px;
-        left: 50%;
-        transform: translateX(-50%) translateY(20px);
-        background: var(--brand-primary);
-        color: #ffffff;
-        padding: 10px 22px;
-        border-radius: 30px;
-        font-size: 13px;
-        font-weight: 700;
-        box-shadow: 0 6px 20px rgba(0, 166, 81, 0.35);
-        opacity: 0;
-        pointer-events: none;
-        transition: 0.3s ease;
-        z-index: 999999;
-      }
-      #copy-toast.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-
-      /* App Header */
       .app-header { 
         background: var(--brand-primary); 
         padding: 30px 20px 40px 20px; 
@@ -94,13 +62,11 @@
       .theme-toggle { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.3s; color: #fff; }
       .theme-toggle:active { transform: scale(0.9); }
 
-      /* Search Bar */
       .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 14px; padding: 14px 18px; margin-top: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
       .search-box svg { width: 20px; height: 20px; fill: var(--brand-primary); margin-right: 12px; }
       .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 15px; color: #333; }
       .search-box input::placeholder { color: #aaa; }
 
-      /* Categories */
       .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0 20px 15px 20px; display: flex; justify-content: space-between; align-items: center; }
       .see-all { font-size: 13px; color: var(--brand-primary); font-weight: 600; cursor: pointer; }
 
@@ -116,7 +82,6 @@
 
       .app-section { padding-bottom: 110px; } 
 
-      /* Product Grid */
       .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 20px; }
       .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f5f5f5; }
       .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
@@ -132,7 +97,6 @@
       .card-pack { font-size: 12px; color: var(--text-muted); font-weight: 700; }
       .card-action { background: var(--brand-primary); color: #fff; width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; border: none; }
 
-      /* FAQ Accordion UI */
       .faq-item { background: var(--card-bg); border-radius: 16px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f5f5f5; overflow: hidden; transition: 0.3s ease; }
       .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; user-select: none; }
       .faq-q:hover { color: var(--brand-primary); }
@@ -140,11 +104,11 @@
       .faq-item.active { border-color: var(--brand-primary); box-shadow: 0 6px 20px rgba(0,166,81,0.1); }
       .faq-item.active .faq-q { color: var(--brand-primary); }
       .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-primary); }
-      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease, background-color 0.2s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; user-select: none; border-radius: 10px; }
+      
+      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; -webkit-tap-highlight-color: transparent;}
       .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
-      .faq-hint { display: block; font-size: 11px; color: var(--brand-primary); opacity: 0.75; margin-top: 8px; font-weight: 600; }
+      .faq-a:active { opacity: 0.7; }
 
-      /* Floating Bottom Nav */
       .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; }
       .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; }
       .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: 0.3s; }
@@ -153,7 +117,6 @@
       .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
       .nav-item.active svg { transform: scale(1.1); }
 
-      /* Product Details Modal (Mobile) */
       .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 10000; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
       @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
       
@@ -175,7 +138,6 @@
       .nutri-value { font-size: 15px; font-weight: 800; color: var(--text-main); }
       .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
       
-      /* Bottom Bar (Mobile) */
       .detail-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 20px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top-left-radius: 30px; border-top-right-radius: 30px; z-index: 100; }
       .price-box { display: flex; flex-direction: column; }
       .price-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
@@ -184,14 +146,12 @@
       .main-action-btn { flex: 1; background: var(--brand-primary); color: #fff; border: none; padding: 18px; border-radius: 25px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,166,81,0.3); display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.4s ease; }
       .main-action-btn svg { width: 20px; height: 20px; fill: #fff; }
 
-      /* List Layouts */
       .list-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f5f5f5; transition: 0.4s ease; }
       .list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
       .list-text { font-size: 13px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;}
       .list-text strong { color: #444; min-width: 60px; }
       .action-pill { background: var(--brand-primary); color: #fff; padding: 10px 18px; border-radius: 25px; font-size: 13px; font-weight: 700; border: none; align-self: flex-start; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,166,81,0.2); }
 
-      /* PIN & SMS Dialog */
       .center-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100000; justify-content: center; align-items: center; padding: 20px; }
       .dialog-box { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 30px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; }
       @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -208,13 +168,9 @@
       .mrp-result:hover { border-color: var(--brand-primary); }
       textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
-      /* =========================================
-         RESPONSIVE WEB DESIGN (DESKTOP/TABLET)
-         ========================================= */
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
-        /* Nav Bar adjustments for 5 items */
         .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; }
         .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
         .nav-item span { display: block; font-size: 14px; margin-top: 0; }
@@ -227,13 +183,11 @@
         .category-scroll { padding: 0 20px 20px 20px; }
         .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         
-        /* FIXED: Grid layout for Depots, Market AND FAQ Lists */
         #depot-list, #market-list, #faq-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 20px;
             padding: 0 20px;
-            align-items: start;
         }
         .list-card { 
             margin: 0;
@@ -243,14 +197,14 @@
             align-items: center;
             justify-content: space-between;
         }
+        .faq-item {
+            margin: 0;
+            max-width: 100%;
+        }
         .action-pill { 
             margin-top: 0; 
             align-self: center; 
             flex-shrink: 0;
-        }
-        .faq-item { 
-            margin: 0; 
-            max-width: 100%; 
         }
 
         .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
@@ -278,9 +232,6 @@
       <div class="spinner"></div>
       <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--text-main);">Loading App...</div>
     </div>
-
-    <!-- Copy Notification Toast -->
-    <div id="copy-toast">✅ Answer Copied!</div>
 
     <!-- MAIN APP WRAPPER -->
     <div id="app-wrapper">
@@ -387,7 +338,7 @@
           </div>
         </header>
         <div id="faq-list">
-          <!-- Rendered by JS from Google Sheet -->
+          <!-- Rendered by JS -->
         </div>
       </div>
 
@@ -513,7 +464,7 @@
       let currentEditingId = null;
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
-      let allFaqData = [];
+      let allFaqData = []; 
 
       const columnDefs = [
         {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Type'}, 
@@ -521,7 +472,8 @@
         {key: 'fat', label: 'Fat (Min)'}, {key: 'fib', label: 'Fiber (Max)'},
         {key: 'ash', label: 'Ash (Max)'}, {key: 'lys', label: 'Lysine (Min)'},
         {key: 'meth', label: 'Methionine'}, {key: 'cal', label: 'Cal (Min)'},
-        {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'}
+        {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'},
+        {key: 'carbo', label: 'Carbohydrates (Max)'} // ADDED NEW COLUMN HERE
       ];
 
       if(window.innerWidth >= 768) { document.getElementById('web-logo').style.display = 'flex'; }
@@ -548,7 +500,6 @@
         }
       }
 
-      // SWR LOCAL CACHING
       const cachedProducts = localStorage.getItem('nh_products');
       if (cachedProducts) {
         try {
@@ -631,7 +582,6 @@
              if(!cachedMarket) document.getElementById('market-loader').innerText = "Failed to load market data.";
         });
 
-      // SWR LOCAL CACHING FOR FAQ
       const cachedFaq = localStorage.getItem('nh_faq');
       if (cachedFaq) {
         try { allFaqData = JSON.parse(cachedFaq); } catch(e){}
@@ -648,7 +598,6 @@
           }
         });
 
-      // Products Rendering
       function filterProducts(category, btnElement) {
         currentCategory = category;
         document.getElementById('searchInput').value = ''; 
@@ -691,7 +640,6 @@
         container.innerHTML = html;
       }
 
-      // Market Rendering
       function renderMarketData(data) {
         document.getElementById('market-loader').style.display = 'none';
         const container = document.getElementById('market-list');
@@ -719,61 +667,19 @@
         renderMarketData(filtered);
       }
 
-      // ==========================================
-      // FAQ Rendering & Double-Tap / Double-Click Copy Logic
-      // ==========================================
-      let lastTapTime = 0;
-
-      function handleDoubleTapFaq(event, element) {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTapTime;
-        if (tapLength < 350 && tapLength > 0) {
-          copyFaqAnswer(element);
-          event.preventDefault();
-        }
-        lastTapTime = currentTime;
-      }
-
-      function copyFaqAnswer(element) {
-        const textToCopy = element.getAttribute('data-answer');
-        if (!textToCopy) return;
-        
-        navigator.clipboard.writeText(textToCopy).then(() => {
-          // Visual highlight inside answer box
-          const origBg = element.style.backgroundColor;
-          element.style.backgroundColor = 'var(--icon-bg)';
-          setTimeout(() => { element.style.backgroundColor = origBg; }, 400);
-
-          // Show Toast Notification
-          const toast = document.getElementById('copy-toast');
-          toast.classList.add('show');
-          setTimeout(() => { toast.classList.remove('show'); }, 2000);
-        });
-      }
-
       function renderFAQ(data) {
         const container = document.getElementById('faq-list');
         if (!data || data.length === 0) {
-          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
+          container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
           return;
         }
         let html = '';
         data.forEach((item) => {
-          const safeAnsAttr = item.a.replace(/"/g, '&quot;');
+          let safeText = item.a.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
           html += `
             <div class="faq-item">
-              <div class="faq-q" onclick="this.parentElement.classList.toggle('active')">
-                ${item.q} 
-                <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-              </div>
-              <div class="faq-a" 
-                   data-answer="${safeAnsAttr}" 
-                   ondblclick="copyFaqAnswer(this)" 
-                   ontouchend="handleDoubleTapFaq(event, this)"
-                   title="Double click or double tap to copy answer">
-                ${item.a}
-                <span class="faq-hint">💡 Double tap / click to copy</span>
-              </div>
+              <div class="faq-q" onclick="this.parentElement.classList.toggle('active')">${item.q} <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+              <div class="faq-a" title="Double tap to copy" ondblclick="copyFaqAnswer(this, \`${safeText}\`)">${item.a}</div>
             </div>
           `;
         });
@@ -788,7 +694,16 @@
         renderFAQ(filtered);
       }
 
-      // Product Detail Modal
+      function copyFaqAnswer(elem, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const origHtml = elem.innerHTML;
+          elem.innerHTML = '<div style="color: var(--brand-primary); font-weight: bold; padding: 10px 0; display:flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Text Copied!</div>';
+          setTimeout(() => {
+            elem.innerHTML = origHtml;
+          }, 1500);
+        });
+      }
+
       function openProductModal(productId) {
         const p = allProducts.find(x => x.id === productId);
         if (!p) return;
@@ -829,7 +744,6 @@
         document.getElementById('product-detail-modal').style.display = 'none';
       }
 
-      // PIN & Editing
       function openPinModal() {
         document.getElementById('pinInput').value = '';
         document.getElementById('pinErrorMsg').innerText = '';
@@ -875,7 +789,6 @@
         }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
       }
 
-      // MRP SMS Dialog
       function openMrpModal() {
         document.getElementById('mrpSearchInput').value = '';
         document.getElementById('mrpResults').innerHTML = '';
@@ -911,7 +824,6 @@
         document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লি:`;
       }
 
-      // Utilities
       function copyNumber(btn, text) {
         navigator.clipboard.writeText(text).then(() => {
           const origHtml = btn.innerHTML;
