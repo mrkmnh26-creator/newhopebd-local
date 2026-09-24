@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>New Hope Feed Mill Bangladesh Ltd. </title>
+    <title>New Hope Feed</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="icon-192.png">
@@ -109,10 +109,21 @@
       .card-pack { font-size: 12px; color: var(--text-muted); font-weight: 700; }
       .card-action { background: var(--brand-primary); color: #fff; width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; border: none; }
 
+      /* FAQ Accordion UI */
+      .faq-item { background: var(--card-bg); border-radius: 16px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f5f5f5; overflow: hidden; transition: 0.3s ease; }
+      .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; }
+      .faq-q:hover { color: var(--brand-primary); }
+      .faq-q svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 10px; }
+      .faq-item.active { border-color: var(--brand-primary); box-shadow: 0 6px 20px rgba(0,166,81,0.1); }
+      .faq-item.active .faq-q { color: var(--brand-primary); }
+      .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-primary); }
+      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap;}
+      .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
+
       /* Floating Bottom Nav */
       .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: space-around; align-items: center; padding: 12px 10px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; }
       .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; }
-      .nav-item svg { width: 24px; height: 24px; fill: currentColor; transition: 0.3s; }
+      .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: 0.3s; }
       .nav-item span { display: none; font-size: 11px; font-weight: 600; margin-top: 4px; }
       
       .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
@@ -173,13 +184,12 @@
       .mrp-result:hover { border-color: var(--brand-primary); }
       textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
-      /* =========================================
-         RESPONSIVE WEB DESIGN (DESKTOP/TABLET)
-         ========================================= */
+      /* Web Responsive */
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
-        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 50px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 40px; background: var(--card-bg); width: 100%; left: 0; }
+        /* Nav Bar adjustments for 5 items */
+        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; }
         .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
         .nav-item span { display: block; font-size: 14px; margin-top: 0; }
         .nav-item.active { background: transparent; color: var(--brand-primary); box-shadow: none; transform: none; border-bottom: 3px solid var(--brand-primary); border-radius: 0; }
@@ -191,30 +201,12 @@
         .category-scroll { padding: 0 20px 20px 20px; }
         .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         
-        /* UPDATE: Grid layout for Depots and Market Lists */
-        #depot-list, #market-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 20px;
-            padding: 0 20px;
-        }
-        .list-card { 
-            margin: 0;
-            max-width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .action-pill { 
-            margin-top: 0; 
-            align-self: center; 
-            flex-shrink: 0;
-        }
+        .list-card { max-width: 800px; margin: 0 20px 15px 20px; display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; gap: 15px; }
+        .action-pill { margin-top: 0; justify-self: end; }
         
-        /* Modal desktop */
+        .faq-item { max-width: 800px; margin: 0 20px 15px 20px; }
+
         .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
-        
         .modal-sheet { 
            padding: 0; 
            max-width: 850px; 
@@ -227,36 +219,9 @@
            overflow: hidden; 
            background: var(--card-bg); 
         }
-        
-        .detail-img-box { 
-           grid-column: 1; 
-           grid-row: 1 / span 2; 
-           border-radius: 0; 
-           height: 100%; 
-           margin-bottom: 0; 
-           padding: 40px; 
-        }
-        
-        .detail-content { 
-           grid-column: 2; 
-           grid-row: 1; 
-           padding: 40px 30px 20px 30px; 
-           overflow-y: auto; 
-        }
-        
-        .detail-bottom-bar { 
-           grid-column: 2; 
-           grid-row: 2; 
-           position: relative; 
-           border-radius: 0; 
-           box-shadow: none; 
-           border-top: 1px solid #eee; 
-           padding: 20px 30px; 
-           background: var(--card-bg);
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-        }
+        .detail-img-box { grid-column: 1; grid-row: 1 / span 2; border-radius: 0; height: 100%; margin-bottom: 0; padding: 40px; }
+        .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
+        .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
       }
     </style>
   </head>
@@ -279,7 +244,7 @@
           <div class="header-top">
             <div>
               <div class="greeting">Welcome to</div>
-              <div class="app-title">New Hope Feed Mill Bangladesh Ltd.</div>
+              <div class="app-title">New Hope Feed</div>
             </div>
             <button class="theme-toggle" onclick="toggleTheme()" title="Switch Cool/Warm Mode">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
@@ -311,7 +276,7 @@
         </div>
 
         <div class="section-title" style="margin-top: 15px;">
-          Our Products <span class="see-all">See All</span>
+          Best Seller Products <span class="see-all">See All</span>
         </div>
 
         <div class="product-grid" id="product-grid">
@@ -355,6 +320,27 @@
         <div id="market-list"></div>
       </div>
 
+      <!-- ==============================
+           4. FAQ & INBOX REPLY SECTION
+           ============================== -->
+      <div id="sec-faq" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Help & Support</div>
+              <div class="app-title">FAQ & Inbox Reply</div>
+            </div>
+          </div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="faqSearchInput" placeholder="Search questions..." onkeyup="searchFAQ()">
+          </div>
+        </header>
+        <div id="faq-list">
+          <!-- Rendered by JS from Google Sheet -->
+        </div>
+      </div>
+
     </div> 
 
     <!-- ==============================
@@ -382,6 +368,11 @@
         <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
         <span>SMS MRP</span>
       </button>
+      <!-- NEW FAQ NAV BUTTON -->
+      <button class="nav-item" onclick="switchSection('sec-faq', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
+        <span>FAQ/Reply</span>
+      </button>
     </nav>
 
     <!-- ==============================
@@ -391,12 +382,9 @@
     <!-- Product Detail Modal -->
     <div id="product-detail-modal" class="modal-overlay">
       <div class="modal-sheet"> 
-        
-        <!-- Image Box -->
         <div class="detail-img-box">
           <img id="detail-img" src="" alt="Product">
         </div>
-        
         <div class="detail-content">
           <div class="detail-action-buttons">
             <button class="back-btn" onclick="closeProductModal()">
@@ -406,7 +394,6 @@
               <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
             </button>
           </div>
-
           <h2 id="detail-title" class="detail-title">Product Name</h2>
           <div id="detail-category" class="detail-subtitle">Category</div>
           
@@ -414,7 +401,6 @@
           <div id="nutrition-view-grid" class="nutrition-grid"></div>
           <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;"></div>
         </div>
-
         <div class="detail-bottom-bar">
           <div class="price-box">
             <span class="price-label">Status</span>
@@ -429,7 +415,6 @@
             Close Details
           </button>
         </div>
-
       </div>
     </div>
 
@@ -479,6 +464,7 @@
       let currentEditingId = null;
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
+      let allFaqData = []; // Dynamic Array for FAQ
 
       const columnDefs = [
         {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Type'}, 
@@ -507,6 +493,11 @@
         document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
         btnElem.classList.add('active');
         window.scrollTo(0,0);
+        
+        // Render FAQ if section is opened
+        if(sectionId === 'sec-faq') {
+          renderFAQ(allFaqData);
+        }
       }
 
       // SWR LOCAL CACHING
@@ -592,8 +583,24 @@
              if(!cachedMarket) document.getElementById('market-loader').innerText = "Failed to load market data.";
         });
 
+      // SWR LOCAL CACHING FOR FAQ
+      const cachedFaq = localStorage.getItem('nh_faq');
+      if (cachedFaq) {
+        try { allFaqData = JSON.parse(cachedFaq); } catch(e){}
+      }
+      fetch(SCRIPT_URL + '?action=getFaq')
+        .then(res => res.json())
+        .then(data => {
+          if(!data.error && Array.isArray(data)) {
+            allFaqData = data;
+            localStorage.setItem('nh_faq', JSON.stringify(data));
+            if(document.getElementById('sec-faq').style.display === 'block') {
+              renderFAQ(allFaqData);
+            }
+          }
+        });
 
-      // Functions
+      // Products Rendering
       function filterProducts(category, btnElement) {
         currentCategory = category;
         document.getElementById('searchInput').value = ''; 
@@ -636,6 +643,7 @@
         container.innerHTML = html;
       }
 
+      // Market Rendering
       function renderMarketData(data) {
         document.getElementById('market-loader').style.display = 'none';
         const container = document.getElementById('market-list');
@@ -663,6 +671,34 @@
         renderMarketData(filtered);
       }
 
+      // FAQ Rendering & Logic
+      function renderFAQ(data) {
+        const container = document.getElementById('faq-list');
+        if (!data || data.length === 0) {
+          container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
+          return;
+        }
+        let html = '';
+        data.forEach((item) => {
+          html += `
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+              <div class="faq-q">${item.q} <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+              <div class="faq-a">${item.a}</div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      }
+
+      function searchFAQ() {
+        const query = document.getElementById('faqSearchInput').value.toLowerCase();
+        const filtered = allFaqData.filter(item => 
+          item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query)
+        );
+        renderFAQ(filtered);
+      }
+
+      // Product Detail Modal
       function openProductModal(productId) {
         const p = allProducts.find(x => x.id === productId);
         if (!p) return;
@@ -703,6 +739,7 @@
         document.getElementById('product-detail-modal').style.display = 'none';
       }
 
+      // PIN & Editing
       function openPinModal() {
         document.getElementById('pinInput').value = '';
         document.getElementById('pinErrorMsg').innerText = '';
