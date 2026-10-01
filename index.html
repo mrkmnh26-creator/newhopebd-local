@@ -1,191 +1,256 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>নিউ হোপ ফিড (New Hope Feed)</title>
+    <title>New Hope Feed Mill Bangladesh Ltd.</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="icon-192.png">
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#004d3a">
+    <meta name="theme-color" content="#00a651">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- Google Fonts for Bengali -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-
     <style>
       /* =======================================
-         COLOR VARIABLES (Protein Plus Theme)
+         COLOR VARIABLES (Brand Colors)
          ======================================= */
       :root { 
-        --brand-dark: #004d3a; /* Deep Green from Hero */
-        --brand-light: #e8f5e9; /* Mint Green for Cards */
-        --brand-accent: #ffb703; /* Yellow Button */
-        --brand-red: #d32f2f; /* Red Badge */
-        --bg-color: #f9fbf9; 
+        --brand-primary: #00a651; 
+        --brand-secondary: #f05a28; 
+        --bg-color: #f8f9fb; 
         --card-bg: #ffffff;
-        --text-main: #1a1a1a;
-        --text-muted: #666666;
+        --text-main: #2b2b2b;
+        --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #1f222a; 
+        --icon-bg: #e8f5e9;
+      }
+      
+      /* WARM MODE */
+      body.warm-mode {
+        --brand-primary: #f05a28; 
+        --brand-secondary: #00a651; 
+        --bg-color: #fff5f0; 
+        --card-bg: #ffffff;
+        --text-main: #3e2723;
+        --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #2d1b15;
+        --icon-bg: #fbe9e7;
       }
       
       * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-      html, body { font-family: 'Hind Siliguri', sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); }
+      html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); transition: 0.4s ease; }
 
       /* Loader */
       #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-      .spinner { width: 45px; height: 45px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-dark); border-radius: 50%; animation: spin 1s linear infinite; }
+      .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
       @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-      /* =======================================
-         TOP NAVBAR (Website Style)
-         ======================================= */
-      .top-navbar { background: #ffffff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
-      .nav-logo { font-size: 22px; font-weight: 800; color: var(--brand-dark); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+      /* App Header */
+      .app-header { 
+        background: var(--brand-primary); 
+        padding: 30px 20px 40px 20px; 
+        border-bottom-left-radius: 35px; 
+        border-bottom-right-radius: 35px; 
+        position: relative; 
+        z-index: 10; 
+        transition: 0.4s ease;
+        margin-bottom: 20px;
+      }
+      .header-top { display: flex; justify-content: space-between; align-items: flex-start; color: var(--header-text); }
+      .greeting { font-size: 13px; opacity: 0.9; margin-bottom: 5px; }
+      .app-title { font-size: 24px; font-weight: 800; line-height: 1.2; display: flex; align-items: center; gap: 8px;}
       
-      /* Desktop Menu */
-      .nav-links { display: flex; gap: 20px; align-items: center; }
-      .nav-item { color: var(--text-main); text-decoration: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; padding: 8px 12px; border-radius: 8px; background: transparent; border: none;}
-      .nav-item:hover, .nav-item.active { color: var(--brand-dark); background: var(--brand-light); }
-      .login-btn { background: var(--brand-dark); color: #fff; padding: 10px 25px; border-radius: 25px; font-weight: 700; border: none; cursor: pointer; }
+      .theme-toggle { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.3s; color: #fff; }
+      .theme-toggle:active { transform: scale(0.9); }
 
-      /* Mobile Menu Button */
-      .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; color: var(--brand-dark); cursor: pointer; }
+      /* Search Bar */
+      .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 14px; padding: 14px 18px; margin-top: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+      .search-box svg { width: 20px; height: 20px; fill: var(--brand-primary); margin-right: 12px; }
+      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 15px; color: #333; }
+      .search-box input::placeholder { color: #aaa; }
 
-      /* =======================================
-         HERO SECTION
-         ======================================= */
-      .hero-section { background: linear-gradient(135deg, #003629, var(--brand-dark)); padding: 60px 5% 120px 5%; text-align: center; color: #fff; position: relative; }
-      .hero-title { font-size: 32px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
-      .hero-subtitle { font-size: 16px; color: #e0e0e0; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
-      .hero-btn { background: var(--brand-accent); color: var(--brand-dark); padding: 12px 30px; border-radius: 25px; font-size: 16px; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3); transition: 0.3s; }
-      .hero-btn:hover { transform: translateY(-3px); }
+      /* Categories */
+      .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0 20px 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+      .see-all { font-size: 13px; color: var(--brand-primary); font-weight: 600; cursor: pointer; }
 
-      /* Floating Overlap Stats Box */
-      .stats-overlap { background: #fff; margin: -60px 5% 40px 5%; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; position: relative; z-index: 10;}
-      .stat-item { text-align: center; color: var(--brand-dark); }
-      .stat-item h3 { font-size: 20px; margin: 0 0 5px 0; font-weight: 700; }
-      .stat-item p { font-size: 13px; color: var(--text-muted); margin: 0; }
-
-      /* =======================================
-         SEARCH & CATEGORY FILTER
-         ======================================= */
-      .section-container { max-width: 1200px; margin: 0 auto; padding: 20px 5%; }
-      .section-header { text-align: center; margin-bottom: 30px; }
-      .section-header h2 { font-size: 24px; color: var(--brand-dark); font-weight: 700; position: relative; display: inline-block; }
+      .category-scroll { display: flex; overflow-x: auto; gap: 20px; padding: 0 20px 15px 20px; scrollbar-width: none; }
+      .category-scroll::-webkit-scrollbar { display: none; }
       
-      .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 25px; padding: 12px 20px; max-width: 500px; margin: 0 auto 25px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
-      .search-box svg { width: 20px; height: 20px; fill: var(--brand-dark); margin-right: 12px; }
-      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 15px; font-family: inherit; }
+      .cat-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; border: none; background: transparent; transition: 0.3s; }
+      .cat-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--card-bg); box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; justify-content: center; align-items: center; font-size: 26px; transition: 0.3s; border: 1px solid #f0f0f0; }
+      .cat-text { font-size: 13px; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
+      
+      .cat-btn.active .cat-icon { background: var(--brand-primary); color: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-color: var(--brand-primary); }
+      .cat-btn.active .cat-text { color: var(--text-main); font-weight: 800; }
 
-      .category-scroll { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; }
-      .cat-btn { padding: 10px 25px; background: #fff; border-radius: 25px; border: 1px solid #ddd; font-size: 15px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-family: inherit; }
-      .cat-btn.active { background: var(--brand-dark); color: #fff; border-color: var(--brand-dark); box-shadow: 0 4px 15px rgba(0, 77, 58, 0.2); }
+      .app-section { padding-bottom: 110px; } 
 
-      /* =======================================
-         PRODUCT GRID (MINT GREEN CARDS)
-         ======================================= */
-      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-      .product-card { background: var(--brand-light); border-radius: 16px; padding-top: 15px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: 0.3s; border: 1px solid #e0ece2; overflow: hidden; }
+      /* Product Grid */
+      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 20px; }
+      .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f5f5f5; }
       .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
       
-      .card-badge { position: absolute; top: 15px; left: 15px; background: var(--brand-red); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; z-index: 2; }
-      
-      .card-img-box { height: 160px; display: flex; justify-content: center; align-items: center; padding: 10px; }
-      .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-      
-      .card-details { background: #fff; margin: 10px 10px 10px 10px; padding: 15px; border-radius: 12px; flex-grow: 1; display: flex; flex-direction: column; }
-      .product-card h3 { font-size: 15px; font-weight: 700; margin: 0 0 10px 0; color: var(--text-main); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
-      
-      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid #f0f0f0; padding-top: 10px; }
-      .card-pack { font-size: 13px; color: var(--brand-dark); font-weight: 700; background: var(--brand-light); padding: 4px 8px; border-radius: 6px;}
-      .card-action { font-size: 13px; font-weight: 700; color: var(--brand-dark); border: none; background: transparent; cursor: pointer; }
+      .fav-icon { position: absolute; top: 12px; right: 12px; background: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2; font-size: 12px; color: #ccc;}
+      .fav-icon.active { color: #ff4757; }
 
-      /* =======================================
-         LISTS (Depots, Market, FAQ)
-         ======================================= */
-      .list-card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eee; display: flex; flex-direction: column; gap: 8px; }
-      .list-title { font-size: 18px; font-weight: 700; color: var(--brand-dark); }
-      .list-text { font-size: 14px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; }
-      .list-text strong { color: var(--text-main); }
-      .action-pill { background: var(--brand-dark); color: #fff; padding: 10px 20px; border-radius: 25px; font-size: 14px; font-weight: 700; border: none; align-self: flex-start; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+      .card-img-box { background: var(--icon-bg); border-radius: 15px; padding: 15px; display: flex; justify-content: center; align-items: center; height: 140px; margin-bottom: 15px; transition: 0.4s ease; }
+      .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      
+      .product-card h3 { font-size: 14px; font-weight: 800; margin: 0 0 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; color: var(--text-main); }
+      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+      .card-pack { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+      .card-action { background: var(--brand-primary); color: #fff; width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; border: none; }
 
-      /* FAQ Accordion */
-      .faq-item { background: #fff; border-radius: 12px; margin-bottom: 15px; border: 1px solid #eee; overflow: hidden; }
-      .faq-q { padding: 18px 20px; font-size: 16px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
-      .faq-q svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform 0.3s; }
-      .faq-item.active { border-color: var(--brand-dark); }
-      .faq-item.active .faq-q { color: var(--brand-dark); background: var(--brand-light); }
-      .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-dark); }
-      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s; font-size: 15px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; }
-      .faq-item.active .faq-a { padding: 20px; max-height: 800px; }
+      /* FAQ Accordion UI */
+      .faq-item { background: var(--card-bg); border-radius: 16px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f5f5f5; overflow: hidden; transition: 0.3s ease; }
+      .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; user-select: none; }
+      .faq-q:hover { color: var(--brand-primary); }
+      .faq-q svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 10px; }
+      .faq-item.active { border-color: var(--brand-primary); box-shadow: 0 6px 20px rgba(0,166,81,0.1); }
+      .faq-item.active .faq-q { color: var(--brand-primary); }
+      .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-primary); }
+      
+      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; -webkit-tap-highlight-color: transparent;}
+      .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
+      .faq-a:active { opacity: 0.7; }
 
-      /* =======================================
-         MODALS & DIALOGS
-         ======================================= */
-      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.3s ease-out;}
-      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      /* Floating Bottom Nav - Updated for 7 items */
+      .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: flex-start; align-items: center; padding: 12px 20px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; overflow-x: auto; scrollbar-width: none; gap: 15px; }
+      .bottom-nav::-webkit-scrollbar { display: none; }
+      .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; }
+      .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: 0.3s; }
+      .nav-item span { display: none; font-size: 11px; font-weight: 600; margin-top: 4px; }
       
-      .modal-sheet { background: #fff; width: 100%; max-width: 850px; border-radius: 20px; display: grid; grid-template-columns: 1fr; overflow: hidden; max-height: 90vh; position: relative; }
-      
-      .detail-img-box { background: var(--brand-light); display: flex; justify-content: center; align-items: center; padding: 40px 20px; position: relative; }
-      .detail-img-box img { max-width: 200px; max-height: 250px; object-fit: contain; mix-blend-mode: multiply; }
-      
-      /* Swipe Arrows */
-      .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 20; color: var(--brand-dark); }
-      .nav-arrow.left { left: 15px; }
-      .nav-arrow.right { right: 15px; }
+      .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
+      .nav-item.active svg { transform: scale(1.1); }
 
-      .detail-content { padding: 25px; overflow-y: auto; }
-      .modal-close-top { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.8); border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 30; }
+      /* Product Details Modal (Mobile) */
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 10000; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
+      @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
       
-      .detail-title { font-size: 22px; font-weight: 800; color: var(--brand-dark); margin-bottom: 5px; line-height: 1.3; }
-      .detail-subtitle { font-size: 14px; color: var(--brand-red); font-weight: 700; margin-bottom: 20px; }
+      .detail-img-box { background: var(--icon-bg); width: 100%; height: 340px; display: flex; justify-content: center; align-items: center; padding: 30px; position: relative; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 25px; transition: 0.4s ease; }
+      .detail-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.1)); }
+      
+      /* NEW: Swipe Navigation Buttons */
+      .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 20; color: var(--brand-secondary); }
+      .nav-arrow:hover { background: #fff; color: var(--brand-primary); }
+      .nav-arrow.left { left: 10px; }
+      .nav-arrow.right { right: 10px; }
+
+      .detail-action-buttons { display: flex; justify-content: flex-start; gap: 15px; margin-bottom: 25px; margin-top: -10px; }
+      .back-btn, .admin-edit-btn { background: var(--card-bg); border: 1px solid #eaeaea; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s ease;}
+      .back-btn:active, .admin-edit-btn:active { transform: scale(0.9); }
+      .back-btn svg, .admin-edit-btn svg { width: 22px; height: 22px; fill: var(--text-main); }
+      
+      .detail-content { padding: 0 25px 120px 25px; }
+      .detail-title { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; line-height: 1.2; }
+      .detail-subtitle { font-size: 14px; color: var(--brand-secondary); font-weight: 700; margin-bottom: 25px; display: inline-block; background: var(--bg-color); padding: 5px 12px; border-radius: 20px;}
 
       .nutrition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 12px; border: 1px solid #eee; }
-      .nutri-label { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px; }
+      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 16px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; transition: 0.4s ease; }
+      .nutri-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
       .nutri-value { font-size: 15px; font-weight: 800; color: var(--text-main); }
-      .nutri-item input { border: 1px solid var(--brand-dark); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: 700; outline: none; }
+      .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
+      
+      /* Bottom Bar (Mobile) */
+      .detail-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 20px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top-left-radius: 30px; border-top-right-radius: 30px; z-index: 100; }
+      .price-box { display: flex; flex-direction: column; }
+      .price-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+      .price-value { font-size: 18px; font-weight: 800; color: var(--text-main); }
+      
+      .main-action-btn { flex: 1; background: var(--brand-primary); color: #fff; border: none; padding: 18px; border-radius: 25px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,166,81,0.3); display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.4s ease; }
+      .main-action-btn svg { width: 20px; height: 20px; fill: #fff; }
 
-      .detail-bottom-bar { padding: 20px 25px; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-      .main-action-btn { flex: 1; background: var(--brand-dark); color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+      /* List Layouts */
+      .list-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f5f5f5; transition: 0.4s ease; }
+      .list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
+      .list-text { font-size: 13px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;}
+      .list-text strong { color: #444; min-width: 60px; }
+      .action-pill { background: var(--brand-primary); color: #fff; padding: 10px 18px; border-radius: 25px; font-size: 13px; font-weight: 700; border: none; align-self: flex-start; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,166,81,0.2); }
 
-      /* Dialogs */
-      .dialog-box { background: #fff; width: 100%; max-width: 400px; border-radius: 20px; padding: 30px; text-align: center; }
-      .pin-input { width: 100%; background: var(--bg-color); border: 1px solid #ddd; padding: 15px; border-radius: 12px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 15px; }
-      .btn-group { display: flex; gap: 10px; }
-      .dialog-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; font-size: 15px;}
-      .btn-cancel { background: #eee; color: var(--text-main); }
-      .btn-confirm { background: var(--brand-dark); color: #fff; }
+      /* PIN & SMS Dialog */
+      .center-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100000; justify-content: center; align-items: center; padding: 20px; }
+      .dialog-box { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 30px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; }
+      @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+      .dialog-title { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+      
+      .pin-input { width: 100%; background: var(--bg-color); border: 1px solid #eaeaea; padding: 15px; border-radius: 15px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 10px; outline: none; color: var(--text-main); }
+      .pin-input:focus { border-color: var(--brand-primary); background: var(--card-bg); }
+      .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+      .dialog-btn { flex: 1; padding: 15px; border-radius: 15px; font-weight: 700; border: none; cursor: pointer; font-size: 15px;}
+      .btn-cancel { background: var(--bg-color); color: var(--text-main); }
+      .btn-confirm { background: var(--brand-primary); color: #fff; box-shadow: 0 8px 20px rgba(0,166,81,0.2); }
 
-      .mrp-result { text-align: left; padding: 15px; background: var(--brand-light); border-radius: 10px; margin-bottom: 10px; font-size: 14px; cursor: pointer; font-weight: 700; color: var(--brand-dark); border: 1px solid #c8e6c9;}
-      textarea.sms-box { width: 100%; height: 120px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; font-family: inherit;}
+      .mrp-result { text-align: left; padding: 15px; background: var(--bg-color); border-radius: 12px; margin-bottom: 10px; font-size: 14px; cursor: pointer; font-weight: 700; border: 1px solid #eaeaea; color: var(--text-main); }
+      .mrp-result:hover { border-color: var(--brand-primary); }
+      textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
-      /* =========================================
-         RESPONSIVE STYLES
-         ========================================= */
+      /* Web Responsive */
       @media (min-width: 768px) {
-        .product-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
-        .list-card, .faq-item { display: grid; grid-template-columns: 2fr 2fr 1fr; align-items: center; gap: 15px; }
-        .faq-item { display: block; } /* Revert faq to block */
-        .modal-sheet { grid-template-columns: 1fr 1.5fr; }
-        .detail-img-box { height: 100%; border-right: 1px solid #eee; }
-        .detail-content { max-height: 70vh; }
-      }
+        #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
+        
+        /* Nav Bar adjustments for 7 items */
+        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; overflow-x: visible; }
+        .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
+        .nav-item span { display: block; font-size: 14px; margin-top: 0; }
+        .nav-item.active { background: transparent; color: var(--brand-primary); box-shadow: none; transform: none; border-bottom: 3px solid var(--brand-primary); border-radius: 0; }
+        .nav-item.active svg { transform: none; }
+        
+        .app-header { border-radius: 30px; margin: 20px; padding: 40px; }
+        .search-box { max-width: 500px; margin-top: 30px; }
+        
+        .category-scroll { padding: 0 20px 20px 20px; }
+        .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        
+        /* FIX FOR DESKTOP GRID ALIGNMENT */
+        #depot-list, #market-list, #faq-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .list-card { 
+            margin: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .faq-item {
+            margin: 0;
+            max-width: 100%;
+        }
+        .action-pill { 
+            margin-top: 0; 
+            align-self: center; 
+            flex-shrink: 0;
+        }
 
-      @media (max-width: 767px) {
-        .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .nav-links.show { display: flex; }
-        .mobile-menu-btn { display: block; }
-        .hero-section { padding: 40px 5% 80px 5%; }
-        .hero-title { font-size: 26px; }
-        .stats-overlap { margin: -40px 5% 30px 5%; flex-direction: column; }
+        .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
+        .modal-sheet { 
+           padding: 0; 
+           max-width: 850px; 
+           height: auto; 
+           max-height: 90vh; 
+           border-radius: 24px; 
+           display: grid; 
+           grid-template-columns: 1fr 1.3fr; 
+           grid-template-rows: 1fr auto; 
+           overflow: hidden; 
+           background: var(--card-bg); 
+        }
+        .detail-img-box { grid-column: 1; grid-row: 1 / span 2; border-radius: 0; height: 100%; margin-bottom: 0; padding: 40px; }
+        .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
+        .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
       }
     </style>
   </head>
@@ -193,28 +258,8 @@
 
     <div id="loader-overlay">
       <div class="spinner"></div>
-      <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--brand-dark);">লোড হচ্ছে...</div>
+      <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--text-main);">Loading App...</div>
     </div>
-
-    <!-- ==============================
-         TOP NAVBAR
-         ============================== -->
-    <nav class="top-navbar">
-      <a href="#" class="nav-logo" onclick="switchSection('sec-products')">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--brand-dark)"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
-        New Hope
-      </a>
-      <button class="mobile-menu-btn" onclick="document.getElementById('navMenu').classList.toggle('show')">☰</button>
-      <div class="nav-links" id="navMenu">
-        <button class="nav-item active" onclick="switchSection('sec-products')">হোম</button>
-        <button class="nav-item" onclick="switchSection('sec-depots')">ডিপো সমূহ</button>
-        <button class="nav-item" onclick="switchSection('sec-market')">কভারেজ এরিয়া</button>
-        <button class="nav-item" onclick="openMrpModal()">এসএমএস ও মূল্য</button>
-        <button class="nav-item" onclick="switchSection('sec-faq')">প্রশ্ন ও উত্তর</button>
-        <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycbzGiRLuc673MddthcifbtMiDja-18Qx7EjYK-CHOaHiB3PWn5Dsx0tTSsjDtv4rE0m6-A/exec', '_blank')">টাস্ক ম্যানেজার</button>
-        <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycby64MfacaLt3ZkYc0cFW9HHacJccBkUlt0-ar4gM9vqF04PL7yS93VqI8z6E5BZrnLb9Q/exec', '_blank')">ক্যালেন্ডার</button>
-      </div>
-    </nav>
 
     <!-- MAIN APP WRAPPER -->
     <div id="app-wrapper">
@@ -224,37 +269,47 @@
            ============================== -->
       <div id="sec-products" class="app-section">
         
-        <div class="hero-section">
-          <div class="hero-title">নিউ হোপ পোল্ট্রি ও ফিশ ফিড</div>
-          <div class="hero-subtitle">খামারির সফলতাই আমাদের মূল লক্ষ্য। পুষ্টিকর এবং গুণগত মানসম্পন্ন ফিড সরবরাহের মাধ্যমে আমরা খামারিদের পাশে আছি।</div>
-          <button class="hero-btn" onclick="document.getElementById('searchInput').focus()">পণ্য খুঁজুন</button>
-        </div>
-
-        <div class="stats-overlap">
-          <div class="stat-item"><h3>উন্নত পুষ্টি</h3><p>নিশ্চিত গুণমান</p></div>
-          <div class="stat-item"><h3>দ্রুত বৃদ্ধি</h3><p>খামারির লাভ</p></div>
-          <div class="stat-item"><h3>সঠিক ওজন</h3><p>সেরা ফর্মুলা</p></div>
-        </div>
-
-        <div class="section-container">
-          <div class="section-header">
-            <h2>আমাদের পণ্যসমূহ</h2>
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Welcome to</div>
+              <div class="app-title">New Hope Feed Mill Bangladesh Ltd.</div>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Cool/Warm Mode">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+            </button>
           </div>
-
           <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="searchInput" placeholder="পণ্য বা কোড খুঁজুন..." onkeyup="searchProducts()">
+            <input type="text" id="searchInput" placeholder="Search product or code..." onkeyup="searchProducts()">
           </div>
-          
-          <div class="category-scroll" id="cat-container">
-            <button class="cat-btn active" onclick="filterProducts('Poultry Feed', this)">পোল্ট্রি ফিড</button>
-            <button class="cat-btn" onclick="filterProducts('Fish Feed', this)">ফিশ ফিড</button>
-            <button class="cat-btn" onclick="filterProducts('Cattle Feed', this)">ক্যাটেল ফিড</button>
-          </div>
+        </header>
 
-          <div class="product-grid" id="product-grid">
-            <!-- Rendered by JS -->
-          </div>
+        <div class="section-title">
+          Categories <span class="see-all">See All</span>
+        </div>
+        
+        <div class="category-scroll" id="cat-container">
+          <button class="cat-btn active" onclick="filterProducts('Poultry Feed', this)">
+            <div class="cat-icon">🐔</div>
+            <div class="cat-text">Poultry</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Fish Feed', this)">
+            <div class="cat-icon">🐟</div>
+            <div class="cat-text">Fish</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Cattle Feed', this)">
+            <div class="cat-icon">🐄</div>
+            <div class="cat-text">Cattle</div>
+          </button>
+        </div>
+
+        <div class="section-title" style="margin-top: 15px;">
+          Our Products <span class="see-all">See All</span>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
@@ -262,54 +317,101 @@
            2. DEPOTS SECTION
            ============================== -->
       <div id="sec-depots" class="app-section" style="display: none;">
-        <div class="hero-section" style="padding: 40px 5% 80px;">
-          <div class="hero-title">ডিপো সমূহ</div>
-          <div class="hero-subtitle">আপনার নিকটস্থ কোম্পানির ডিপো খুঁজে নিন</div>
-        </div>
-        <div class="section-container" style="margin-top: -60px; position:relative; z-index:10;">
-          <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold;">লোড হচ্ছে...</div>
-          <div id="depot-list"></div>
-        </div>
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Find Locations</div>
+              <div class="app-title">Company Depots</div>
+            </div>
+          </div>
+        </header>
+        <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Depots...</div>
+        <div id="depot-list"></div>
       </div>
 
       <!-- ==============================
            3. MARKET COVERAGE SECTION
            ============================== -->
       <div id="sec-market" class="app-section" style="display: none;">
-        <div class="hero-section" style="padding: 40px 5% 80px;">
-          <div class="hero-title">মার্কেট কভারেজ</div>
-          <div class="hero-subtitle">এলাকাভিত্তিক কভারেজ এবং কর্মকর্তাদের কন্টাক্ট নম্বর</div>
-        </div>
-        <div class="section-container" style="margin-top: -60px; position:relative; z-index:10;">
-          <div class="search-box" style="margin-top: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="marketSearchInput" placeholder="উপজেলা বা জেলা খুঁজুন..." onkeyup="searchMarket()">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Market Areas</div>
+              <div class="app-title">Coverage & Contacts</div>
+            </div>
           </div>
-          <div id="market-loader" style="text-align:center; padding: 20px; font-weight:bold;">লোড হচ্ছে...</div>
-          <div id="market-list"></div>
-        </div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="marketSearchInput" placeholder="Search upazila, district..." onkeyup="searchMarket()">
+          </div>
+        </header>
+        <div id="market-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Market Data...</div>
+        <div id="market-list"></div>
       </div>
 
       <!-- ==============================
            4. FAQ & INBOX REPLY SECTION
            ============================== -->
       <div id="sec-faq" class="app-section" style="display: none;">
-        <div class="hero-section" style="padding: 40px 5% 80px;">
-          <div class="hero-title">প্রশ্ন ও উত্তর</div>
-          <div class="hero-subtitle">সাধারণ জিজ্ঞাসার উত্তরসমূহ ও ইনবক্স রিপ্লাই ফরম্যাট</div>
-        </div>
-        <div class="section-container" style="margin-top: -60px; position:relative; z-index:10;">
-          <div class="search-box" style="margin-top: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Help & Support</div>
+              <div class="app-title">FAQ & Inbox Reply</div>
+            </div>
+          </div>
+          <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="faqSearchInput" placeholder="প্রশ্ন খুঁজুন..." onkeyup="searchFAQ()">
+            <input type="text" id="faqSearchInput" placeholder="Search questions..." onkeyup="searchFAQ()">
           </div>
-          <div id="faq-list">
-            <!-- Rendered by JS -->
-          </div>
+        </header>
+        <div id="faq-list">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
     </div> 
+
+    <!-- ==============================
+         NAVIGATION BAR
+         ============================== -->
+    <nav class="bottom-nav">
+      <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; align-items:center; gap:8px;" id="web-logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
+        NH FEED
+      </div>
+      
+      <button class="nav-item active" onclick="switchSection('sec-products', this)">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-depots', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>Depots</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-market', this)">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span>Market</span>
+      </button>
+      <button class="nav-item" onclick="openMrpModal()">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+        <span>SMS MRP</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-faq', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
+        <span>FAQ/Reply</span>
+      </button>
+      
+      <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycbzGiRLuc673MddthcifbtMiDja-18Qx7EjYK-CHOaHiB3PWn5Dsx0tTSsjDtv4rE0m6-A/exec', '_blank')">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+        <span>Task Mgr</span>
+      </button>
+      
+      <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycby64MfacaLt3ZkYc0cFW9HHacJccBkUlt0-ar4gM9vqF04PL7yS93VqI8z6E5BZrnLb9Q/exec', '_blank')">
+        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+        <span>Calendar</span>
+      </button>
+    </nav>
 
     <!-- ==============================
          MODALS & DIALOGS
@@ -318,67 +420,80 @@
     <!-- Product Detail Modal -->
     <div id="product-detail-modal" class="modal-overlay">
       <div class="modal-sheet"> 
-        <button class="modal-close-top" onclick="closeProductModal()">✖</button>
-        
         <div class="detail-img-box" id="detail-img-container">
-          <button class="nav-arrow left" onclick="navigateProduct(-1)">❮</button>
+          <!-- Navigation Arrows for Swipe/Click effect -->
+          <button class="nav-arrow left" onclick="navigateProduct(-1)">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+          </button>
           <img id="detail-img" src="" alt="Product">
-          <button class="nav-arrow right" onclick="navigateProduct(1)">❯</button>
+          <button class="nav-arrow right" onclick="navigateProduct(1)">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </button>
         </div>
-        
         <div class="detail-content">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <h2 id="detail-title" class="detail-title">পণ্যের নাম</h2>
-            <button class="login-btn" style="padding: 5px 15px; font-size: 12px;" onclick="openPinModal()">এডিট</button>
+          <div class="detail-action-buttons">
+            <button class="back-btn" onclick="closeProductModal()">
+              <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            </button>
+            <button class="admin-edit-btn" onclick="openPinModal()">
+              <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
           </div>
-          <div id="detail-category" class="detail-subtitle">ক্যাটাগরি</div>
+          <h2 id="detail-title" class="detail-title">Product Name</h2>
+          <div id="detail-category" class="detail-subtitle">Category</div>
           
-          <div class="nutrition-grid" id="nutrition-view-grid"></div>
-          <div class="nutrition-grid" id="nutrition-edit-grid" style="display:none;"></div>
+          <div class="section-title" style="margin: 10px 0 15px 0; padding:0;">Nutrition Details</div>
+          <div id="nutrition-view-grid" class="nutrition-grid"></div>
+          <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;"></div>
         </div>
-        
-        <div class="detail-bottom-bar" style="grid-column: 1 / -1;">
+        <div class="detail-bottom-bar">
           <div class="price-box">
-            <span class="price-label" id="modal-status-label">স্ট্যাটাস</span>
-            <span class="price-value" id="modal-status-text" style="font-size:16px;">ভিউ মোড</span>
+            <span class="price-label">Status</span>
+            <span class="price-value" id="modal-status-text" style="font-size:16px;">View Mode</span>
           </div>
-          <button id="save-btn" class="main-action-btn" style="display:none; max-width: 200px;" onclick="saveUpdatedData()">সেভ করুন</button>
+          <button id="save-btn" class="main-action-btn" style="display:none;" onclick="saveUpdatedData()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            Save Changes
+          </button>
+          <button id="close-bottom-btn" class="main-action-btn" onclick="closeProductModal()">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            Close Details
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Smart PIN Dialog -->
-    <div id="smart-pin-modal" class="modal-overlay" style="z-index: 100001;">
+    <div id="smart-pin-modal" class="center-modal">
       <div class="dialog-box">
-        <h2 style="color: var(--brand-dark); margin-bottom: 10px;">এডমিন এক্সেস</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">ডাটা এডিট করতে পিন নম্বর দিন</p>
+        <div class="dialog-title">Admin Access</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Enter secure PIN to edit values.</p>
         <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="10">
-        <div id="pinErrorMsg" style="color:var(--brand-red); font-size:13px; font-weight:bold; margin-bottom:10px;"></div>
+        <div id="pinErrorMsg" style="color:red; font-size:13px; min-height:15px; font-weight:bold; margin-bottom:10px;"></div>
         <div class="btn-group">
-          <button class="dialog-btn btn-cancel" onclick="closePinModal()">বাতিল</button>
-          <button class="dialog-btn btn-confirm" onclick="verifyPin()">নিশ্চিত করুন</button>
+          <button class="dialog-btn btn-cancel" onclick="closePinModal()">Cancel</button>
+          <button class="dialog-btn btn-confirm" onclick="verifyPin()">Verify</button>
         </div>
       </div>
     </div>
 
     <!-- MRP / SMS Dialog -->
-    <div id="mrp-modal" class="modal-overlay" style="z-index: 100001;">
-      <div class="dialog-box" style="max-width: 500px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-          <h2 style="color: var(--brand-dark); margin:0;">এসএমএস জেনারেটর</h2>
-          <button style="background:none; border:none; font-size:20px; cursor:pointer;" onclick="closeMrpModal()">✖</button>
+    <div id="mrp-modal" class="center-modal">
+      <div class="dialog-box">
+        <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMrpModal()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </div>
-        
-        <div class="search-box" style="margin: 0; box-shadow:none; border:2px solid #eaeaea;">
-          <input type="text" id="mrpSearchInput" placeholder="পণ্যের নাম বা কোড..." onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
+        <div class="dialog-title" style="margin-top:10px;">Price / SMS Generator</div>
+        <div class="search-box" style="margin-top: 20px; box-shadow:none; border:2px solid #eaeaea;">
+          <input type="text" id="mrpSearchInput" placeholder="Product Code or Name..." onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
         </div>
-        <button class="login-btn" style="width: 100%; margin-top: 15px; border-radius: 12px; padding: 15px;" onclick="searchMrpBtnClick()">মূল্য খুঁজুন</button>
+        <button class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="searchMrpBtnClick()">Search Price</button>
         
-        <div id="mrp-loading" style="display:none; color: var(--brand-dark); margin-top: 15px; font-weight:bold; font-size:14px;">খোঁজা হচ্ছে...</div>
+        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 15px; font-weight:bold; font-size:14px;">Searching...</div>
         <div id="mrpResults" style="margin-top: 15px; max-height: 140px; overflow-y: auto;"></div>
 
-        <textarea id="smsText" class="sms-box" placeholder="এসএমএস ফরম্যাট এখানে স্বয়ংক্রিয়ভাবে তৈরি হবে..."></textarea>
-        <button id="copySmsBtn" class="login-btn" style="width: 100%; margin-top: 15px; border-radius: 12px; padding: 15px;" onclick="copySms()">কপি করুন</button>
+        <textarea id="smsText" class="sms-box" placeholder="SMS format will auto-generate here..."></textarea>
+        <button id="copySmsBtn" class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="copySms()">Copy SMS</button>
       </div>
     </div>
 
@@ -392,35 +507,38 @@
       let currentCategory = 'Poultry Feed';
       let currentFilteredProducts = []; 
       let currentEditingId = null;
-      let currentProductIndex = 0; 
+      let currentProductIndex = 0; // For Swipe Navigation
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
       let allFaqData = []; 
 
-      // Translated Column Labels
       const columnDefs = [
-        {key: 'pack', label: 'প্যাকিং সাইজ'}, {key: 'type', label: 'ফিডের ধরন'}, 
-        {key: 'mois', label: 'আর্দ্রতা (সর্বোচ্চ)'}, {key: 'cp', label: 'ক্রুড প্রোটিন'},
-        {key: 'fat', label: 'ফ্যাট (সর্বনিম্ন)'}, {key: 'fib', label: 'ফাইবার (সর্বোচ্চ)'},
-        {key: 'ash', label: 'অ্যাশ (সর্বোচ্চ)'}, {key: 'lys', label: 'লাইসিন (সর্বনিম্ন)'},
-        {key: 'meth', label: 'মিথিওনিন'}, {key: 'cal', label: 'ক্যালসিয়াম (সর্বনিম্ন)'},
-        {key: 'pho', label: 'ফসফরাস (সর্বনিম্ন)'}, {key: 'eng', label: 'এনার্জি (Kcal)'},
-        {key: 'carbo', label: 'কার্বোহাইড্রেট (সর্বোচ্চ)'} 
+        {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Type'}, 
+        {key: 'mois', label: 'Moisture (Max)'}, {key: 'cp', label: 'Crude Protein'},
+        {key: 'fat', label: 'Fat (Min)'}, {key: 'fib', label: 'Fiber (Max)'},
+        {key: 'ash', label: 'Ash (Max)'}, {key: 'lys', label: 'Lysine (Min)'},
+        {key: 'meth', label: 'Methionine'}, {key: 'cal', label: 'Cal (Min)'},
+        {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'},
+        {key: 'carbo', label: 'Carbohydrates (Max)'} 
       ];
 
-      function switchSection(sectionId) {
+      if(window.innerWidth >= 768) { document.getElementById('web-logo').style.display = 'flex'; }
+
+      function toggleTheme() {
+        document.body.classList.toggle('warm-mode');
+        if(document.body.classList.contains('warm-mode')) {
+          localStorage.setItem('theme', 'warm');
+        } else {
+          localStorage.setItem('theme', 'cool');
+        }
+      }
+      if(localStorage.getItem('theme') === 'warm') { document.body.classList.add('warm-mode'); }
+
+      function switchSection(sectionId, btnElem) {
         document.querySelectorAll('.app-section').forEach(sec => sec.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
-        
-        // Update Active state in Top Nav
-        document.querySelectorAll('.nav-links .nav-item').forEach(btn => btn.classList.remove('active'));
-        let buttons = document.querySelectorAll('.nav-links .nav-item');
-        if(sectionId === 'sec-products') buttons[0].classList.add('active');
-        if(sectionId === 'sec-depots') buttons[1].classList.add('active');
-        if(sectionId === 'sec-market') buttons[2].classList.add('active');
-        if(sectionId === 'sec-faq') buttons[4].classList.add('active');
-
-        document.getElementById('navMenu').classList.remove('show'); // Hide mobile menu
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
+        btnElem.classList.add('active');
         window.scrollTo(0,0);
         
         if(sectionId === 'sec-faq') {
@@ -451,7 +569,7 @@
           }
         }).catch(err => {
            if(!cachedProducts) {
-             document.getElementById('loading-msg').innerHTML = `<span style="color:red;">ইন্টারনেট সংযোগ চেক করুন।</span>`;
+             document.getElementById('loading-msg').innerHTML = `<span style="color:red;">Network Error. Please Check Connection.</span>`;
            }
         });
 
@@ -477,10 +595,13 @@
             <div class="list-card">
               <div style="flex:1;">
                 <div class="list-title">🏢 ${depot.name}</div>
-                <div class="list-text"><strong>📍 ঠিকানা:</strong> <span>${depot.address}</span></div>
-                <div class="list-text"><strong>👤 ব্যক্তি:</strong> <span>${depot.person}</span></div>
+                <div class="list-text"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
+                <div class="list-text"><strong>👤 Person:</strong> <span>${depot.person}</span></div>
               </div>
-              <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">📞 ${depot.phone}</button>
+              <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                ${depot.phone}
+              </button>
             </div>`;
         });
         container.innerHTML = html;
@@ -502,10 +623,10 @@
             document.getElementById('market-loader').style.display = 'none';
             renderMarketData(allMarketData);
           } else {
-             if(!cachedMarket) document.getElementById('market-loader').innerText = "কোনো ডাটা পাওয়া যায়নি।";
+             if(!cachedMarket) document.getElementById('market-loader').innerText = "Coverage data empty.";
           }
         }).catch(err => {
-             if(!cachedMarket) document.getElementById('market-loader').innerText = "সার্ভার এরর!";
+             if(!cachedMarket) document.getElementById('market-loader').innerText = "Failed to load market data.";
         });
 
       const cachedFaq = localStorage.getItem('nh_faq');
@@ -547,24 +668,19 @@
       function renderProductGrid(products) {
         const container = document.getElementById('product-grid');
         if(products.length === 0) {
-          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">কোনো পণ্য পাওয়া যায়নি।</div>`;
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">No products found.</div>`;
           return;
         }
         let html = '';
         products.forEach((p, index) => {
-          // Setting badge based on category for matched UI
-          let badgeName = p.category === "Poultry Feed" ? "পোল্ট্রি" : (p.category === "Fish Feed" ? "মাছ" : "গবাদিপশু");
-          
           html += `
             <div class="product-card" onclick="openProductModal('${p.id}', ${index})">
-              <div class="card-badge">${badgeName}</div>
+              <div class="fav-icon">❤</div>
               <div class="card-img-box"><img src="${p.imgUrl}" alt=""></div>
-              <div class="card-details">
-                <h3>${p.name}</h3>
-                <div class="card-bottom">
-                  <div class="card-pack">${p.pack !== '-' ? p.pack : 'বস্তা'}</div>
-                  <button class="card-action">বিস্তারিত ➔</button>
-                </div>
+              <h3>${p.name}</h3>
+              <div class="card-bottom">
+                <div class="card-pack">${p.pack !== '-' ? p.pack : 'Bag'}</div>
+                <button class="card-action">+</button>
               </div>
             </div>`;
         });
@@ -580,10 +696,10 @@
             <div class="list-card">
               <div style="flex:1;">
                 <div class="list-title">${item.district} ➔ ${item.upazila_bn}</div>
-                <div class="list-text"><strong>জোন:</strong> <span style="color:var(--brand-dark); font-weight:bold;">${item.zone}</span></div>
-                <div class="list-text"><strong>ব্যক্তি:</strong> <span style="font-weight:600; color:var(--text-main);">${item.person}</span></div>
+                <div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-secondary); font-weight:bold;">${item.zone}</span></div>
+                <div class="list-text"><strong>Person:</strong> <span style="font-weight:600; color:var(--text-main);">${item.person}</span></div>
               </div>
-              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')">📞 ${item.phone}</button>` : ''}
+              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${item.phone}</button>` : ''}
             </div>`;
         });
         container.innerHTML = html;
@@ -601,7 +717,7 @@
       function renderFAQ(data) {
         const container = document.getElementById('faq-list');
         if (!data || data.length === 0) {
-          container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">লোড হচ্ছে...</div>`;
+          container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">Loading FAQ...</div>`;
           return;
         }
         let html = '';
@@ -610,7 +726,7 @@
           html += `
             <div class="faq-item">
               <div class="faq-q" onclick="this.parentElement.classList.toggle('active')">${item.q} <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-              <div class="faq-a" title="কপি করতে ডাবল ট্যাপ করুন" ondblclick="copyFaqAnswer(this, \`${safeText}\`)">${item.a}</div>
+              <div class="faq-a" title="Double tap to copy" ondblclick="copyFaqAnswer(this, \`${safeText}\`)">${item.a}</div>
             </div>
           `;
         });
@@ -628,7 +744,7 @@
       function copyFaqAnswer(elem, text) {
         navigator.clipboard.writeText(text).then(() => {
           const origHtml = elem.innerHTML;
-          elem.innerHTML = '<div style="color: var(--brand-dark); font-weight: bold; padding: 10px 0;">✔ লেখাটি কপি হয়েছে!</div>';
+          elem.innerHTML = '<div style="color: var(--brand-primary); font-weight: bold; padding: 10px 0; display:flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Text Copied!</div>';
           setTimeout(() => {
             elem.innerHTML = origHtml;
           }, 1500);
@@ -645,9 +761,7 @@
         
         document.getElementById('detail-img').src = p.imgUrl;
         document.getElementById('detail-title').innerText = p.name;
-        
-        let catBn = p.category === "Poultry Feed" ? "পোল্ট্রি ফিড" : (p.category === "Fish Feed" ? "ফিশ ফিড" : "ক্যাটেল ফিড");
-        document.getElementById('detail-category').innerText = catBn;
+        document.getElementById('detail-category').innerText = p.category;
         
         let viewHtml = '';
         let editHtml = '';
@@ -667,8 +781,10 @@
         document.getElementById('nutrition-edit-grid').style.display = 'none';
         
         document.getElementById('save-btn').style.display = 'none';
+        document.getElementById('close-bottom-btn').style.display = 'flex';
+        document.querySelector('.admin-edit-btn').style.display = 'flex';
         
-        document.getElementById('modal-status-text').innerText = "ভিউ মোড";
+        document.getElementById('modal-status-text').innerText = "View Mode";
         document.getElementById('modal-status-text').style.color = "var(--text-main)";
 
         document.getElementById('product-detail-modal').style.display = 'flex';
@@ -676,6 +792,7 @@
 
       function navigateProduct(direction) {
         let newIndex = currentProductIndex + direction;
+        // Loop around
         if (newIndex < 0) {
           newIndex = currentFilteredProducts.length - 1;
         } else if (newIndex >= currentFilteredProducts.length) {
@@ -700,8 +817,14 @@
       });
       
       function handleSwipe() {
-        if (touchEndX < touchStartX - 50) { navigateProduct(1); } // Swipe Left
-        if (touchEndX > touchStartX + 50) { navigateProduct(-1); } // Swipe Right
+        if (touchEndX < touchStartX - 50) {
+          // Swipe Left -> Next Product
+          navigateProduct(1);
+        }
+        if (touchEndX > touchStartX + 50) {
+          // Swipe Right -> Previous Product
+          navigateProduct(-1);
+        }
       }
 
       function closeProductModal() {
@@ -721,16 +844,18 @@
           document.getElementById('nutrition-view-grid').style.display = 'none';
           document.getElementById('nutrition-edit-grid').style.display = 'grid';
           document.getElementById('save-btn').style.display = 'flex';
+          document.getElementById('close-bottom-btn').style.display = 'none';
+          document.querySelector('.admin-edit-btn').style.display = 'none';
           
-          document.getElementById('modal-status-text').innerText = "এডিট মোড";
-          document.getElementById('modal-status-text').style.color = "var(--brand-red)";
+          document.getElementById('modal-status-text').innerText = "Edit Mode";
+          document.getElementById('modal-status-text').style.color = "var(--brand-secondary)";
         } else {
-          document.getElementById('pinErrorMsg').innerText = "ভুল পিন নম্বর!";
+          document.getElementById('pinErrorMsg').innerText = "Incorrect PIN!";
         }
       }
 
       function saveUpdatedData() {
-        document.getElementById('modal-status-text').innerText = "সেভ হচ্ছে...";
+        document.getElementById('modal-status-text').innerText = "Saving...";
         
         let updatedData = { id: currentEditingId, name: document.getElementById('detail-title').innerText };
         columnDefs.forEach(col => { updatedData[col.key] = document.getElementById('edit-' + col.key).value; });
@@ -744,11 +869,11 @@
               if (idx !== -1) { columnDefs.forEach(col => { allProducts[idx][col.key] = updatedData[col.key]; }); }
               localStorage.setItem('nh_products', JSON.stringify(allProducts));
               
-              document.getElementById('modal-status-text').innerText = "সেভ হয়েছে!"; 
-              document.getElementById('modal-status-text').style.color = "var(--brand-dark)";
+              document.getElementById('modal-status-text').innerText = "Saved!"; 
+              document.getElementById('modal-status-text').style.color = "var(--brand-primary)";
               setTimeout(() => { openProductModal(currentEditingId, currentProductIndex); }, 1500); 
-            } else { document.getElementById('modal-status-text').innerText = "এরর সেভিং"; }
-        }).catch(err => { document.getElementById('modal-status-text').innerText = "কানেকশন ফেইল্ড"; });
+            } else { document.getElementById('modal-status-text').innerText = "Error Saving"; }
+        }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
       }
 
       // MRP SMS Dialog
@@ -756,9 +881,7 @@
         document.getElementById('mrpSearchInput').value = '';
         document.getElementById('mrpResults').innerHTML = '';
         document.getElementById('smsText').value = '';
-        document.getElementById('copySmsBtn').innerText = 'কপি করুন';
-        
-        document.getElementById('navMenu').classList.remove('show');
+        document.getElementById('copySmsBtn').innerText = 'Copy SMS';
         document.getElementById('mrp-modal').style.display = 'flex';
       }
       function closeMrpModal() { document.getElementById('mrp-modal').style.display = 'none'; }
@@ -772,27 +895,27 @@
           .then(results => {
             document.getElementById('mrp-loading').style.display = 'none';
             if(results.error || results.length === 0) {
-               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--brand-red); font-weight:600;">কোনো পণ্য পাওয়া যায়নি।</div>`;
+               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No product found.</div>`;
                return;
             }
             let html = '';
             results.forEach(m => {
               let name = m.rowData[28] ? m.rowData[28].trim() : "পণ্য";
               let price = m.rowData[11] ? m.rowData[11].trim() : "---";
-              html += `<div class="mrp-result" onclick='selectMrpMatch("${name}", "${price}")'>${name} - MRP: ${price} ৳</div>`;
+              html += `<div class="mrp-result" onclick='selectMrpMatch("${name}", "${price}")'>${name} - MRP: ${price} TK</div>`;
             });
             document.getElementById('mrpResults').innerHTML = html;
           }).catch(e => { document.getElementById('mrp-loading').style.display = 'none'; });
       }
 
       function selectMrpMatch(name, price) {
-        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লি:`;
-      }
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা\nখাদ্য সংগ্রহ করতে আপনার এলাকার নিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড\n(স্থান ও ডিলার ভেদে মূল্যের সামান্য তারতম্য হতে পারে।)`;      }
 
+      // Utilities
       function copyNumber(btn, text) {
         navigator.clipboard.writeText(text).then(() => {
           const origHtml = btn.innerHTML;
-          btn.innerHTML = '✔ কপি হয়েছে!';
+          btn.innerHTML = '✅ Copied!';
           setTimeout(() => btn.innerHTML = origHtml, 2000);
         });
       }
@@ -800,7 +923,7 @@
         const box = document.getElementById('smsText');
         if(!box.value) return;
         box.select(); navigator.clipboard.writeText(box.value);
-        document.getElementById('copySmsBtn').innerText = '✔ কপি হয়েছে!';
+        document.getElementById('copySmsBtn').innerText = '✔ Copied!';
       }
     </script>
     
