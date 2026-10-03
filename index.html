@@ -122,7 +122,7 @@
       .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
       .faq-a:active { opacity: 0.7; }
 
-      /* Floating Bottom Nav */
+      /* Floating Bottom Nav - Updated for 7 items */
       .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: flex-start; align-items: center; padding: 12px 20px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; overflow-x: auto; scrollbar-width: none; gap: 15px; }
       .bottom-nav::-webkit-scrollbar { display: none; }
       .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; }
@@ -132,7 +132,7 @@
       .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
       .nav-item.active svg { transform: scale(1.1); }
 
-      /* Product Details Modal */
+      /* Product Details Modal (Mobile) */
       .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 10000; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
       @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
       
@@ -160,6 +160,7 @@
       .nutri-value { font-size: 15px; font-weight: 800; color: var(--text-main); }
       .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
       
+      /* Bottom Bar (Mobile) */
       .detail-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 20px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top-left-radius: 30px; border-top-right-radius: 30px; z-index: 100; }
       .price-box { display: flex; flex-direction: column; }
       .price-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
@@ -196,6 +197,7 @@
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
+        /* Nav Bar adjustments for 7 items */
         .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; overflow-x: visible; }
         .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
         .nav-item span { display: block; font-size: 14px; margin-top: 0; }
@@ -208,13 +210,44 @@
         .category-scroll { padding: 0 20px 20px 20px; }
         .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
         
-        #depot-list, #market-list, #faq-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; padding: 0 20px; }
-        .list-card { margin: 0; max-width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: space-between; }
-        .faq-item { margin: 0; max-width: 100%; }
-        .action-pill { margin-top: 0; align-self: center; flex-shrink: 0; }
+        /* FIX FOR DESKTOP GRID ALIGNMENT */
+        #depot-list, #market-list, #faq-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .list-card { 
+            margin: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .faq-item {
+            margin: 0;
+            max-width: 100%;
+        }
+        .action-pill { 
+            margin-top: 0; 
+            align-self: center; 
+            flex-shrink: 0;
+        }
 
         .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
-        .modal-sheet { padding: 0; max-width: 850px; height: auto; max-height: 90vh; border-radius: 24px; display: grid; grid-template-columns: 1fr 1.3fr; grid-template-rows: 1fr auto; overflow: hidden; background: var(--card-bg); }
+        .modal-sheet { 
+           padding: 0; 
+           max-width: 850px; 
+           height: auto; 
+           max-height: 90vh; 
+           border-radius: 24px; 
+           display: grid; 
+           grid-template-columns: 1fr 1.3fr; 
+           grid-template-rows: 1fr auto; 
+           overflow: hidden; 
+           background: var(--card-bg); 
+        }
         .detail-img-box { grid-column: 1; grid-row: 1 / span 2; border-radius: 0; height: 100%; margin-bottom: 0; padding: 40px; }
         .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
         .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
@@ -388,6 +421,7 @@
     <div id="product-detail-modal" class="modal-overlay">
       <div class="modal-sheet"> 
         <div class="detail-img-box" id="detail-img-container">
+          <!-- Navigation Arrows for Swipe/Click effect -->
           <button class="nav-arrow left" onclick="navigateProduct(-1)">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
           </button>
@@ -757,6 +791,7 @@
         
         // Show/Hide buttons for View Mode
         document.getElementById('mrp-shortcut-btn').style.display = 'flex';
+        document.getElementById('mrp-shortcut-btn').innerText = 'Price / SMS'; // Reset text
         document.getElementById('status-box').style.display = 'none';
         document.getElementById('save-btn').style.display = 'none';
         document.getElementById('close-bottom-btn').style.display = 'flex';
@@ -846,21 +881,35 @@
         }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
       }
 
-      // NEW: Open MRP directly with pre-filled search
+      // NEW: Direct Price Fetching Function
       function openMrpModalFromProduct() {
-        const pName = document.getElementById('detail-title').innerText;
-        closeProductModal(); 
-        openMrpModal();
+        const btn = document.getElementById('mrp-shortcut-btn');
+        btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px;"></div>`;
         
-        // Extract product code if the name starts with a number (e.g., "8024 - Fish Feed")
+        const pName = document.getElementById('detail-title').innerText;
         let searchQuery = pName;
         let firstWord = pName.split(' ')[0];
+        
+        // Determine search keyword (code if available, otherwise name)
         if (!isNaN(firstWord) && firstWord.trim() !== '') {
           searchQuery = firstWord;
         }
-        
-        document.getElementById('mrpSearchInput').value = searchQuery;
-        searchMrpBtnClick(); // Auto-trigger search
+
+        // Fetch price silently
+        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(searchQuery))
+          .then(res => res.json())
+          .then(results => {
+            if(results.error || results.length === 0) {
+               btn.innerText = "No Price Found";
+               return;
+            }
+            // Display the exact price directly on the button
+            let price = results[0].rowData[11] ? results[0].rowData[11].trim() : "---";
+            btn.innerHTML = `<strong>MRP: ${price} TK</strong>`;
+          })
+          .catch(e => { 
+             btn.innerText = "Error"; 
+          });
       }
 
       function openMrpModal() {
@@ -895,7 +944,7 @@
       }
 
       function selectMrpMatch(name, price) {
-        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ হোপ ফিড মিল বাংলাদেশ লি:`;
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকা ভেদে দামের সামান্য তারতম্য হতে পারে)\n\nনিকটস্থ ডিলার পয়েন্টে যোগাযোগ করুন।\n📞 হটলাইন: +880 1742-510889\n\nনিউ Hope ফিড মিল বাংলাদেশ লি:`;
       }
 
       function copyNumber(btn, text) {
