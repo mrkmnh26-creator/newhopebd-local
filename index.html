@@ -376,14 +376,14 @@
          NAVIGATION BAR
          ============================== -->
     <nav class="bottom-nav">
-      <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; align-items:center; gap:8px;" id="web-logo">
+      <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; cursor: pointer; user-select: none; align-items:center; gap:8px;" id="web-logo" onclick="goHome()" title="Home" role="button">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
         NH FEED
       </div>
       
-      <button class="nav-item active" onclick="switchSection('sec-products', this)">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        <span>Home</span>
+      <button class="nav-item active" id="nav-products-btn" onclick="switchSection('sec-products', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm5.5 11c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zM3 21.5h8v-8H3v8z"/></svg>
+        <span>Products</span>
       </button>
       <button class="nav-item" onclick="switchSection('sec-depots', this)">
         <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -465,9 +465,9 @@
             Save Changes
           </button>
           
-          <button id="close-bottom-btn" class="main-action-btn" style="flex: 1;" onclick="closeProductModal()">
+          <button id="close-bottom-btn" class="main-action-btn" style="flex: 1;" onclick="generateSmsForProduct()">
             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-            Close Details
+            Price / SMS Generator
           </button>
         </div>
       </div>
@@ -554,6 +554,12 @@
         if(sectionId === 'sec-faq') {
           renderFAQ(allFaqData);
         }
+      }
+
+      // Logo click = Home (opens Products section)
+      function goHome() {
+        closeProductModal();
+        switchSection('sec-products', document.getElementById('nav-products-btn'));
       }
 
       // SWR LOCAL CACHING
@@ -909,6 +915,43 @@
           })
           .catch(e => { 
              btn.innerText = "Error"; 
+          });
+      }
+
+      // Generates SMS (with price) for the currently opened product
+      function generateSmsForProduct() {
+        const btn = document.getElementById('close-bottom-btn');
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px; border-top-color:#fff;"></div>`;
+
+        const pName = document.getElementById('detail-title').innerText;
+        let searchQuery = pName;
+        let firstWord = pName.split(' ')[0];
+        if (!isNaN(firstWord) && firstWord.trim() !== '') { searchQuery = firstWord; }
+
+        const restore = () => { btn.disabled = false; btn.innerHTML = originalHtml; };
+
+        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(searchQuery))
+          .then(res => res.json())
+          .then(results => {
+            restore();
+            openMrpModal();
+            document.getElementById('mrpSearchInput').value = searchQuery;
+            if (results.error || results.length === 0) {
+              document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No price found for this product.</div>`;
+              return;
+            }
+            const row = results[0].rowData;
+            const name = row[28] ? row[28].trim() : pName;
+            const price = row[11] ? row[11].trim() : "---";
+            selectMrpMatch(name, price);
+          })
+          .catch(e => {
+            restore();
+            openMrpModal();
+            document.getElementById('mrpSearchInput').value = searchQuery;
+            document.getElementById('mrpResults').innerHTML = `<div style="color:red; font-weight:600;">Connection failed. Try again.</div>`;
           });
       }
 
