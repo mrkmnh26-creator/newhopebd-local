@@ -252,6 +252,22 @@
         .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
         .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
       }
+
+      /* ===== Market: Division filter + grouped cards ===== */
+      .div-filter-row { display: flex; gap: 10px; padding: 0 20px 15px 20px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+      .div-filter-row::-webkit-scrollbar { display: none; }
+      .div-chip { flex-shrink: 0; padding: 8px 16px; border-radius: 20px; border: 1px solid #e3e3e3; background: var(--card-bg); font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-family: inherit; }
+      .div-chip.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+      .list-card.market-card { flex-direction: column; align-items: stretch; justify-content: flex-start; }
+      .market-entry { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px dashed #ececec; }
+      .market-entry:first-of-type { border-top: 1px solid #f0f0f0; margin-top: 4px; }
+      .market-entry-info { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-width: 0; }
+      .market-person { font-weight: 700; font-size: 14px; color: var(--text-main); }
+      .div-badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 12px; }
+      .div-badge.poultry { background: #e8f5e9; color: #00a651; }
+      .div-badge.aqua { background: #e3f2fd; color: #1976d2; }
+      .div-badge.other { background: #fff3e0; color: #f05a28; }
+      .market-entry .action-pill { margin-top: 0; align-self: center; flex-shrink: 0; }
     </style>
   </head>
   <body>
@@ -342,9 +358,10 @@
           </div>
           <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="marketSearchInput" placeholder="Search upazila, district..." onkeyup="searchMarket()">
+            <input type="text" id="marketSearchInput" placeholder="Search upazila, district, division, person..." onkeyup="searchMarket()">
           </div>
         </header>
+        <div id="market-division-filters" class="div-filter-row"></div>
         <div id="market-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Market Data...</div>
         <div id="market-list"></div>
       </div>
@@ -705,32 +722,109 @@
         container.innerHTML = html;
       }
 
-      function renderMarketData(data) {
-        document.getElementById('market-loader').style.display = 'none';
+      // ===== MARKET: grouped by area, with Division filter =====
+      let marketDivisionFilter = 'All';
+
+      function mkClean(v) {
+        if (v === null || v === undefined) return '';
+        const t = String(v).trim();
+        return t === '-' ? '' : t;
+      }
+      function mkDivision(item) { return mkClean(item.division !== undefined ? item.division : item.Division); }
+      function mkValidEntries() {
+        // Skip empty placeholder rows (no person and no phone)
+        return allMarketData.filter(i => mkClean(i.person) || mkClean(i.phone));
+      }
+      function mkBadgeClass(div) {
+        const d = div.toLowerCase();
+        if (d.includes('aqua') || d.includes('fish')) return 'aqua';
+        if (d.includes('poultry') || d.includes('cattle')) return 'poultry';
+        return 'other';
+      }
+
+      function renderMarketFilters() {
+        const entries = mkValidEntries();
+        const counts = {};
+        entries.forEach(i => { const d = mkDivision(i); if (d) counts[d] = (counts[d] || 0) + 1; });
+        const box = document.getElementById('market-division-filters');
+        const names = Object.keys(counts);
+        if (names.length === 0) { box.innerHTML = ''; return; }
+        if (marketDivisionFilter !== 'All' && !counts[marketDivisionFilter]) marketDivisionFilter = 'All';
+        let html = `<button class="div-chip ${marketDivisionFilter === 'All' ? 'active' : ''}" data-div="All">All (${entries.length})</button>`;
+        names.forEach(n => {
+          html += `<button class="div-chip ${marketDivisionFilter === n ? 'active' : ''}" data-div="${n.replace(/"/g, '&quot;')}">${n} (${counts[n]})</button>`;
+        });
+        box.innerHTML = html;
+        box.querySelectorAll('.div-chip').forEach(btn => {
+          btn.onclick = () => { marketDivisionFilter = btn.getAttribute('data-div'); renderMarketFilters(); applyMarketFilters(); };
+        });
+      }
+
+      function applyMarketFilters() {
+        const q = document.getElementById('marketSearchInput').value.toLowerCase().trim();
+        const tokens = q ? q.split(/\s+/) : [];
+
+        // 1) filter entries by division chip + search (location, zone, person, phone, division)
+        const filtered = mkValidEntries().filter(i => {
+          const div = mkDivision(i);
+          if (marketDivisionFilter !== 'All' && div !== marketDivisionFilter) return false;
+          if (tokens.length === 0) return true;
+          const hay = [i.district, i.upazila_bn, i.upazila_en, i.zone, i.person, i.phone, div]
+            .map(mkClean).join(' ').toLowerCase();
+          return tokens.every(t => hay.includes(t));
+        });
+
+        // 2) group by area so one market shows every division's person together
+        const groups = new Map();
+        filtered.forEach(i => {
+          const key = [mkClean(i.district), mkClean(i.upazila_en), mkClean(i.upazila_bn)].join('|').toLowerCase();
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(i);
+        });
+
         const container = document.getElementById('market-list');
+        if (groups.size === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-weight:bold;">No result found.</div>`;
+          return;
+        }
+
+        const limit = tokens.length ? Infinity : 100; // show everything when searching
         let html = '';
-        data.slice(0, 50).forEach(item => { 
-          html += `
-            <div class="list-card">
-              <div style="flex:1;">
-                <div class="list-title">${item.district} ➔ ${item.upazila_bn}</div>
-                <div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-secondary); font-weight:bold;">${item.zone}</span></div>
-                <div class="list-text"><strong>Person:</strong> <span style="font-weight:600; color:var(--text-main);">${item.person}</span></div>
+        let shown = 0;
+        groups.forEach(list => {
+          if (shown++ >= limit) return;
+          const f = list[0];
+          const district = mkClean(f.district);
+          const upz = mkClean(f.upazila_bn) || mkClean(f.upazila_en);
+          const title = upz ? `${district} ➔ ${upz}` : `${district} <span style="font-weight:600; font-size:12px; color:var(--text-muted);">(District Level)</span>`;
+          const zones = [...new Set(list.map(i => mkClean(i.zone)).filter(Boolean))];
+
+          html += `<div class="list-card market-card"><div class="list-title">${title}</div>`;
+          if (zones.length) {
+            html += `<div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-secondary); font-weight:bold;">${zones.join(', ')}</span></div>`;
+          }
+          list.forEach(i => {
+            const div = mkDivision(i);
+            const phone = mkClean(i.phone);
+            html += `<div class="market-entry"><div class="market-entry-info">
+                ${div ? `<span class="div-badge ${mkBadgeClass(div)}">${div}</span>` : ''}
+                <span class="market-person">${mkClean(i.person) || '-'}</span>
               </div>
-              ${item.phone !== '-' ? `<button class="action-pill" onclick="copyNumber(this, '${item.phone}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${item.phone}</button>` : ''}
+              ${phone ? `<button class="action-pill" onclick="copyNumber(this, '${phone}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${phone}</button>` : ''}
             </div>`;
+          });
+          html += `</div>`;
         });
         container.innerHTML = html;
       }
 
-      function searchMarket() {
-        const query = document.getElementById('marketSearchInput').value.toLowerCase();
-        const filtered = allMarketData.filter(item => 
-          item.zone.toLowerCase().includes(query) || item.district.toLowerCase().includes(query) ||
-          item.upazila_bn.toLowerCase().includes(query) || item.upazila_en.toLowerCase().includes(query)
-        );
-        renderMarketData(filtered);
+      function renderMarketData(data) {
+        document.getElementById('market-loader').style.display = 'none';
+        renderMarketFilters();
+        applyMarketFilters();
       }
+
+      function searchMarket() { applyMarketFilters(); }
 
       function renderFAQ(data) {
         const container = document.getElementById('faq-list');
