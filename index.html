@@ -122,7 +122,7 @@
       .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
       .faq-a:active { opacity: 0.7; }
 
-      /* Floating Bottom Nav - Updated for 7 items */
+      /* Floating Bottom Nav - Updated for 8 items */
       .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: flex-start; align-items: center; padding: 12px 20px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; overflow-x: auto; scrollbar-width: none; gap: 15px; }
       .bottom-nav::-webkit-scrollbar { display: none; }
       .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; }
@@ -197,7 +197,7 @@
       @media (min-width: 768px) {
         #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
         
-        /* Nav Bar adjustments for 7 items */
+        /* Nav Bar adjustments for 8 items */
         .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; overflow-x: visible; }
         .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
         .nav-item span { display: block; font-size: 14px; margin-top: 0; }
@@ -251,6 +251,24 @@
         .detail-img-box { grid-column: 1; grid-row: 1 / span 2; border-radius: 0; height: 100%; margin-bottom: 0; padding: 40px; }
         .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
         .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
+      }
+
+      /* ===== Social Media Panel ===== */
+      .social-intro { padding: 0 20px 18px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+      .social-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 20px; }
+      .social-card { position: relative; display: flex; align-items: center; gap: 12px; min-height: 92px; padding: 16px; background: var(--card-bg); border: 1px solid #f0f0f0; border-radius: 20px; color: var(--text-main); text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+      .social-card::after { content: ''; position: absolute; width: 90px; height: 90px; right: -30px; bottom: -45px; border-radius: 50%; background: var(--social-color); opacity: .08; }
+      .social-card:hover { transform: translateY(-4px); border-color: var(--social-color); box-shadow: 0 10px 24px rgba(0,0,0,0.10); }
+      .social-icon { flex: 0 0 46px; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 15px; background: var(--social-color); color: #fff; box-shadow: 0 6px 14px color-mix(in srgb, var(--social-color) 28%, transparent); }
+      .social-icon svg { width: 25px; height: 25px; fill: currentColor; }
+      .social-info { min-width: 0; position: relative; z-index: 1; }
+      .social-name { display: block; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+      .social-handle { display: block; color: var(--text-muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .social-arrow { margin-left: auto; color: var(--social-color); font-size: 20px; font-weight: 800; position: relative; z-index: 1; }
+      @media (min-width: 768px) {
+        .social-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+        .social-card { min-height: 110px; padding: 20px; }
+        .social-icon { width: 52px; height: 52px; flex-basis: 52px; }
       }
 
       /* ===== Market: Division filter + grouped cards ===== */
@@ -367,6 +385,48 @@
       </div>
 
       <!-- ==============================
+           4. SOCIAL MEDIA SECTION
+           ============================== -->
+      <div id="sec-social" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Stay Connected</div>
+              <div class="app-title">Follow NH Feed</div>
+            </div>
+          </div>
+        </header>
+        <div class="section-title" style="margin-top: 5px;">Our Social Accounts</div>
+        <p class="social-intro">নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর সর্বশেষ খবর, পণ্য ও আপডেট পেতে আমাদের সোশ্যাল মিডিয়া অ্যাকাউন্টগুলো অনুসরণ করুন।</p>
+        <div class="social-grid">
+          <a class="social-card" style="--social-color:#1877f2" href="https://www.facebook.com/newhopefeed" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Facebook">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.3v3h2.8v8h3.4z"/></svg></span>
+            <span class="social-info"><span class="social-name">Facebook</span><span class="social-handle">@newhopefeed</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#0a66c2" href="https://www.linkedin.com/company/new-hope-feed-mill-bangladesh-ltd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on LinkedIn">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M6.5 8.2A1.7 1.7 0 1 1 6.5 4.8a1.7 1.7 0 0 1 0 3.4zM5 9.5h3v9H5v-9zm4.8 0h2.9v1.2h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7v4.7h-3v-4.2c0-1 0-2.4-1.5-2.4s-1.7 1.1-1.7 2.3v4.3h-3v-9z"/></svg></span>
+            <span class="social-info"><span class="social-name">LinkedIn</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#d62976" href="https://www.instagram.com/newhopefeedmill/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Instagram">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></span>
+            <span class="social-info"><span class="social-name">Instagram</span><span class="social-handle">@newhopefeedmill</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#ff0000" href="https://www.youtube.com/@NewHopeFeedMillBangladeshLtd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on YouTube">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C2 9 2 12 2 12s0 3 .4 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.8.4-4.8.4-4.8s0-3-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg></span>
+            <span class="social-info"><span class="social-name">YouTube</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#111111" href="https://www.tiktok.com/@newhopefeedmillbd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on TikTok">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M16.6 3c.3 1.8 1.3 3.1 3.4 3.2v3a8.3 8.3 0 0 1-3.4-1v6.1a5.7 5.7 0 1 1-4.9-5.7v3.1a2.7 2.7 0 1 0 1.9 2.6V3h3z"/></svg></span>
+            <span class="social-info"><span class="social-name">TikTok</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#e60023" href="https://www.pinterest.com/newhopefeedmillbd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Pinterest">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-1.6 0-3.5.4-4.9l1-4.2s-.3-.7-.3-1.7c0-1.6.9-2.8 2-2.8 1 0 1.4.8 1.4 1.7 0 1-.6 2.4-.9 3.8-.3 1.1.6 2.1 1.7 2.1 2.1 0 0 3.1-.2 3.1-3.8 0-2.5-1.8-4.4-4.5-4.4-3.1 0-4.9 2.3-4.9 4.7 0 .9.3 1.8.8 2.4.1.1.1.2.1.4l-.3 1.2c-.1.4-.4.5-.7.3-1.4-.6-2-2.3-2-4.1 0-3 2.5-6.6 7.4-6.6 4 0 6.7 2.9 6.7 6.1 0 4.2-2.4 7.3-5.9 7.3-1.2 0-2.4-.7-2.8-1.4l-.7 2.7c-.3 1.1-1.1 2.5-1.6 3.3A10 10 0 1 0 12 2z"/></svg></span>
+            <span class="social-info"><span class="social-name">Pinterest</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ==============================
            4. FAQ & INBOX REPLY SECTION
            ============================== -->
       <div id="sec-faq" class="app-section" style="display: none;">
@@ -414,6 +474,11 @@
         <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
         <span>SMS MRP</span>
       </button>
+      <button class="nav-item" onclick="switchSection('sec-social', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.9v-2.1h-2v2.1A8 8 0 0 1 4.1 13H6v-2H4.1A8 8 0 0 1 11 4.1V6h2V4.1a8 8 0 0 1 6.9 6.9H18v2h1.9a8 8 0 0 1-6.9 6.9zM12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg>
+        <span>Social</span>
+      </button>
+      
       <button class="nav-item" onclick="switchSection('sec-faq', this)">
         <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
         <span>FAQ/Reply</span>
