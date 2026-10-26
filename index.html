@@ -1226,7 +1226,7 @@
             const row = results[0].rowData;
             const name = row[28] ? row[28].trim() : pName;
             const price = row[11] ? row[11].trim() : "---";
-            selectMrpMatch(name, price);
+            selectMrpMatch(name, price, results[0].pack || '');
             document.getElementById('mrp-search-area').style.display = 'none'; // only SMS box
           })
           .catch(e => {
@@ -1263,15 +1263,20 @@
             results.forEach(m => {
               let name = m.rowData[28] ? m.rowData[28].trim() : "পণ্য";
               let price = m.rowData[11] ? m.rowData[11].trim() : "---";
-              html += `<div class="mrp-result" onclick='selectMrpMatch("${name}", "${price}")'>${name} - MRP: ${price} TK</div>`;
+              let pack = m.pack || '';
+              html += `<div class="mrp-result" data-name="${faqEscape(name)}" data-price="${faqEscape(price)}" data-pack="${faqEscape(pack)}">${faqEscape(name)} - MRP: ${faqEscape(price)} TK</div>`;
             });
-            document.getElementById('mrpResults').innerHTML = html;
+            const resultBox = document.getElementById('mrpResults');
+            resultBox.innerHTML = html;
+            resultBox.querySelectorAll('.mrp-result').forEach(item => {
+              item.addEventListener('click', () => selectMrpMatch(item.dataset.name, item.dataset.price, item.dataset.pack));
+            });
           }).catch(e => { document.getElementById('mrp-loading').style.display = 'none'; });
       }
 
-      function selectMrpMatch(name, price) {
-        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।
-\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
+      function selectMrpMatch(name, price, pack) {
+        const correctWeight = (pack || '').trim();
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসঠিক ওজন: ${correctWeight}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
       }
 
       function copyNumber(btn, text) {
