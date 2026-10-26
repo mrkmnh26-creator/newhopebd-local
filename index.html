@@ -1207,6 +1207,9 @@
         btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px; border-top-color:#fff;"></div>`;
 
         const pName = document.getElementById('detail-title').innerText;
+        // getProducts already loads NutritionData column D as pack; use it as a reliable fallback.
+        const currentProduct = allProducts.find(p => String(p.id) === String(currentEditingId));
+        const nutritionPack = currentProduct && currentProduct.pack && currentProduct.pack !== '-' ? String(currentProduct.pack).trim() : '';
         let searchQuery = pName;
         let firstWord = pName.split(' ')[0];
         if (!isNaN(firstWord) && firstWord.trim() !== '') { searchQuery = firstWord; }
@@ -1226,7 +1229,7 @@
             const row = results[0].rowData;
             const name = row[28] ? row[28].trim() : pName;
             const price = row[11] ? row[11].trim() : "---";
-            selectMrpMatch(name, price, results[0].pack || '');
+            selectMrpMatch(name, price, results[0].pack || nutritionPack);
             document.getElementById('mrp-search-area').style.display = 'none'; // only SMS box
           })
           .catch(e => {
