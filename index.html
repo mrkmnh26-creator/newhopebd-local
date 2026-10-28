@@ -236,6 +236,8 @@
 
       .mrp-result { text-align: left; padding: 15px; background: var(--bg-color); border-radius: 12px; margin-bottom: 10px; font-size: 14px; cursor: pointer; font-weight: 700; border: 1px solid #eaeaea; color: var(--text-main); }
       .mrp-result:hover { border-color: var(--brand-primary); }
+      .mrp-chip { padding: 8px 16px; border-radius: 20px; border: 2px solid #eaeaea; background: var(--bg-color); color: var(--text-main); font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; }
+      .mrp-chip.active { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
       textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
 
       /* Web Responsive */
@@ -650,11 +652,17 @@
         <div id="mrp-search-area">
         <div class="dialog-title" style="margin-top:10px;">Price / SMS Generator</div>
         <div class="search-box" style="margin-top: 20px; box-shadow:none; border:2px solid #eaeaea;">
-          <input type="text" id="mrpSearchInput" placeholder="Product Code or Name..." onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
+          <input type="text" id="mrpSearchInput" placeholder="Code / Name (e.g. 510 ton, 713 kg)" onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
         </div>
         <button class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="searchMrpBtnClick()">Search Price</button>
         </div>
         
+        <div id="mrp-unit-chips" style="display:flex; gap:8px; margin-top:15px; justify-content:center; flex-wrap:wrap;">
+          <button class="mrp-chip active" data-unit="all" onclick="setMrpUnit('all')">All</button>
+          <button class="mrp-chip" data-unit="bag" onclick="setMrpUnit('bag')">Bag</button>
+          <button class="mrp-chip" data-unit="kg" onclick="setMrpUnit('kg')">KG</button>
+          <button class="mrp-chip" data-unit="ton" onclick="setMrpUnit('ton')">Ton</button>
+        </div>
         <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 15px; font-weight:bold; font-size:14px;">Searching...</div>
         <div id="mrpResults" style="margin-top: 15px; max-height: 140px; overflow-y: auto;"></div>
 
@@ -1168,38 +1176,69 @@
         }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
       }
 
-      // NEW: Direct Price Fetching Function
+      // =====================================================
+      //  MRP — NutritionData শীট থেকে Bag / KG / Ton
+      // =====================================================
+      let mrpUnit = 'all';        // all | bag | kg | ton
+      let mrpLastResults = [];
+      let mrpSelected = null;
+      const MRP_UNIT_INFO = {
+        bag: { label: 'Bag', bn: 'ব্যাগ' },
+        kg:  { label: 'KG',  bn: 'কেজি' },
+        ton: { label: 'Ton', bn: 'টন' }
+      };
+
+      function mrpFetch(query, id) {
+        let url = SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(query || '');
+        if (id) url += '&id=' + encodeURIComponent(id);
+        return fetch(url).then(res => res.json());
+      }
+
+      function applyMrpChips() {
+        document.querySelectorAll('#mrp-unit-chips .mrp-chip').forEach(ch => ch.classList.toggle('active', ch.dataset.unit === mrpUnit));
+      }
+
+      function setMrpUnit(u) {
+        mrpUnit = u;
+        applyMrpChips();
+        if (mrpLastResults.length) renderMrpResults();
+        if (mrpSelected) buildSms(mrpSelected);
+      }
+
+      function mrpPriceLine(item) {
+        return ['bag', 'kg', 'ton'].map(u => {
+          const v = item[u] || '---';
+          const on = (mrpUnit === 'all' || mrpUnit === u);
+          const hi = (mrpUnit === u) ? 'color:var(--brand-primary);' : '';
+          return `<span style="opacity:${on ? 1 : 0.35}; ${hi}">${MRP_UNIT_INFO[u].label}: ${faqEscape(v)}</span>`;
+        }).join(' · ');
+      }
+
+      function renderMrpResults() {
+        const box = document.getElementById('mrpResults');
+        box.innerHTML = mrpLastResults.map((m, i) =>
+          `<div class="mrp-result" data-idx="${i}">${faqEscape(m.name)}<div style="font-size:12px; font-weight:600; margin-top:6px;">${mrpPriceLine(m)}</div></div>`
+        ).join('');
+        box.querySelectorAll('.mrp-result').forEach(el => {
+          el.addEventListener('click', () => { mrpSelected = mrpLastResults[Number(el.dataset.idx)]; buildSms(mrpSelected); });
+        });
+      }
+
+      // প্রোডাক্ট পেজের Price বাটন: তিনটি দামই দেখায়
       function openMrpModalFromProduct() {
         const btn = document.getElementById('mrp-shortcut-btn');
         btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px;"></div>`;
-        
         const pName = document.getElementById('detail-title').innerText;
-        let searchQuery = pName;
-        let firstWord = pName.split(' ')[0];
-        
-        // Determine search keyword (code if available, otherwise name)
-        if (!isNaN(firstWord) && firstWord.trim() !== '') {
-          searchQuery = firstWord;
-        }
-
-        // Fetch price silently
-        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(searchQuery))
-          .then(res => res.json())
-          .then(results => {
-            if(results.error || results.length === 0) {
-               btn.innerText = "No Price Found";
-               return;
-            }
-            // Display the exact price directly on the button
-            let price = results[0].rowData[11] ? results[0].rowData[11].trim() : "---";
-            btn.innerHTML = `<strong>MRP: ${price} TK</strong>`;
+        mrpFetch(pName, currentEditingId)
+          .then(data => {
+            if (data.error || !data.results || data.results.length === 0) { btn.innerText = "No Price Found"; return; }
+            const m = data.results[0];
+            btn.innerHTML = `<span style="font-size:13px; line-height:1.35; text-align:center;"><strong>Bag: ${faqEscape(m.bag || '---')}</strong> · KG: ${faqEscape(m.kg || '---')} · Ton: ${faqEscape(m.ton || '---')} <strong>TK</strong></span>`;
           })
-          .catch(e => { 
-             btn.innerText = "Error"; 
-          });
+          .catch(() => { btn.innerText = "Error"; });
       }
 
-      // Generates SMS (with price) for the currently opened product
+      // বর্তমান প্রোডাক্টের SMS তৈরি
       function generateSmsForProduct() {
         const btn = document.getElementById('close-bottom-btn');
         const originalHtml = btn.innerHTML;
@@ -1207,40 +1246,34 @@
         btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px; border-top-color:#fff;"></div>`;
 
         const pName = document.getElementById('detail-title').innerText;
-        // getProducts already loads NutritionData column D as pack; use it as a reliable fallback.
         const currentProduct = allProducts.find(p => String(p.id) === String(currentEditingId));
         const nutritionPack = currentProduct && currentProduct.pack && currentProduct.pack !== '-' ? String(currentProduct.pack).trim() : '';
-        let searchQuery = pName;
-        let firstWord = pName.split(' ')[0];
-        if (!isNaN(firstWord) && firstWord.trim() !== '') { searchQuery = firstWord; }
-
         const restore = () => { btn.disabled = false; btn.innerHTML = originalHtml; };
 
-        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(searchQuery))
-          .then(res => res.json())
-          .then(results => {
+        mrpFetch(pName, currentEditingId)
+          .then(data => {
             restore();
             openMrpModal();
-            document.getElementById('mrpSearchInput').value = searchQuery;
-            if (results.error || results.length === 0) {
+            if (data.error || !data.results || data.results.length === 0) {
               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No price found for this product.</div>`;
               return;
             }
-            const row = results[0].rowData;
-            const name = row[28] ? row[28].trim() : pName;
-            const price = row[11] ? row[11].trim() : "---";
-            selectMrpMatch(name, price, results[0].pack || nutritionPack);
-            document.getElementById('mrp-search-area').style.display = 'none'; // only SMS box
+            const m = data.results[0];
+            if (!m.pack) m.pack = nutritionPack;
+            mrpLastResults = [m];
+            mrpSelected = m;
+            buildSms(m);
+            document.getElementById('mrp-search-area').style.display = 'none'; // only SMS box + unit chips
           })
-          .catch(e => {
+          .catch(() => {
             restore();
             openMrpModal();
-            document.getElementById('mrpSearchInput').value = searchQuery;
             document.getElementById('mrpResults').innerHTML = `<div style="color:red; font-weight:600;">Connection failed. Try again.</div>`;
           });
       }
 
       function openMrpModal() {
+        mrpUnit = 'all'; mrpLastResults = []; mrpSelected = null; applyMrpChips();
         document.getElementById('mrp-search-area').style.display = 'block';
         document.getElementById('mrpSearchInput').value = '';
         document.getElementById('mrpResults').innerHTML = '';
@@ -1250,36 +1283,38 @@
       }
       function closeMrpModal() { document.getElementById('mrp-modal').style.display = 'none'; }
 
+      // সার্চ: "510", "510 ton", "713 কেজি", "broiler starter ব্যাগ" — সবই কাজ করবে
       function searchMrpBtnClick() {
-        const q = document.getElementById('mrpSearchInput').value;
-        if(!q) return;
+        const q = document.getElementById('mrpSearchInput').value.trim();
+        if (!q) return;
         document.getElementById('mrp-loading').style.display = 'block';
-        fetch(SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(q))
-          .then(res => res.json())
-          .then(results => {
+        mrpSelected = null;
+        mrpFetch(q)
+          .then(data => {
             document.getElementById('mrp-loading').style.display = 'none';
-            if(results.error || results.length === 0) {
-               document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No product found.</div>`;
-               return;
+            if (data.error || !data.results || data.results.length === 0) {
+              mrpLastResults = [];
+              document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No product found.</div>`;
+              return;
             }
-            let html = '';
-            results.forEach(m => {
-              let name = m.rowData[28] ? m.rowData[28].trim() : "পণ্য";
-              let price = m.rowData[11] ? m.rowData[11].trim() : "---";
-              let pack = m.pack || '';
-              html += `<div class="mrp-result" data-name="${faqEscape(name)}" data-price="${faqEscape(price)}" data-pack="${faqEscape(pack)}">${faqEscape(name)} - MRP: ${faqEscape(price)} TK</div>`;
-            });
-            const resultBox = document.getElementById('mrpResults');
-            resultBox.innerHTML = html;
-            resultBox.querySelectorAll('.mrp-result').forEach(item => {
-              item.addEventListener('click', () => selectMrpMatch(item.dataset.name, item.dataset.price, item.dataset.pack));
-            });
-          }).catch(e => { document.getElementById('mrp-loading').style.display = 'none'; });
+            if (data.unit) { mrpUnit = data.unit; applyMrpChips(); } // লেখা থেকে একক বুঝে নিলে চিপ অটো সিলেক্ট
+            mrpLastResults = data.results;
+            renderMrpResults();
+            if (mrpLastResults.length === 1) { mrpSelected = mrpLastResults[0]; buildSms(mrpSelected); }
+          })
+          .catch(() => { document.getElementById('mrp-loading').style.display = 'none'; });
       }
 
-      function selectMrpMatch(name, price, pack) {
-        const correctWeight = (pack || '').trim();
-        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${name}\nসঠিক ওজন: ${correctWeight}\nসর্বোচ্চ খুচরা মূল্য (MRP): ${price} টাকা (এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
+      function buildSms(item) {
+        const pack = (item.pack || '').trim();
+        let priceText;
+        if (mrpUnit === 'all') {
+          priceText = `সর্বোচ্চ খুচরা মূল্য (MRP):\n• প্রতি ব্যাগ: ${item.bag || '---'} টাকা\n• প্রতি কেজি: ${item.kg || '---'} টাকা\n• প্রতি টন: ${item.ton || '---'} টাকা`;
+        } else {
+          priceText = `সর্বোচ্চ খুচরা মূল্য (MRP): ${item[mrpUnit] || '---'} টাকা/${MRP_UNIT_INFO[mrpUnit].bn}`;
+        }
+        const weightLine = pack ? `সঠিক ওজন: ${pack}\n` : '';
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${item.name}\n${weightLine}${priceText}\n(ডিলার ও এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
       }
 
       function copyNumber(btn, text) {
