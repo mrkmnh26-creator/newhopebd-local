@@ -165,6 +165,47 @@
       .faq-form-btn.save { background: var(--brand-primary); color: #fff; box-shadow: 0 8px 18px rgba(0,166,81,.22); }
       .faq-form-btn:disabled { opacity: .6; cursor: wait; }
       .faq-form-status { min-height: 18px; margin-top: 12px; text-align: center; font-size: 12px; font-weight: 700; color: var(--brand-primary); }
+
+      /* ===== FAQ Help Center (hero + trending + topic cards) ===== */
+      #sec-faq .faq-hero { margin-bottom: 0; padding: 34px 20px 64px; text-align: center; }
+      .faq-hero-title { margin: 0; font-size: 28px; font-weight: 800; color: var(--header-text); letter-spacing: .2px; }
+      .faq-hero-sub { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--header-text); opacity: .85; }
+      .faq-hero-search { display: flex; gap: 10px; max-width: 640px; margin: 20px auto 0; }
+      .faq-hero-search input { flex: 1; min-width: 0; border: 0; outline: none; border-radius: 14px; padding: 14px 16px; font: inherit; font-size: 15px; background: #fff; color: #2b2b2b; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+      .faq-hero-search button { border: 0; border-radius: 999px; padding: 0 24px; background: #fff; color: var(--brand-primary); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.12); transition: transform .2s ease; }
+      .faq-hero-search button:active { transform: scale(.96); }
+      #sec-faq .faq-trending { display: flex; align-items: center; gap: 16px; margin: -32px 20px 20px; position: relative; z-index: 11; background: var(--card-bg); border-radius: 18px; padding: 14px 18px; box-shadow: 0 10px 28px rgba(0,0,0,.09); }
+      .faq-trending-label { font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; padding-right: 16px; border-right: 1px solid #ececec; }
+      .faq-trending-list { display: flex; gap: 6px 20px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+      .faq-trending-list::-webkit-scrollbar { display: none; }
+      .faq-trend-chip { background: none; border: 0; padding: 4px 0; font: inherit; font-size: 13px; font-weight: 700; color: var(--brand-primary); cursor: pointer; white-space: nowrap; }
+      .faq-trend-chip:hover { text-decoration: underline; }
+      .faq-cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; padding: 0 20px 24px; }
+      .faq-cat-card { background: var(--card-bg); border-radius: 18px; padding: 20px 22px 14px; border: 1px solid #f0f0f0; box-shadow: 0 4px 18px rgba(0,0,0,.05); animation: faqReveal .35s ease both; display: flex; flex-direction: column; }
+      .faq-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+      .faq-cat-icon { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--icon-bg); display: grid; place-items: center; }
+      .faq-cat-icon svg { width: 21px; height: 21px; fill: var(--brand-primary); }
+      .faq-cat-title { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+      .faq-cat-bn { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+      .faq-cat-links { list-style: none; margin: 0; padding: 0; flex: 1; }
+      .faq-cat-links button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--brand-primary); cursor: pointer; }
+      .faq-cat-links button:hover { text-decoration: underline; }
+      .faq-see-all { margin: 6px 0 4px; align-self: flex-start; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 12px; font-weight: 800; color: var(--text-muted); cursor: pointer; }
+      .faq-see-all:hover { color: var(--brand-primary); }
+      .faq-listbar { display: flex; align-items: center; gap: 12px; padding: 0 20px 16px; flex-wrap: wrap; }
+      .faq-back-btn { border: 1px solid #e4ebe6; background: var(--card-bg); color: var(--text-main); font: inherit; font-size: 13px; font-weight: 700; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+      .faq-back-btn:hover { color: var(--brand-primary); border-color: var(--brand-primary); }
+      .faq-list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
+      #faq-list { align-items: start; }
+      .faq-meta { margin-top: 4px; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+      .faq-q > div { flex: 1; }
+      .faq-copy-btn { margin: 14px 0 0; border: 0; background: var(--icon-bg); color: var(--brand-primary); font: inherit; font-size: 12px; font-weight: 800; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+      .faq-ans-cat { display: inline-block; background: var(--icon-bg); color: var(--brand-primary); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+      .faq-ans-q { margin: 0 34px 14px 0; font-size: 19px; font-weight: 850; line-height: 1.35; color: var(--text-main); }
+      .faq-ans-body { font-size: 14.5px; line-height: 1.75; color: var(--text-main); white-space: pre-wrap; background: var(--bg-color); border-radius: 16px; padding: 16px; max-height: 46vh; overflow-y: auto; }
+      #sec-faq .faq-hero.compact { padding-bottom: 30px; margin-bottom: 20px; }
+      @media (min-width: 768px) { #sec-faq .faq-hero { padding: 44px 40px 72px; } #sec-faq .faq-hero.compact { padding-bottom: 36px; } #sec-faq .faq-trending { margin: -44px 20px 22px; } .faq-hero-title { font-size: 34px; } }
+      @media (max-width: 430px) { .faq-trending { padding: 12px 14px; gap: 12px; } .faq-trending-label { padding-right: 12px; font-size: 13px; } .faq-hero-title { font-size: 24px; } }
       @media (max-width: 430px) { .faq-toolbar { align-items: flex-start; flex-direction: column; } .faq-add-btn { width: 100%; justify-content: center; } .faq-form-card { padding: 23px 17px 18px; border-radius: 24px; } }
 
       /* Floating Bottom Nav - Updated for 8 items */
@@ -477,18 +518,18 @@
            4. FAQ & INBOX REPLY SECTION
            ============================== -->
       <div id="sec-faq" class="app-section" style="display: none;">
-        <header class="app-header">
-          <div class="header-top">
-            <div>
-              <div class="greeting">Help & Support</div>
-              <div class="app-title">FAQ & Inbox Reply</div>
-            </div>
-          </div>
-          <div class="search-box">
-            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            <input type="text" id="faqSearchInput" placeholder="Search questions..." onkeyup="searchFAQ()">
+        <header class="app-header faq-hero">
+          <h1 class="faq-hero-title">How can we help?</h1>
+          <div class="faq-hero-sub">কীভাবে আমরা সাহায্য করতে পারি?</div>
+          <div class="faq-hero-search">
+            <input type="text" id="faqSearchInput" placeholder="Search questions or topics..." autocomplete="off" oninput="faqSearchDebounced()" onkeydown="if(event.key==='Enter') searchFAQ()">
+            <button type="button" onclick="searchFAQ()">Search</button>
           </div>
         </header>
+        <div class="faq-trending" id="faq-trending" style="display:none;">
+          <div class="faq-trending-label">Trending Topics:</div>
+          <div class="faq-trending-list" id="faq-trending-list"></div>
+        </div>
         <div class="faq-toolbar">
           <span class="faq-count" id="faq-count">Loading questions...</span>
           <button class="faq-add-btn" type="button" onclick="openFaqModal()">
@@ -496,8 +537,13 @@
             Add Question & Answer
           </button>
         </div>
-        <div id="faq-list">
-          <!-- Rendered by JS -->
+        <div id="faq-home" class="faq-cat-grid"></div>
+        <div id="faq-list-wrap" style="display:none;">
+          <div class="faq-listbar">
+            <button type="button" class="faq-back-btn" onclick="faqShowHome()">&larr; All topics</button>
+            <div class="faq-list-title" id="faq-list-title"></div>
+          </div>
+          <div id="faq-list"></div>
         </div>
       </div>
 
@@ -552,6 +598,20 @@
     <!-- ==============================
          MODALS & DIALOGS
          ============================== -->
+    <!-- FAQ Answer Modal -->
+    <div id="faq-answer-modal" class="faq-modal" role="dialog" aria-modal="true" onclick="if(event.target===this) closeFaqAnswer()">
+      <div class="faq-form-card">
+        <button class="faq-modal-close" type="button" onclick="closeFaqAnswer()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-ans-cat" id="faq-ans-cat"></div>
+        <h2 class="faq-ans-q" id="faq-ans-q"></h2>
+        <div class="faq-ans-body" id="faq-ans-body"></div>
+        <div class="faq-form-actions">
+          <button class="faq-form-btn cancel" type="button" onclick="closeFaqAnswer()">Close</button>
+          <button class="faq-form-btn save" type="button" id="faq-ans-copy" onclick="faqCopyCurrent(this)">Copy Answer</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Modern FAQ Add Modal -->
     <div id="faq-add-modal" class="faq-modal" role="dialog" aria-modal="true" aria-labelledby="faq-form-title" onclick="if(event.target===this) closeFaqModal()">
       <div class="faq-form-card">
@@ -565,6 +625,7 @@
         <form onsubmit="saveNewFaq(event)">
           <div class="faq-form-group"><label class="faq-form-label" for="new-faq-question">Question / প্রশ্ন</label><input class="faq-form-input" id="new-faq-question" required maxlength="240" placeholder="যেমন: আপনার ডিলার পয়েন্ট কোথায়?" autocomplete="off"></div>
           <div class="faq-form-group"><label class="faq-form-label" for="new-faq-answer">Answer / উত্তর</label><textarea class="faq-form-textarea" id="new-faq-answer" required maxlength="3000" placeholder="প্রশ্নটির সুন্দর ও সম্পূর্ণ উত্তর লিখুন..."></textarea></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="new-faq-category">Category / বিভাগ <span style="font-weight:600; color:var(--text-muted);">(optional)</span></label><input class="faq-form-input" id="new-faq-category" list="faq-cat-options" maxlength="60" placeholder="যেমন: Price &amp; MRP — ফাঁকা রাখলে অটো বসবে" autocomplete="off"><datalist id="faq-cat-options"></datalist></div>
           <div class="faq-form-actions"><button class="faq-form-btn cancel" type="button" onclick="closeFaqModal()">Cancel</button><button class="faq-form-btn save" id="faq-save-btn" type="submit">Save FAQ</button></div>
           <div class="faq-form-status" id="faq-form-status" aria-live="polite"></div>
         </form>
@@ -1010,35 +1071,161 @@
         return String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
       }
 
-      function renderFAQ(data) {
-        const container = document.getElementById('faq-list');
-        const count = document.getElementById('faq-count');
-        const items = Array.isArray(data) ? data : [];
-        if (count) count.innerText = `${items.length} question${items.length === 1 ? '' : 's'} available`;
-        if (items.length === 0) {
-          container.innerHTML = `<div class="faq-empty"><div class="faq-empty-icon">?</div><strong>No FAQ found</strong><div style="margin-top:6px; font-size:13px;">নতুন প্রশ্ন ও উত্তর যোগ করতে উপরের বাটনে ক্লিক করুন।</div></div>`;
-          return;
-        }
-        let html = '';
-        items.forEach((item) => {
-          const question = faqEscape(item.q);
-          const answer = faqEscape(item.a);
-          html += `
-            <div class="faq-item">
-              <div class="faq-q" role="button" tabindex="0" onclick="this.parentElement.classList.toggle('active')" onkeydown="if(event.key==='Enter'||event.key===' ') this.parentElement.classList.toggle('active')"><span>${question}</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-              <div class="faq-a" title="Double tap to copy" ondblclick="copyFaqAnswer(this, this.innerText)">${answer}</div>
-            </div>`;
-        });
-        container.innerHTML = html;
+      // =====================================================
+      //  FAQ — Help Center UI (Hero search + Trending + Topic cards)
+      // =====================================================
+      const FAQ_ICONS = {
+        help: 'M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z',
+        tag: 'M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z',
+        store: 'M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z',
+        truck: 'M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z',
+        verified: 'M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z',
+        box: 'M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z'
+      };
+      // ডিফল্ট টপিক (অটো-ক্যাটাগরি)। শীটের Category কলামে লিখলে সেটাই অগ্রাধিকার পায়।
+      const FAQ_DEFAULT_CATS = [
+        { name: 'Price & MRP', bn: 'মূল্য ও এমআরপি', icon: 'tag', kw: ['price', 'mrp', 'rate', 'cost', 'দাম', 'মূল্য', 'রেট', 'টাকা'] },
+        { name: 'Dealer & Depot', bn: 'ডিলার ও ডিপো', icon: 'store', kw: ['dealer', 'depot', 'distributor', 'agency', 'address', 'ডিলার', 'ডিপো', 'এজেন্সি', 'পরিবেশক', 'ঠিকানা', 'কোথায়'] },
+        { name: 'Order & Delivery', bn: 'অর্ডার ও ডেলিভারি', icon: 'truck', kw: ['order', 'delivery', 'supply', 'stock', 'অর্ডার', 'ডেলিভারি', 'সরবরাহ', 'স্টক', 'পরিবহন'] },
+        { name: 'Quality & Complaint', bn: 'মান ও অভিযোগ', icon: 'verified', kw: ['quality', 'complaint', 'problem', 'defect', 'expire', 'মান', 'অভিযোগ', 'সমস্যা', 'মেয়াদ', 'নষ্ট'] },
+        { name: 'Products & Nutrition', bn: 'পণ্য ও পুষ্টি', icon: 'box', kw: ['feed', 'protein', 'nutrition', 'ingredient', 'broiler', 'layer', 'fish', 'cattle', 'ফিড', 'প্রোটিন', 'পুষ্টি', 'খাদ্য', 'ব্রয়লার', 'লেয়ার', 'মাছ', 'গরু', 'ডোজ'] }
+      ];
+      const FAQ_GENERAL = { name: 'General', bn: 'সাধারণ জিজ্ঞাসা', icon: 'help' };
+
+      let faqView = 'home', faqActiveCat = '', faqShown = [], faqCurrentIdx = -1, faqSearchTimer = null;
+
+      function faqCatMeta(name) {
+        const n = String(name).trim().toLowerCase();
+        return FAQ_DEFAULT_CATS.find(c => c.name.toLowerCase() === n) || (n === 'general' ? FAQ_GENERAL : { name: String(name).trim(), bn: '', icon: 'help' });
+      }
+      function faqGuessCat(item) {
+        const passes = [String(item.q || '').toLowerCase(), (String(item.q || '') + ' ' + String(item.a || '')).toLowerCase()];
+        for (const text of passes) for (const c of FAQ_DEFAULT_CATS) if (c.kw.some(k => text.includes(k))) return c.name;
+        return FAQ_GENERAL.name;
+      }
+      function faqCatOf(item) { return String(item.c || '').trim() || faqGuessCat(item); }
+      function faqShort(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1).trim() + '…' : t; }
+
+      function faqViews() { try { return JSON.parse(localStorage.getItem('nh_faq_views') || '{}'); } catch (e) { return {}; } }
+      function faqBump(q) { const v = faqViews(); v[q] = (v[q] || 0) + 1; try { localStorage.setItem('nh_faq_views', JSON.stringify(v)); } catch (e) {} }
+
+      function faqGroup() {
+        const map = {};
+        allFaqData.forEach((item, i) => { const c = faqCatOf(item); (map[c] = map[c] || []).push(i); });
+        return Object.keys(map).map(name => ({ name, idx: map[name] }))
+          .sort((a, b) => (a.name === FAQ_GENERAL.name) - (b.name === FAQ_GENERAL.name) || b.idx.length - a.idx.length);
       }
 
+      function faqTrendingIdx() {
+        const flagged = allFaqData.map((x, i) => x.t ? i : -1).filter(i => i >= 0);
+        if (flagged.length) return flagged.slice(0, 6);
+        const v = faqViews();
+        const top = allFaqData.map((x, i) => i).filter(i => v[allFaqData[i].q] > 0).sort((a, b) => v[allFaqData[b].q] - v[allFaqData[a].q]).slice(0, 6);
+        return top.length ? top : allFaqData.map((x, i) => i).slice(0, 5);
+      }
+
+      function renderFAQ() { faqRefresh(); } // পুরোনো কলগুলোর জন্য
+
+      function faqRefresh() {
+        const total = allFaqData.length, cats = faqGroup();
+        const count = document.getElementById('faq-count');
+        const home = document.getElementById('faq-home'), listWrap = document.getElementById('faq-list-wrap'), trending = document.getElementById('faq-trending');
+        const query = document.getElementById('faqSearchInput').value.trim();
+        if (faqView === 'home' && query) faqView = 'search';
+
+        if (faqView === 'home') {
+          home.style.display = total ? 'grid' : 'block'; listWrap.style.display = 'none';
+          if (count) count.innerText = total ? `${total} question${total === 1 ? '' : 's'} · ${cats.length} topic${cats.length === 1 ? '' : 's'}` : 'No questions yet';
+          // Trending
+          const tIdx = total ? faqTrendingIdx() : [];
+          trending.style.display = tIdx.length ? 'flex' : 'none';
+          document.querySelector('#sec-faq .faq-hero').classList.toggle('compact', !tIdx.length);
+          document.getElementById('faq-trending-list').innerHTML = tIdx.map(i => `<button type="button" class="faq-trend-chip" onclick="faqOpenAnswer(${i})">${faqEscape(faqShort(allFaqData[i].q, 34))}</button>`).join('');
+          // Topic cards
+          if (!total) {
+            home.innerHTML = `<div class="faq-empty"><div class="faq-empty-icon">?</div><strong>No FAQ found</strong><div style="margin-top:6px; font-size:13px;">নতুন প্রশ্ন ও উত্তর যোগ করতে উপরের বাটনে ক্লিক করুন।</div></div>`;
+            return;
+          }
+          home.innerHTML = cats.map(c => {
+            const meta = faqCatMeta(c.name), shown = c.idx.slice(0, 5);
+            return `<div class="faq-cat-card">
+              <div class="faq-cat-head"><div class="faq-cat-icon"><svg viewBox="0 0 24 24"><path d="${FAQ_ICONS[meta.icon] || FAQ_ICONS.help}"/></svg></div>
+                <div><div class="faq-cat-title">${faqEscape(meta.name)}</div>${meta.bn ? `<div class="faq-cat-bn">${faqEscape(meta.bn)}</div>` : ''}</div></div>
+              <ul class="faq-cat-links">${shown.map(i => `<li><button type="button" onclick="faqOpenAnswer(${i})">${faqEscape(allFaqData[i].q)}</button></li>`).join('')}</ul>
+              ${c.idx.length > shown.length ? `<button type="button" class="faq-see-all" onclick="faqShowCategory(this.dataset.cat)" data-cat="${faqEscape(c.name)}">See all ${c.idx.length} &rarr;</button>` : ''}
+            </div>`;
+          }).join('');
+          return;
+        }
+
+        // লিস্ট ভিউ: ক্যাটাগরি বা সার্চ রেজাল্ট
+        home.style.display = 'none'; trending.style.display = 'none'; listWrap.style.display = 'block';
+        document.querySelector('#sec-faq .faq-hero').classList.add('compact');
+        let idxs, title;
+        if (faqView === 'cat') {
+          idxs = allFaqData.map((x, i) => i).filter(i => faqCatOf(allFaqData[i]) === faqActiveCat);
+          title = faqEscape(faqActiveCat);
+        } else {
+          const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
+          idxs = allFaqData.map((x, i) => i).filter(i => {
+            const hay = (allFaqData[i].q + ' ' + allFaqData[i].a + ' ' + faqCatOf(allFaqData[i])).toLowerCase();
+            return tokens.every(t => hay.includes(t));
+          });
+          title = `Results for “${faqEscape(query)}”`;
+        }
+        if (count) count.innerText = `${idxs.length} question${idxs.length === 1 ? '' : 's'} found`;
+        document.getElementById('faq-list-title').innerHTML = title;
+        const list = document.getElementById('faq-list');
+        if (!idxs.length) { list.innerHTML = `<div class="faq-empty"><div class="faq-empty-icon">?</div><strong>No matching question</strong><div style="margin-top:6px; font-size:13px;">অন্য শব্দ দিয়ে খুঁজে দেখুন।</div></div>`; return; }
+        list.innerHTML = idxs.map(i => {
+          const it = allFaqData[i];
+          return `<div class="faq-item">
+            <div class="faq-q" role="button" tabindex="0" onclick="faqToggle(this, ${i})" onkeydown="if(event.key==='Enter'||event.key===' ') faqToggle(this, ${i})"><div><span>${faqEscape(it.q)}</span>${faqView === 'search' ? `<div class="faq-meta">${faqEscape(faqCatOf(it))}</div>` : ''}</div><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+            <div class="faq-a"><div title="Double tap to copy" ondblclick="faqCopyIdx(${i}, this.nextElementSibling)">${faqEscape(it.a)}</div><button type="button" class="faq-copy-btn" onclick="faqCopyIdx(${i}, this)">Copy answer</button></div>
+          </div>`;
+        }).join('');
+      }
+
+      function faqToggle(headEl, i) {
+        const item = headEl.parentElement, opening = !item.classList.contains('active');
+        item.classList.toggle('active'); if (opening) faqBump(allFaqData[i].q);
+      }
+      function faqShowHome() { faqView = 'home'; faqActiveCat = ''; document.getElementById('faqSearchInput').value = ''; faqRefresh(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      function faqShowCategory(name) { faqView = 'cat'; faqActiveCat = name; document.getElementById('faqSearchInput').value = ''; faqRefresh(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      function faqSearchDebounced() { clearTimeout(faqSearchTimer); faqSearchTimer = setTimeout(searchFAQ, 180); }
       function searchFAQ() {
-        const query = document.getElementById('faqSearchInput').value.toLowerCase().trim();
-        const filtered = allFaqData.filter(item => String(item.q || '').toLowerCase().includes(query) || String(item.a || '').toLowerCase().includes(query));
-        renderFAQ(filtered);
+        const q = document.getElementById('faqSearchInput').value.trim();
+        faqView = q ? 'search' : 'home'; faqActiveCat = ''; faqRefresh();
+      }
+
+      function faqCopyText(text, btn, okLabel, idleLabel) {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.innerText = okLabel; setTimeout(() => { btn.innerText = idleLabel; }, 1500);
+        }).catch(() => { btn.innerText = 'Copy failed'; setTimeout(() => { btn.innerText = idleLabel; }, 1500); });
+      }
+      function faqCopyIdx(i, btn) { faqCopyText(allFaqData[i].a, btn, '✔ Copied', 'Copy answer'); }
+
+      function faqOpenAnswer(i) {
+        const it = allFaqData[i]; if (!it) return;
+        faqCurrentIdx = i; faqBump(it.q);
+        document.getElementById('faq-ans-cat').innerText = faqCatOf(it);
+        document.getElementById('faq-ans-q').innerText = it.q;
+        document.getElementById('faq-ans-body').innerText = it.a;
+        document.getElementById('faq-ans-copy').innerText = 'Copy Answer';
+        document.getElementById('faq-answer-modal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeFaqAnswer() { document.getElementById('faq-answer-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function faqCopyCurrent(btn) { if (faqCurrentIdx >= 0) faqCopyText(allFaqData[faqCurrentIdx].a, btn, '✔ Copied', 'Copy Answer'); }
+
+      function faqFillCatOptions() {
+        const names = new Set(FAQ_DEFAULT_CATS.map(c => c.name)); names.add(FAQ_GENERAL.name);
+        allFaqData.forEach(i => { if (i.c) names.add(i.c); });
+        document.getElementById('faq-cat-options').innerHTML = Array.from(names).map(n => `<option value="${faqEscape(n)}"></option>`).join('');
       }
 
       function openFaqModal() {
+        faqFillCatOptions();
         const modal = document.getElementById('faq-add-modal');
         modal.classList.add('show');
         document.getElementById('new-faq-question').focus();
@@ -1057,21 +1244,22 @@
         event.preventDefault();
         const q = document.getElementById('new-faq-question').value.trim();
         const a = document.getElementById('new-faq-answer').value.trim();
+        const c = document.getElementById('new-faq-category').value.trim();
         const btn = document.getElementById('faq-save-btn');
         const status = document.getElementById('faq-form-status');
         if (!q || !a) return;
         btn.disabled = true;
         status.innerText = 'Saving...';
-        const newItem = { q, a };
+        const newItem = { q, a, c, t: false };
         allFaqData = [newItem, ...allFaqData];
         localStorage.setItem('nh_faq', JSON.stringify(allFaqData));
         renderFAQ(allFaqData);
-        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addFaq', q, a, question: q, answer: a }) })
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addFaq', q, a, c, question: q, answer: a, category: c }) })
           .then(res => res.json())
           .then(result => {
             if (result && (result.success || result.status === 'success')) status.innerText = 'Saved successfully';
             else status.innerText = 'Added to this app';
-            setTimeout(() => { closeFaqModal(); document.getElementById('faqSearchInput').value = ''; }, 850);
+            setTimeout(() => { closeFaqModal(); document.getElementById('faqSearchInput').value = ''; faqView = 'home'; faqRefresh(); }, 850);
           })
           .catch(() => {
             status.innerText = 'Added to this app; server sync unavailable';
@@ -1079,7 +1267,7 @@
           });
       }
 
-      document.addEventListener('keydown', event => { if (event.key === 'Escape' && document.getElementById('faq-add-modal').classList.contains('show')) closeFaqModal(); });
+      document.addEventListener('keydown', event => { if (event.key !== 'Escape') return; if (document.getElementById('faq-answer-modal').classList.contains('show')) closeFaqAnswer(); else if (document.getElementById('faq-add-modal').classList.contains('show')) closeFaqModal(); });
 
       function copyFaqAnswer(elem, text) {
         navigator.clipboard.writeText(text).then(() => {
