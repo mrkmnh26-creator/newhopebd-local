@@ -591,6 +591,10 @@
             <button class="back-btn" onclick="closeProductModal()">
               <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             </button>
+            <button class="action-pill" style="margin:0; align-self:center;" onclick="openCardModal()">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+              Share Card
+            </button>
             <button class="admin-edit-btn" onclick="openPinModal()">
               <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
             </button>
@@ -639,6 +643,37 @@
         <div class="btn-group">
           <button class="dialog-btn btn-cancel" onclick="closePinModal()">Cancel</button>
           <button class="dialog-btn btn-confirm" onclick="verifyPin()">Verify</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Share Card Dialog -->
+    <div id="card-modal" class="center-modal">
+      <div class="dialog-box" style="max-width:520px; width:94%; max-height:94vh; overflow-y:auto;">
+        <div style="position:absolute; right:15px; top:15px; cursor:pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeCardModal()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div class="dialog-title" style="margin-top:10px;">Share Card</div>
+        <select id="card-product-select" onchange="cardPickProduct(this.value)" style="width:100%; margin-top:15px; padding:12px; border-radius:12px; border:2px solid #eaeaea; background:var(--bg-color); color:var(--text-main); font:inherit; font-weight:700; font-size:14px;"></select>
+        <div style="display:flex; gap:8px; margin-top:12px; justify-content:center; flex-wrap:wrap;" id="card-fmt-row">
+          <button class="mrp-chip active" data-g="fmt" data-v="portrait" onclick="setCardOpt('fmt','portrait')">Portrait 4:5</button>
+          <button class="mrp-chip" data-g="fmt" data-v="square" onclick="setCardOpt('fmt','square')">Square 1:1</button>
+          <button class="mrp-chip" data-g="fmt" data-v="story" onclick="setCardOpt('fmt','story')">Story 9:16</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px; justify-content:center; align-items:center; flex-wrap:wrap;">
+          <button class="mrp-chip active" data-g="lang" data-v="en" onclick="setCardOpt('lang','en')">English</button>
+          <button class="mrp-chip" data-g="lang" data-v="bn" onclick="setCardOpt('lang','bn')">বাংলা</button>
+          <span style="width:1px; height:22px; background:#ddd; margin:0 4px;"></span>
+          <button class="mrp-chip active" data-g="theme" data-v="green" onclick="setCardOpt('theme','green')">Green</button>
+          <button class="mrp-chip" data-g="theme" data-v="orange" onclick="setCardOpt('theme','orange')">Orange</button>
+        </div>
+        <label style="display:flex; align-items:center; justify-content:center; gap:6px; margin-top:10px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="card-price-toggle" onchange="toggleCardPrice(this.checked)"> Show MRP (Bag / KG / Ton)</label>
+<div id="card-status" style="min-height:18px; margin-top:12px; font-size:13px; font-weight:700; color:var(--brand-primary);"></div>
+        <div id="card-preview-wrap" style="margin-top:8px; border-radius:14px; overflow:hidden; border:1px solid #eaeaea; line-height:0; text-align:center; background:#f4f4f4;"></div>
+        <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
+          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="copyCardImage()">Copy</button>
+          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="downloadCard()">Download</button>
+          <button class="dialog-btn btn-confirm" id="card-share-btn" style="flex:1; min-width:100px; display:none;" onclick="shareCard()">Share</button>
         </div>
       </div>
     </div>
@@ -1314,7 +1349,249 @@
           priceText = `সর্বোচ্চ খুচরা মূল্য (MRP): ${item[mrpUnit] || '---'} টাকা/${MRP_UNIT_INFO[mrpUnit].bn}`;
         }
         const weightLine = pack ? `সঠিক ওজন: ${pack}\n` : '';
-        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${item.name}\n${weightLine}${priceText}\n(ডিলার ও এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${item.name}\n${weightLine}${priceText}\n(এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
+      }
+
+      // =====================================================
+      //  SHARE CARD — প্রোডাক্ট পোস্ট কার্ড (Canvas → PNG)
+      // =====================================================
+      const CARD_FONT = "'Segoe UI', Roboto, 'Noto Sans Bengali', 'Nirmala UI', 'Hind Siliguri', Helvetica, Arial, sans-serif";
+      const CARD_FORMATS = {
+        portrait: { W: 1080, H: 0,    mode: 'stack', safeT: 0,  safeB: 0 },
+        square:   { W: 1080, H: 1080, mode: 'split', safeT: 0,  safeB: 0 },
+        story:    { W: 1080, H: 1920, mode: 'stack', safeT: 90, safeB: 110 } // Story-তে উপরে/নিচে UI ঢাকা পড়ে, তাই সেফ জোন
+      };
+      const CARD_EN = { header: 'NEW HOPE FEED MILL BANGLADESH LTD.', sub: 'Product Information', nutri: 'Nutrition Details',
+        mrp: 'MRP (Tk)  ·  price may vary slightly by area', units: ['Per Bag', 'Per KG', 'Per Ton'], hotline: 'Hotline: ', noimg: 'Image not available' };
+      const CARD_BN = { header: 'নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড', sub: 'পণ্যের তথ্য', nutri: 'পুষ্টিগুণ',
+        mrp: 'এমআরপি (টাকা)  ·  এলাকাভেদে সামান্য তারতম্য হতে পারে', units: ['ব্যাগ প্রতি', 'কেজি প্রতি', 'টন প্রতি'], hotline: 'হটলাইন: ', noimg: 'ছবি পাওয়া যায়নি',
+        labels: { pack: 'প্যাকিং সাইজ', type: 'ফিড সাইজ', mois: 'আর্দ্রতা (সর্বোচ্চ)', cp: 'ক্রুড প্রোটিন', fat: 'ফ্যাট (সর্বনিম্ন)', fib: 'ফাইবার (সর্বোচ্চ)',
+                  ash: 'ছাই (সর্বোচ্চ)', lys: 'লাইসিন (সর্বনিম্ন)', meth: 'মেথিওনিন', cal: 'ক্যালসিয়াম (সর্বনিম্ন)', pho: 'ফসফরাস (সর্বনিম্ন)',
+                  eng: 'এনার্জি (কিলোক্যালরি)', carbo: 'শর্করা (সর্বোচ্চ)' },
+        cats: { 'Poultry Feed': 'পোল্ট্রি ফিড', 'Cattle Feed': 'ক্যাটল ফিড', 'Fish Feed': 'ফিশ ফিড' } };
+      function cardBnDigits(v) { return String(v).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]); }
+      const CARD_THEMES = {
+        green:  { main: '#00a651', dark: '#007a3d', tint: '#e8f7ef' },
+        orange: { main: '#f05a28', dark: '#c8431a', tint: '#fdeee8' }
+      };
+      const cardImgCache = {}, cardMrpCache = {};
+      let cardProduct = null, cardTheme = 'green', cardFormat = 'portrait', cardLang = 'en', cardShowPrice = false, cardCanvas = null, cardTok = 0;
+
+      function cardLoadImg(src, cors) {
+        return new Promise((res, rej) => { const i = new Image(); if (cors) i.crossOrigin = 'anonymous'; i.onload = () => res(i); i.onerror = rej; i.src = src; });
+      }
+      function cardFetchImage(p) {
+        if (cardImgCache[p.id]) return Promise.resolve(cardImgCache[p.id]);
+        return fetch(SCRIPT_URL + '?action=getImage&id=' + encodeURIComponent(p.id)).then(r => r.json())
+          .then(d => { if (!d.data) throw new Error('no data'); return cardLoadImg('data:' + d.mime + ';base64,' + d.data); })
+          .catch(() => cardLoadImg(p.imgUrl, true).catch(() => null))
+          .then(img => { if (img) cardImgCache[p.id] = img; return img; });
+      }
+      function cardFetchMrp(p) {
+        if (cardMrpCache[p.id]) return Promise.resolve(cardMrpCache[p.id]);
+        return mrpFetch(p.name, p.id).then(d => {
+          const m = d && d.results && d.results[0] ? d.results[0] : null;
+          if (m) cardMrpCache[p.id] = m;
+          return m;
+        }).catch(() => null);
+      }
+
+      function openCardModal() {
+        cardProduct = allProducts.find(p => String(p.id) === String(currentEditingId)) || currentFilteredProducts[currentProductIndex];
+        if (!cardProduct) return;
+        const sel = document.getElementById('card-product-select');
+        sel.innerHTML = allProducts.map(p => `<option value="${faqEscape(p.id)}">${faqEscape(p.name)}</option>`).join('');
+        sel.value = cardProduct.id;
+        document.getElementById('card-share-btn').style.display = (navigator.canShare && navigator.share) ? 'block' : 'none';
+        document.getElementById('card-modal').style.display = 'flex';
+        renderCard();
+      }
+      function closeCardModal() { document.getElementById('card-modal').style.display = 'none'; }
+      function cardPickProduct(id) { cardProduct = allProducts.find(p => String(p.id) === String(id)); renderCard(); }
+      function setCardOpt(group, v) {
+        if (group === 'fmt') cardFormat = v; else if (group === 'lang') cardLang = v; else cardTheme = v;
+        document.querySelectorAll('#card-modal .mrp-chip[data-g="' + group + '"]').forEach(ch => ch.classList.toggle('active', ch.dataset.v === v));
+        renderCard();
+      }
+      function toggleCardPrice(on) { cardShowPrice = on; renderCard(); }
+
+      function cardRR(ctx, x, y, w, h, r) {
+        ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+      }
+      function cardWrap(ctx, text, maxW) {
+        const words = text.split(' '), lines = []; let cur = '';
+        words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; });
+        if (cur) lines.push(cur); return lines;
+      }
+      function cardFit(ctx, text, maxW, start, min, weight) {
+        let s = start; ctx.font = `${weight} ${s}px ${CARD_FONT}`;
+        while (ctx.measureText(text).width > maxW && s > min) { s -= 2; ctx.font = `${weight} ${s}px ${CARD_FONT}`; }
+      }
+
+      async function renderCard() {
+        const p = cardProduct; if (!p) return;
+        const tok = ++cardTok, status = document.getElementById('card-status');
+        status.innerText = 'Preparing card...';
+        const [img, mrp] = await Promise.all([cardFetchImage(p), cardShowPrice ? cardFetchMrp(p) : Promise.resolve(null)]);
+        if (tok !== cardTok) return; // নতুন রিকোয়েস্ট এসে গেছে
+
+        const th = CARD_THEMES[cardTheme], fmt = CARD_FORMATS[cardFormat], bn = cardLang === 'bn', T = bn ? CARD_BN : CARD_EN;
+        const split = fmt.mode === 'split', W = fmt.W, pad = 60, innerW = W - pad * 2;
+        const num = v => bn ? cardBnDigits(v) : String(v);
+
+        // কোড ও নাম আলাদা: "510 - Broiler Starter Feed - Blue"
+        let code = '', title = p.name.trim();
+        const mm = title.match(/^([A-Za-z0-9]{1,6})\s*[-–—]\s*(.+)$/);
+        if (mm) { code = mm[1]; title = mm[2]; }
+        const items = columnDefs.map(c => ({ label: bn ? T.labels[c.key] : c.label, value: num(String(p[c.key] || '').trim()), raw: String(p[c.key] || '').trim() }))
+                                .filter(i => i.raw && i.raw !== '-');
+        const category = bn ? (T.cats[p.category] || p.category) : p.category;
+
+        // লেআউট প্যারামিটার
+        let cols = split ? 4 : 3, cellH = split ? (mrp ? 76 : 86) : 120;
+        const gap = split ? 12 : 20;
+        let cellW = (innerW - gap * (cols - 1)) / cols, rows = Math.ceil(items.length / cols);
+        const titleSize = split ? 46 : 56, lineH = split ? 56 : 68;
+        const imgS = split ? (mrp ? 300 : 380) : 0, colX = pad + imgS + 36;
+        const tW = split ? W - pad - colX : innerW;
+        const headerH = split ? 96 : 130 + fmt.safeT, footH = split ? 70 : 110 + fmt.safeB;
+        const priceH = split ? 120 : 170;
+
+        const m = document.createElement('canvas').getContext('2d');
+        m.font = `800 ${titleSize}px ${CARD_FONT}`;
+        let lines = cardWrap(m, title, tW);
+        if (split && lines.length > 4) { lines = lines.slice(0, 4); lines[3] = lines[3].replace(/\s*\S*$/, '') + '…'; }
+
+        let H, imgY, imgH, titleY, catY, secY, gridY, priceY;
+        const secBlock = items.length ? (split ? 56 : 70) : 0; let gridBlock = rows * (cellH + gap);
+        if (split) {
+          H = fmt.H; imgY = headerH + 24; imgH = imgS; secY = imgY + imgS + 24; gridY = secY + secBlock; priceY = gridY + gridBlock + 8;
+        } else {
+          const titleBlock = lines.length * lineH + 8, catBlock = 96, priceBlock = mrp ? 10 + priceH + 30 : 0;
+          const fixedH = headerH + 30 + 45 + titleBlock + catBlock + secBlock + priceBlock + 20 + footH;
+          // জায়গা কম পড়লে (Story-তে অনেক আইটেম + MRP) গ্রিড ৪ কলামে নিয়ে যাই
+          if (fmt.H && fixedH + gridBlock + 380 > fmt.H) {
+            cols = 4; cellH = 104; cellW = (innerW - gap * (cols - 1)) / cols; rows = Math.ceil(items.length / cols); gridBlock = rows * (cellH + gap);
+          }
+          const base = fixedH + gridBlock;
+          imgH = fmt.H ? Math.max(240, Math.min(900, fmt.H - base)) : 540;
+          H = fmt.H || (base + imgH);
+          imgY = headerH + 30; titleY = imgY + imgH + 45; catY = titleY + titleBlock; secY = catY + catBlock; gridY = secY + secBlock; priceY = gridY + gridBlock + 10;
+        }
+        const footY = H - footH;
+
+        const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+        // হেডার
+        const grad = ctx.createLinearGradient(0, 0, W, headerH); grad.addColorStop(0, th.main); grad.addColorStop(1, th.dark);
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, W, headerH);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        cardFit(ctx, T.header, W - pad * 2, split ? 34 : 38, 22, 800); ctx.fillText(T.header, W / 2, split ? 44 : fmt.safeT + 62);
+        ctx.globalAlpha = 0.85; ctx.font = `600 ${split ? 22 : 26}px ${CARD_FONT}`; ctx.fillText(T.sub, W / 2, split ? 76 : fmt.safeT + 102); ctx.globalAlpha = 1;
+
+        // ছবির প্যানেল
+        const pw = split ? imgS : innerW;
+        ctx.fillStyle = th.tint; cardRR(ctx, pad, imgY, pw, imgH, split ? 28 : 36); ctx.fill();
+        if (img) {
+          const bx = pad + 30, by = imgY + 30, bw0 = pw - 60, bh0 = imgH - 60;
+          const r = Math.min(bw0 / img.width, bh0 / img.height), dw = img.width * r, dh = img.height * r;
+          ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 12;
+          ctx.drawImage(img, bx + (bw0 - dw) / 2, by + (bh0 - dh) / 2, dw, dh);
+          ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+        } else { ctx.fillStyle = '#999'; ctx.font = `600 26px ${CARD_FONT}`; ctx.fillText(T.noimg, pad + pw / 2, imgY + imgH / 2); }
+
+        // কোড ব্যাজ
+        const badgeFont = split ? 36 : 40, badgeH = split ? 56 : 66;
+        let badgeBottom = 0, bx0, by0;
+        if (code) {
+          ctx.font = `800 ${badgeFont}px ${CARD_FONT}`; const bw = ctx.measureText(code).width + 52;
+          bx0 = split ? colX : pad + 24; by0 = split ? imgY : imgY + 24;
+          ctx.fillStyle = th.main; cardRR(ctx, bx0, by0, bw, badgeH, badgeH / 2); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(code, bx0 + bw / 2, by0 + badgeH * 0.7);
+          badgeBottom = by0 + badgeH;
+        }
+
+        // নাম + ক্যাটাগরি
+        ctx.textAlign = 'left'; ctx.fillStyle = '#1b1b1b'; ctx.font = `800 ${titleSize}px ${CARD_FONT}`;
+        const tx = split ? colX : pad, ty = split ? (code ? badgeBottom + 20 : imgY) : titleY;
+        lines.forEach((ln, i) => ctx.fillText(ln, tx, ty + titleSize * 0.95 + i * lineH));
+        if (category) {
+          ctx.font = `700 ${split ? 24 : 26}px ${CARD_FONT}`; const cw = ctx.measureText(category).width + 48, chH = split ? 50 : 56;
+          const cy0 = split ? ty + lines.length * lineH + 12 : catY;
+          ctx.fillStyle = th.tint; cardRR(ctx, tx, cy0, cw, chH, chH / 2); ctx.fill();
+          ctx.fillStyle = th.dark; ctx.fillText(category, tx + 24, cy0 + chH * 0.68);
+        }
+
+        // নিউট্রিশন গ্রিড
+        if (items.length) {
+          ctx.fillStyle = th.main; ctx.font = `800 ${split ? 30 : 36}px ${CARD_FONT}`; ctx.fillText(T.nutri, pad, secY + (split ? 30 : 36));
+          ctx.fillRect(pad, secY + (split ? 40 : 50), 90, 5);
+          items.forEach((it, i) => {
+            const cx = pad + (i % cols) * (cellW + gap), cy = gridY + Math.floor(i / cols) * (cellH + gap);
+            ctx.fillStyle = th.tint; cardRR(ctx, cx, cy, cellW, cellH, split ? 14 : 18); ctx.fill();
+            ctx.fillStyle = th.main; ctx.fillRect(cx, cy + cellH * 0.18, 6, cellH * 0.64);
+            ctx.fillStyle = '#6b6b6b'; cardFit(ctx, it.label, cellW - 36, split ? 17 : 22, 12, 600); ctx.fillText(it.label, cx + 20, cy + cellH * 0.36);
+            ctx.fillStyle = '#1b1b1b'; cardFit(ctx, it.value, cellW - 36, split ? 30 : 38, 16, 800); ctx.fillText(it.value, cx + 20, cy + cellH * 0.8);
+          });
+        }
+
+        // MRP স্ট্রিপ (ঐচ্ছিক)
+        if (mrp) {
+          const o = split ? { cap: 30, lab: 66, val: 106, cf: 19, lf: 20, vf: 38, dv: 46, dh: 60 } : { cap: 40, lab: 92, val: 142, cf: 24, lf: 24, vf: 46, dv: 66, dh: 90 };
+          ctx.fillStyle = th.dark; cardRR(ctx, pad, priceY, innerW, priceH, 22); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.globalAlpha = 0.85; ctx.font = `700 ${o.cf}px ${CARD_FONT}`;
+          ctx.fillText(T.mrp, W / 2, priceY + o.cap); ctx.globalAlpha = 1;
+          const cw = innerW / 3;
+          [[T.units[0], mrp.bag], [T.units[1], mrp.kg], [T.units[2], mrp.ton]].forEach((c, i) => {
+            const cx = pad + cw * i + cw / 2, v = c[1] ? num(c[1]) : '---';
+            ctx.font = `600 ${o.lf}px ${CARD_FONT}`; ctx.globalAlpha = 0.85; ctx.fillText(c[0], cx, priceY + o.lab); ctx.globalAlpha = 1;
+            cardFit(ctx, v, cw - 30, o.vf, 24, 800); ctx.fillText(v, cx, priceY + o.val);
+            if (i) { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(pad + cw * i, priceY + o.dv, 2, o.dh); ctx.fillStyle = '#fff'; }
+          });
+        }
+
+        // ফুটার
+        ctx.fillStyle = th.main; ctx.fillRect(0, footY, W, footH);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `800 ${split ? 30 : 36}px ${CARD_FONT}`;
+        ctx.fillText(T.hotline + num('+880 1742-510889'), W / 2, footY + (split ? 46 : 68));
+
+        cv.style.cssText = 'display:block; margin:0 auto; width:auto; max-width:100%; height:auto; max-height:58vh;';
+        cardCanvas = cv;
+        const wrap = document.getElementById('card-preview-wrap'); wrap.innerHTML = ''; wrap.appendChild(cv);
+        status.innerText = (cardShowPrice && !mrp) ? 'MRP not found for this product.' : '';
+      }
+
+      function cardFileName() {
+        const base = (cardProduct ? cardProduct.name : 'product').replace(/[^\w\u0980-\u09FF]+/g, '_').replace(/^_|_$/g, '');
+        return 'NewHope_' + base + '_' + cardFormat + (cardLang === 'bn' ? '_bn' : '') + '.png';
+      }
+      function cardBlob() { return new Promise(res => cardCanvas.toBlob(res, 'image/png')); }
+
+      async function downloadCard() {
+        if (!cardCanvas) return;
+        const blob = await cardBlob(), a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = cardFileName(); document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        document.getElementById('card-status').innerText = '✔ Downloaded';
+      }
+      async function copyCardImage() {
+        const status = document.getElementById('card-status');
+        if (!cardCanvas) return;
+        try {
+          const blob = await cardBlob();
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          status.innerText = '✔ Image copied — paste it in WhatsApp / Messenger / Facebook';
+        } catch (e) { status.innerText = 'Copy not supported in this browser. Please use Download.'; }
+      }
+      async function shareCard() {
+        if (!cardCanvas) return;
+        try {
+          const blob = await cardBlob(), file = new File([blob], cardFileName(), { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: cardProduct ? cardProduct.name : 'New Hope' });
+          else document.getElementById('card-status').innerText = 'Sharing not supported. Please use Download.';
+        } catch (e) { /* user cancelled */ }
       }
 
       function copyNumber(btn, text) {
