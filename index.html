@@ -584,7 +584,7 @@
         <span>FAQ/Reply</span>
       </button>
       
-      <button class="nav-item" onclick="window.open('https://kmmamun.github.io/TaskManager/')">
+      <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycbzGiRLuc673MddthcifbtMiDja-18Qx7EjYK-CHOaHiB3PWn5Dsx0tTSsjDtv4rE0m6-A/exec', '_blank')">
         <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
         <span>Task Mgr</span>
       </button>
@@ -740,7 +740,39 @@
     </div>
 
     <!-- MRP / SMS Dialog -->
-    <div id="mrp-modal" class="center-modal">
+<div id="mk-msg-modal" class="center-modal">
+      <div class="dialog-box" style="max-width:520px; width:94%; max-height:94vh; overflow-y:auto; text-align:left;">
+        <div style="position:absolute; right:15px; top:15px; cursor:pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMkMsg()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div class="dialog-title" style="margin-top:10px; text-align:center;">Contact Message</div>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:16px; padding:12px 14px; background:var(--bg-color); border-radius:14px;">
+          <div style="flex:1; min-width:0;">
+            <div id="mk-info-name" style="font-weight:800; font-size:14px; color:var(--text-main); line-height:1.35;"></div>
+            <div id="mk-info-area" style="margin-top:3px; font-size:12px; font-weight:600; color:var(--text-muted);"></div>
+          </div>
+          <button type="button" id="mk-copy-num" class="mrp-chip" onclick="mkCopyNumber()" style="white-space:nowrap;"></button>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:14px; justify-content:center; flex-wrap:wrap;">
+          <button class="mrp-chip" data-mklang="bn" onclick="setMkLang('bn')">বাংলা</button>
+          <button class="mrp-chip" data-mklang="en" onclick="setMkLang('en')">English</button>
+          <button class="mrp-chip active" data-mklang="both" onclick="setMkLang('both')">বাংলা + English</button>
+        </div>
+        <div style="display:flex; gap:18px; margin-top:12px; justify-content:center; flex-wrap:wrap;">
+          <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="mk-inc-name" checked onchange="mkRenderMsg()"> Name / নাম</label>
+          <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="mk-inc-area" checked onchange="mkRenderMsg()"> Area / এলাকা</label>
+        </div>
+        <textarea id="mk-msg-text" class="sms-box" style="height:260px;" spellcheck="false"></textarea>
+        <button id="mk-copy-msg" class="dialog-btn btn-confirm" style="width:100%; margin-top:12px;" onclick="mkCopyMsg()">Copy Message</button>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button class="dialog-btn" style="background:#25D366; color:#fff; padding:13px 8px; font-size:14px;" onclick="mkWhatsApp()">WhatsApp</button>
+          <button class="dialog-btn btn-cancel" style="padding:13px 8px; font-size:14px;" onclick="mkSms()">SMS</button>
+          <a id="mk-call" class="dialog-btn btn-cancel" href="#" style="padding:13px 8px; font-size:14px; text-align:center; text-decoration:none;">Call</a>
+        </div>
+      </div>
+    </div>
+
+        <div id="mrp-modal" class="center-modal">
       <div class="dialog-box">
         <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMrpModal()">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -780,6 +812,8 @@
       let currentProductIndex = 0; 
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
+      let mkMsgPool = [], mkMsgCur = null, mkMsgLang = 'both';
+      let marketDivisionFilter = 'All';
       let allFaqData = []; 
 
       const columnDefs = [
@@ -964,7 +998,6 @@
       }
 
       // ===== MARKET: grouped by area, with Division filter =====
-      let marketDivisionFilter = 'All';
 
       function mkClean(v) {
         if (v === null || v === undefined) return '';
@@ -1023,6 +1056,7 @@
           groups.get(key).push(i);
         });
 
+        mkMsgPool.length = 0;
         const container = document.getElementById('market-list');
         if (groups.size === 0) {
           container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-weight:bold;">No result found.</div>`;
@@ -1051,7 +1085,7 @@
                 ${div ? `<span class="div-badge ${mkBadgeClass(div)}">${div}</span>` : ''}
                 <span class="market-person">${mkClean(i.person) || '-'}</span>
               </div>
-              ${phone ? `<button class="action-pill" onclick="copyNumber(this, '${phone}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${phone}</button>` : ''}
+              ${phone ? `<button class="action-pill" title="Generate contact message" onclick="openMkMsg(${mkMsgPool.push({ person: mkClean(i.person), phone: phone, div: div, district: district, upzBn: mkClean(i.upazila_bn), upzEn: mkClean(i.upazila_en) }) - 1})"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${phone}</button>` : ''}
             </div>`;
           });
           html += `</div>`;
@@ -1781,6 +1815,73 @@
           else document.getElementById('card-status').innerText = 'Sharing not supported. Please use Download.';
         } catch (e) { /* user cancelled */ }
       }
+
+      // =====================================================
+      //  MARKET — ফোন বাটনে ক্লিক করলে অটো মেসেজ (বাংলা / English / উভয়)
+      // =====================================================
+      function mkFirstNumber(p) {
+        const m = String(p).match(/\+?\d[\d\s-]{7,}\d/);
+        return (m ? m[0] : String(p)).replace(/[^\d+]/g, '');
+      }
+      function mkUniq(parts) {
+        const seen = new Set();
+        return parts.filter(x => { const k = String(x || '').trim().toLowerCase(); if (!k || seen.has(k)) return false; seen.add(k); return true; });
+      }
+      function mkAreaText(c, lang) {
+        return lang === 'bn' ? (c.upzBn || c.district) : mkUniq([c.upzEn, c.district]).join(', ');
+      }
+      function mkNameText(c) {
+        const d = c.div && !c.person.toLowerCase().includes(c.div.toLowerCase()) ? ` (${c.div})` : '';
+        return (c.person || '') + d;
+      }
+
+      function mkBuildMsg() {
+        const c = mkMsgCur; if (!c) return '';
+        const incName = document.getElementById('mk-inc-name').checked && c.person;
+        const incArea = document.getElementById('mk-inc-area').checked;
+        const bn = ['সম্মানিত গ্রাহক,', 'আসসালামু আলাইকুম। নিউ হোপ (New Hope)-এর সাথে যোগাযোগ করার জন্য আপনাকে অসংখ্য ধন্যবাদ!',
+                    'বিস্তারিত তথ্য জানতে অনুগ্রহ করে আপনার এলাকার দায়িত্বপ্রাপ্ত প্রতিনিধির সাথে যোগাযোগ করুন:'];
+        if (incName) bn.push('👤 নাম: ' + mkNameText(c));
+        if (incArea && mkAreaText(c, 'bn')) bn.push('📍 এলাকা: ' + mkAreaText(c, 'bn'));
+        bn.push('📞 মোবাইল: ' + c.phone, '', 'ধন্যবাদ!');
+        const en = ['Dear Valued Customer,', 'Assalamu Alaikum. Thank you very much for contacting New Hope!',
+                    'For more details, please contact the representative in charge of your area:'];
+        if (incName) en.push('👤 Name: ' + mkNameText(c));
+        if (incArea && mkAreaText(c, 'en')) en.push('📍 Area: ' + mkAreaText(c, 'en'));
+        en.push('📞 Mobile: ' + c.phone, '', 'Thank you!');
+        const B = bn.join('\n'), E = en.join('\n');
+        return mkMsgLang === 'bn' ? B : mkMsgLang === 'en' ? E : B + '\n\n━━━━━━━━━━\n\n' + E;
+      }
+      function mkRenderMsg() {
+        document.getElementById('mk-msg-text').value = mkBuildMsg();
+        document.getElementById('mk-copy-msg').innerText = 'Copy Message';
+      }
+      function openMkMsg(idx) {
+        mkMsgCur = mkMsgPool[idx]; if (!mkMsgCur) return;
+        const c = mkMsgCur;
+        document.getElementById('mk-info-name').innerText = mkNameText(c) || '—';
+        document.getElementById('mk-info-area').innerText = mkUniq([c.upzBn, c.upzEn, c.district]).join(' · ');
+        document.getElementById('mk-copy-num').innerText = '📋 ' + c.phone;
+        document.getElementById('mk-call').href = 'tel:' + mkFirstNumber(c.phone);
+        setMkLang('both');
+        document.getElementById('mk-msg-modal').style.display = 'flex';
+      }
+      function closeMkMsg() { document.getElementById('mk-msg-modal').style.display = 'none'; }
+      function setMkLang(l) {
+        mkMsgLang = l;
+        document.querySelectorAll('#mk-msg-modal .mrp-chip[data-mklang]').forEach(ch => ch.classList.toggle('active', ch.dataset.mklang === l));
+        mkRenderMsg();
+      }
+      function mkFlash(btn, ok, idle) { btn.innerText = ok; setTimeout(() => { btn.innerText = idle; }, 1600); }
+      function mkCopyText(text, btn, ok, idle) {
+        const fallback = () => { const t = document.getElementById('mk-msg-text'); t.select(); try { document.execCommand('copy'); mkFlash(btn, ok, idle); } catch (e) { mkFlash(btn, 'Copy failed', idle); } };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => mkFlash(btn, ok, idle)).catch(fallback); else fallback();
+      }
+      function mkCopyMsg() { const v = document.getElementById('mk-msg-text').value; if (v) mkCopyText(v, document.getElementById('mk-copy-msg'), '✔ Copied!', 'Copy Message'); }
+      function mkCopyNumber() { if (mkMsgCur) mkCopyText(mkMsgCur.phone, document.getElementById('mk-copy-num'), '✔ Copied', '📋 ' + mkMsgCur.phone); }
+      function mkWhatsApp() { const v = document.getElementById('mk-msg-text').value; if (v) window.open('https://wa.me/?text=' + encodeURIComponent(v), '_blank'); }
+      function mkSms() { const v = document.getElementById('mk-msg-text').value; if (v) window.location.href = 'sms:?&body=' + encodeURIComponent(v); }
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMkMsg(); });
 
       function copyNumber(btn, text) {
         navigator.clipboard.writeText(text).then(() => {
