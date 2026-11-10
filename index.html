@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Hope Feed Mill Bangladesh Ltd.</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon-192.png">
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00a651">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <style>
+      /* =======================================
+         COLOR VARIABLES (Brand Colors)
+         ======================================= */
+      :root { 
+        --brand-primary: #00a651; 
+        --brand-secondary: #f05a28; 
+        --bg-color: #f8f9fb; 
+        --card-bg: #ffffff;
+        --text-main: #2b2b2b;
+        --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #1f222a; 
+        --icon-bg: #e8f5e9;
+      }
+      
+      /* WARM MODE */
+      body.warm-mode {
+        --brand-primary: #f05a28; 
+        --brand-secondary: #00a651; 
+        --bg-color: #fff5f0; 
+        --card-bg: #ffffff;
+        --text-main: #3e2723;
+        --text-muted: #888888;
+        --header-text: #ffffff;
+        --bottom-nav-bg: #2d1b15;
+        --icon-bg: #fbe9e7;
+      }
+      
+      * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      html, body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); transition: 0.4s ease; }
+
+      /* Loader */
+      #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .spinner { width: 40px; height: 40px; border: 4px solid #e1e1e1; border-top: 4px solid var(--brand-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+      /* App Header */
+      .app-header { 
+        background: var(--brand-primary); 
+        padding: 30px 20px 40px 20px; 
+        border-bottom-left-radius: 35px; 
+        border-bottom-right-radius: 35px; 
+        position: relative; 
+        z-index: 10; 
+        transition: 0.4s ease;
+        margin-bottom: 20px;
+      }
+      .header-top { display: flex; justify-content: space-between; align-items: flex-start; color: var(--header-text); }
+      .greeting { font-size: 13px; opacity: 0.9; margin-bottom: 5px; }
+      .app-title { font-size: 24px; font-weight: 800; line-height: 1.2; display: flex; align-items: center; gap: 8px;}
+      
+      .theme-toggle { background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.3s; color: #fff; }
+      .theme-toggle:active { transform: scale(0.9); }
+
+      /* Search Bar */
+      .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 14px; padding: 14px 18px; margin-top: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+      .search-box svg { width: 20px; height: 20px; fill: var(--brand-primary); margin-right: 12px; }
+      .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 15px; color: #333; }
+      .search-box input::placeholder { color: #aaa; }
+
+      /* Categories */
+      .section-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0 20px 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+      .see-all { font-size: 13px; color: var(--brand-primary); font-weight: 600; cursor: pointer; }
+
+      .category-scroll { display: flex; overflow-x: auto; gap: 20px; padding: 0 20px 15px 20px; scrollbar-width: none; }
+      .category-scroll::-webkit-scrollbar { display: none; }
+      
+      .cat-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; border: none; background: transparent; transition: 0.3s; }
+      .cat-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--card-bg); box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; justify-content: center; align-items: center; font-size: 26px; transition: 0.3s; border: 1px solid #f0f0f0; }
+      .cat-text { font-size: 13px; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
+      
+      .cat-btn.active .cat-icon { background: var(--brand-primary); color: #fff; box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-color: var(--brand-primary); }
+      .cat-btn.active .cat-text { color: var(--text-main); font-weight: 800; }
+
+      .app-section { padding-bottom: 110px; } 
+
+      /* Product Grid */
+      .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 0 20px; }
+      .product-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: 0.3s; cursor: pointer; border: 1px solid #f5f5f5; }
+      .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+      
+      .fav-icon { position: absolute; top: 12px; right: 12px; background: #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2; font-size: 12px; color: #ccc;}
+      .fav-icon.active { color: #ff4757; }
+
+      .card-img-box { background: var(--icon-bg); border-radius: 15px; padding: 15px; display: flex; justify-content: center; align-items: center; height: 140px; margin-bottom: 15px; transition: 0.4s ease; }
+      .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      
+      .product-card h3 { font-size: 14px; font-weight: 800; margin: 0 0 5px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; color: var(--text-main); }
+      .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+      .card-pack { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+      .card-action { background: var(--brand-primary); color: #fff; width: 30px; height: 30px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; border: none; }
+
+      /* FAQ Accordion UI */
+      .faq-item { background: var(--card-bg); border-radius: 16px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid #f5f5f5; overflow: hidden; transition: 0.3s ease; }
+      .faq-q { padding: 18px 20px; font-size: 15px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s ease; user-select: none; }
+      .faq-q:hover { color: var(--brand-primary); }
+      .faq-q svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 10px; }
+      .faq-item.active { border-color: var(--brand-primary); box-shadow: 0 6px 20px rgba(0,166,81,0.1); }
+      .faq-item.active .faq-q { color: var(--brand-primary); }
+      .faq-item.active .faq-q svg { transform: rotate(180deg); fill: var(--brand-primary); }
+      
+      .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; font-size: 14px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; cursor: pointer; -webkit-tap-highlight-color: transparent;}
+      .faq-item.active .faq-a { padding: 0 20px 20px 20px; max-height: 800px; }
+      .faq-a:active { opacity: 0.7; }
+
+      /* ===== Modern FAQ UI ===== */
+      .faq-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 20px 18px; }
+      .faq-count { color: var(--text-muted); font-size: 13px; font-weight: 700; }
+      .faq-add-btn { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 16px; padding: 12px 16px; background: var(--brand-primary); color: #fff; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: 0 8px 18px rgba(0,166,81,.22); transition: transform .2s ease, box-shadow .2s ease; }
+      .faq-add-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0,166,81,.3); }
+      .faq-add-btn:active { transform: scale(.96); }
+      .faq-add-btn svg { width: 18px; height: 18px; fill: currentColor; }
+      .faq-empty { margin: 0 20px; padding: 42px 22px; text-align: center; background: var(--card-bg); border: 1px dashed #dfe8e2; border-radius: 22px; color: var(--text-muted); }
+      .faq-empty-icon { width: 54px; height: 54px; margin: 0 auto 12px; display: grid; place-items: center; border-radius: 18px; background: var(--icon-bg); color: var(--brand-primary); font-size: 26px; }
+      .faq-item { animation: faqReveal .35s ease both; }
+      .faq-item:nth-child(2) { animation-delay: .04s; } .faq-item:nth-child(3) { animation-delay: .08s; } .faq-item:nth-child(4) { animation-delay: .12s; }
+      @keyframes faqReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      .faq-q { gap: 14px; }
+      .faq-q span { flex: 1; }
+      .faq-a { border-top: 1px solid transparent; }
+      .faq-item.active .faq-a { border-top-color: rgba(0,166,81,.12); }
+      .faq-modal { display: none; position: fixed; inset: 0; z-index: 100001; align-items: center; justify-content: center; padding: 18px; background: rgba(24, 33, 28, .58); backdrop-filter: blur(7px); }
+      .faq-modal.show { display: flex; animation: faqFadeIn .25s ease both; }
+      .faq-modal.show .faq-form-card { animation: faqModalUp .35s cubic-bezier(.2,.8,.2,1) both; }
+      @keyframes faqFadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes faqModalUp { from { opacity: 0; transform: translateY(24px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+      .faq-form-card { width: min(100%, 520px); max-height: min(680px, 92vh); overflow-y: auto; padding: 26px 22px 22px; border-radius: 28px; background: var(--card-bg); box-shadow: 0 24px 70px rgba(0,0,0,.22); position: relative; }
+      .faq-form-head { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 22px; }
+      .faq-form-icon { width: 46px; height: 46px; flex: 0 0 46px; display: grid; place-items: center; border-radius: 15px; background: var(--icon-bg); color: var(--brand-primary); }
+      .faq-form-icon svg { width: 24px; height: 24px; fill: currentColor; }
+      .faq-form-title { margin: 0 34px 4px 0; font-size: 21px; font-weight: 850; color: var(--text-main); }
+      .faq-form-subtitle { margin: 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; }
+      .faq-modal-close { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--bg-color); color: var(--text-muted); cursor: pointer; transition: .2s ease; }
+      .faq-modal-close:hover { color: var(--brand-primary); transform: rotate(90deg); }
+      .faq-modal-close svg { width: 19px; height: 19px; fill: currentColor; }
+      .faq-form-label { display: block; margin: 0 0 8px; color: var(--text-main); font-size: 13px; font-weight: 800; }
+      .faq-form-group { margin-bottom: 17px; }
+      .faq-form-input, .faq-form-textarea { width: 100%; border: 1px solid #e4ebe6; border-radius: 15px; outline: none; background: var(--bg-color); color: var(--text-main); font: inherit; font-size: 14px; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+      .faq-form-input { padding: 14px 15px; }
+      .faq-form-textarea { min-height: 145px; resize: vertical; padding: 14px 15px; line-height: 1.6; }
+      .faq-form-input:focus, .faq-form-textarea:focus { border-color: var(--brand-primary); background: var(--card-bg); box-shadow: 0 0 0 4px rgba(0,166,81,.1); }
+      .faq-form-actions { display: flex; gap: 10px; margin-top: 21px; }
+      .faq-form-btn { flex: 1; padding: 14px 16px; border: 0; border-radius: 15px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; transition: transform .2s ease, opacity .2s ease; }
+      .faq-form-btn:active { transform: scale(.97); }
+      .faq-form-btn.cancel { background: var(--bg-color); color: var(--text-main); }
+      .faq-form-btn.save { background: var(--brand-primary); color: #fff; box-shadow: 0 8px 18px rgba(0,166,81,.22); }
+      .faq-form-btn:disabled { opacity: .6; cursor: wait; }
+      .faq-form-status { min-height: 18px; margin-top: 12px; text-align: center; font-size: 12px; font-weight: 700; color: var(--brand-primary); }
+
+      /* ===== FAQ Help Center (hero + trending + topic cards) ===== */
+      #sec-faq .faq-hero { margin-bottom: 0; padding: 34px 20px 64px; text-align: center; }
+      .faq-hero-title { margin: 0; font-size: 28px; font-weight: 800; color: var(--header-text); letter-spacing: .2px; }
+      .faq-hero-sub { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--header-text); opacity: .85; }
+      .faq-hero-search { display: flex; gap: 10px; max-width: 640px; margin: 20px auto 0; }
+      .faq-hero-search input { flex: 1; min-width: 0; border: 0; outline: none; border-radius: 14px; padding: 14px 16px; font: inherit; font-size: 15px; background: #fff; color: #2b2b2b; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+      .faq-hero-search button { border: 0; border-radius: 999px; padding: 0 24px; background: #fff; color: var(--brand-primary); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.12); transition: transform .2s ease; }
+      .faq-hero-search button:active { transform: scale(.96); }
+      #sec-faq .faq-trending { display: flex; align-items: center; gap: 16px; margin: -32px 20px 20px; position: relative; z-index: 11; background: var(--card-bg); border-radius: 18px; padding: 14px 18px; box-shadow: 0 10px 28px rgba(0,0,0,.09); }
+      .faq-trending-label { font-size: 14px; font-weight: 800; color: var(--text-main); white-space: nowrap; padding-right: 16px; border-right: 1px solid #ececec; }
+      .faq-trending-list { display: flex; gap: 6px 20px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+      .faq-trending-list::-webkit-scrollbar { display: none; }
+      .faq-trend-chip { background: none; border: 0; padding: 4px 0; font: inherit; font-size: 13px; font-weight: 700; color: var(--brand-primary); cursor: pointer; white-space: nowrap; }
+      .faq-trend-chip:hover { text-decoration: underline; }
+      .faq-cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; padding: 0 20px 24px; }
+      .faq-cat-card { background: var(--card-bg); border-radius: 18px; padding: 20px 22px 14px; border: 1px solid #f0f0f0; box-shadow: 0 4px 18px rgba(0,0,0,.05); animation: faqReveal .35s ease both; display: flex; flex-direction: column; }
+      .faq-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+      .faq-cat-icon { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--icon-bg); display: grid; place-items: center; }
+      .faq-cat-icon svg { width: 21px; height: 21px; fill: var(--brand-primary); }
+      .faq-cat-title { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+      .faq-cat-bn { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+      .faq-cat-links { list-style: none; margin: 0; padding: 0; flex: 1; }
+      .faq-cat-links button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--brand-primary); cursor: pointer; }
+      .faq-cat-links button:hover { text-decoration: underline; }
+      .faq-see-all { margin: 6px 0 4px; align-self: flex-start; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 12px; font-weight: 800; color: var(--text-muted); cursor: pointer; }
+      .faq-see-all:hover { color: var(--brand-primary); }
+      .faq-listbar { display: flex; align-items: center; gap: 12px; padding: 0 20px 16px; flex-wrap: wrap; }
+      .faq-back-btn { border: 1px solid #e4ebe6; background: var(--card-bg); color: var(--text-main); font: inherit; font-size: 13px; font-weight: 700; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+      .faq-back-btn:hover { color: var(--brand-primary); border-color: var(--brand-primary); }
+      .faq-list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
+      #faq-list { align-items: start; }
+      .faq-meta { margin-top: 4px; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+      .faq-q > div { flex: 1; }
+      .faq-copy-btn { margin: 14px 0 0; border: 0; background: var(--icon-bg); color: var(--brand-primary); font: inherit; font-size: 12px; font-weight: 800; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+      .faq-ans-cat { display: inline-block; background: var(--icon-bg); color: var(--brand-primary); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+      .faq-ans-q { margin: 0 34px 14px 0; font-size: 19px; font-weight: 850; line-height: 1.35; color: var(--text-main); }
+      .faq-ans-body { font-size: 14.5px; line-height: 1.75; color: var(--text-main); white-space: pre-wrap; background: var(--bg-color); border-radius: 16px; padding: 16px; max-height: 46vh; overflow-y: auto; }
+      #sec-faq .faq-hero.compact { padding-bottom: 30px; margin-bottom: 20px; }
+      @media (min-width: 768px) { #sec-faq .faq-hero { padding: 44px 40px 72px; } #sec-faq .faq-hero.compact { padding-bottom: 36px; } #sec-faq .faq-trending { margin: -44px 20px 22px; } .faq-hero-title { font-size: 34px; } }
+      @media (max-width: 430px) { .faq-trending { padding: 12px 14px; gap: 12px; } .faq-trending-label { padding-right: 12px; font-size: 13px; } .faq-hero-title { font-size: 24px; } }
+      @media (max-width: 430px) { .faq-toolbar { align-items: flex-start; flex-direction: column; } .faq-add-btn { width: 100%; justify-content: center; } .faq-form-card { padding: 23px 17px 18px; border-radius: 24px; } }
+
+      /* Floating Bottom Nav - Updated for 8 items */
+      .bottom-nav { position: fixed; bottom: 20px; left: 20px; width: calc(100% - 40px); background: var(--bottom-nav-bg); display: flex; justify-content: flex-start; align-items: center; padding: 12px 20px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; transition: 0.4s ease; overflow-x: auto; scrollbar-width: none; gap: 15px; }
+      .bottom-nav::-webkit-scrollbar { display: none; }
+      .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; text-decoration: none; border: none; background: transparent; cursor: pointer; transition: 0.3s; width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; }
+      .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: 0.3s; }
+      .nav-item span { display: none; font-size: 11px; font-weight: 600; margin-top: 4px; }
+      
+      .nav-item.active { background: #ffffff; color: var(--brand-primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
+      .nav-item.active svg { transform: scale(1.1); }
+
+      /* Product Details Modal (Mobile) */
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 10000; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
+      @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+      
+      .detail-img-box { background: var(--icon-bg); width: 100%; height: 340px; display: flex; justify-content: center; align-items: center; padding: 30px; position: relative; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 25px; transition: 0.4s ease; }
+      .detail-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.1)); }
+      
+      /* Swipe Navigation Arrows */
+      .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 20; color: var(--brand-secondary); }
+      .nav-arrow:hover { background: #fff; color: var(--brand-primary); }
+      .nav-arrow.left { left: 10px; }
+      .nav-arrow.right { right: 10px; }
+
+      .detail-action-buttons { display: flex; justify-content: flex-start; gap: 15px; margin-bottom: 25px; margin-top: -10px; }
+      .back-btn, .admin-edit-btn { background: var(--card-bg); border: 1px solid #eaeaea; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s ease;}
+      .back-btn:active, .admin-edit-btn:active { transform: scale(0.9); }
+      .back-btn svg, .admin-edit-btn svg { width: 22px; height: 22px; fill: var(--text-main); }
+      
+      .detail-content { padding: 0 25px 120px 25px; }
+      .detail-title { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; line-height: 1.2; }
+      .detail-subtitle { font-size: 14px; color: var(--brand-secondary); font-weight: 700; margin-bottom: 25px; display: inline-block; background: var(--bg-color); padding: 5px 12px; border-radius: 20px;}
+
+      .nutrition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+      .nutri-item { background: var(--bg-color); padding: 15px; border-radius: 16px; display: flex; flex-direction: column; border: 1px solid #f0f0f0; transition: 0.4s ease; }
+      .nutri-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
+      .nutri-value { font-size: 15px; font-weight: 800; color: var(--text-main); }
+      .nutri-item input { border: 1px solid var(--brand-primary); background: #fff; border-radius: 6px; padding: 8px; font-size: 14px; width: 100%; font-weight: bold; outline: none; }
+      
+      /* Bottom Bar (Mobile) */
+      .detail-bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; padding: 20px 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top-left-radius: 30px; border-top-right-radius: 30px; z-index: 100; }
+      .price-box { display: flex; flex-direction: column; }
+      .price-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+      .price-value { font-size: 18px; font-weight: 800; color: var(--text-main); }
+      
+      .main-action-btn { flex: 1; background: var(--brand-primary); color: #fff; border: none; padding: 18px; border-radius: 25px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 25px rgba(0,166,81,0.3); display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.4s ease; }
+      .main-action-btn svg { width: 20px; height: 20px; fill: #fff; }
+
+      /* List Layouts */
+      .list-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin: 0 20px 15px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f5f5f5; transition: 0.4s ease; }
+      .list-title { font-size: 16px; font-weight: 800; color: var(--text-main); }
+      .list-text { font-size: 13px; color: var(--text-muted); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;}
+      .list-text strong { color: #444; min-width: 60px; }
+      .action-pill { background: var(--brand-primary); color: #fff; padding: 10px 18px; border-radius: 25px; font-size: 13px; font-weight: 700; border: none; align-self: flex-start; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,166,81,0.2); }
+
+      /* PIN & SMS Dialog */
+      .center-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100000; justify-content: center; align-items: center; padding: 20px; }
+      .dialog-box { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 30px; padding: 30px 25px; text-align: center; position: relative; animation: popIn 0.3s ease; }
+      @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+      .dialog-title { font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
+      
+      .pin-input { width: 100%; background: var(--bg-color); border: 1px solid #eaeaea; padding: 15px; border-radius: 15px; font-size: 24px; text-align: center; letter-spacing: 10px; margin-bottom: 10px; outline: none; color: var(--text-main); }
+      .pin-input:focus { border-color: var(--brand-primary); background: var(--card-bg); }
+      .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+      .dialog-btn { flex: 1; padding: 15px; border-radius: 15px; font-weight: 700; border: none; cursor: pointer; font-size: 15px;}
+      .btn-cancel { background: var(--bg-color); color: var(--text-main); }
+      .btn-confirm { background: var(--brand-primary); color: #fff; box-shadow: 0 8px 20px rgba(0,166,81,0.2); }
+
+      .mrp-result { text-align: left; padding: 15px; background: var(--bg-color); border-radius: 12px; margin-bottom: 10px; font-size: 14px; cursor: pointer; font-weight: 700; border: 1px solid #eaeaea; color: var(--text-main); }
+      .mrp-result:hover { border-color: var(--brand-primary); }
+      .mrp-chip { padding: 8px 16px; border-radius: 20px; border: 2px solid #eaeaea; background: var(--bg-color); color: var(--text-main); font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; }
+      .mrp-chip.active { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+      textarea.sms-box { width: 100%; height: 140px; background: var(--bg-color); border: 1px solid #eaeaea; border-radius: 15px; padding: 15px; font-size: 14px; margin-top: 15px; resize: none; outline: none; font-family: inherit; color: var(--text-main);}
+
+      /* Web Responsive */
+      @media (min-width: 768px) {
+        #app-wrapper { max-width: 1200px; margin: 0 auto; padding-top: 80px; } 
+        
+        /* Nav Bar adjustments for 8 items */
+        .bottom-nav { position: fixed; top: 0; bottom: auto; padding: 15px 30px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); justify-content: flex-end; gap: 20px; background: var(--card-bg); width: 100%; left: 0; overflow-x: visible; }
+        .nav-item { flex-direction: row; font-size: 14px; gap: 8px; color: var(--text-muted); background: transparent; width: auto; height: auto; border-radius: 0; padding: 10px 15px;}
+        .nav-item span { display: block; font-size: 14px; margin-top: 0; }
+        .nav-item.active { background: transparent; color: var(--brand-primary); box-shadow: none; transform: none; border-bottom: 3px solid var(--brand-primary); border-radius: 0; }
+        .nav-item.active svg { transform: none; }
+        
+        .app-header { border-radius: 30px; margin: 20px; padding: 40px; }
+        .search-box { max-width: 500px; margin-top: 30px; }
+        
+        .category-scroll { padding: 0 20px 20px 20px; }
+        .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        
+        /* FIX FOR DESKTOP GRID ALIGNMENT */
+        #depot-list, #market-list, #faq-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .list-card { 
+            margin: 0;
+            max-width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .faq-item {
+            margin: 0;
+            max-width: 100%;
+        }
+        .action-pill { 
+            margin-top: 0; 
+            align-self: center; 
+            flex-shrink: 0;
+        }
+
+        .modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); padding: 20px; }
+        .modal-sheet { 
+           padding: 0; 
+           max-width: 850px; 
+           height: auto; 
+           max-height: 90vh; 
+           border-radius: 24px; 
+           display: grid; 
+           grid-template-columns: 1fr 1.3fr; 
+           grid-template-rows: 1fr auto; 
+           overflow: hidden; 
+           background: var(--card-bg); 
+        }
+        .detail-img-box { grid-column: 1; grid-row: 1 / span 2; border-radius: 0; height: 100%; margin-bottom: 0; padding: 40px; }
+        .detail-content { grid-column: 2; grid-row: 1; padding: 40px 30px 20px 30px; overflow-y: auto; }
+        .detail-bottom-bar { grid-column: 2; grid-row: 2; position: relative; border-radius: 0; box-shadow: none; border-top: 1px solid #eee; padding: 20px 30px; background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
+      }
+
+      /* ===== Social Media Panel ===== */
+      .social-intro { padding: 0 20px 18px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+      .social-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 20px; }
+      .social-card { position: relative; display: flex; align-items: center; gap: 12px; min-height: 92px; padding: 16px; background: var(--card-bg); border: 1px solid #f0f0f0; border-radius: 20px; color: var(--text-main); text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+      .social-card::after { content: ''; position: absolute; width: 90px; height: 90px; right: -30px; bottom: -45px; border-radius: 50%; background: var(--social-color); opacity: .08; }
+      .social-card:hover { transform: translateY(-4px); border-color: var(--social-color); box-shadow: 0 10px 24px rgba(0,0,0,0.10); }
+      .social-icon { flex: 0 0 46px; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 15px; background: var(--social-color); color: #fff; box-shadow: 0 6px 14px color-mix(in srgb, var(--social-color) 28%, transparent); }
+      .social-icon svg { width: 25px; height: 25px; fill: currentColor; }
+      .social-info { min-width: 0; position: relative; z-index: 1; }
+      .social-name { display: block; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+      .social-handle { display: block; color: var(--text-muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .social-arrow { margin-left: auto; color: var(--social-color); font-size: 20px; font-weight: 800; position: relative; z-index: 1; }
+      @media (min-width: 768px) {
+        .social-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+        .social-card { min-height: 110px; padding: 20px; }
+        .social-icon { width: 52px; height: 52px; flex-basis: 52px; }
+      }
+
+      /* ===== Market: Division filter + grouped cards ===== */
+      .div-filter-row { display: flex; gap: 10px; padding: 0 20px 15px 20px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+      .div-filter-row::-webkit-scrollbar { display: none; }
+      .div-chip { flex-shrink: 0; padding: 8px 16px; border-radius: 20px; border: 1px solid #e3e3e3; background: var(--card-bg); font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-family: inherit; }
+      .div-chip.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+      .list-card.market-card { flex-direction: column; align-items: stretch; justify-content: flex-start; }
+      .market-entry { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px dashed #ececec; }
+      .market-entry:first-of-type { border-top: 1px solid #f0f0f0; margin-top: 4px; }
+      .market-entry-info { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-width: 0; }
+      .market-person { font-weight: 700; font-size: 14px; color: var(--text-main); }
+      .div-badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 12px; }
+      .div-badge.poultry { background: #e8f5e9; color: #00a651; }
+      .div-badge.aqua { background: #e3f2fd; color: #1976d2; }
+      .div-badge.other { background: #fff3e0; color: #f05a28; }
+      .market-entry .action-pill { margin-top: 0; align-self: center; flex-shrink: 0; }
+    </style>
+  </head>
+  <body>
+
+    <div id="loader-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-msg" style="margin-top: 15px; font-weight: bold; color: var(--text-main);">Loading App...</div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper">
+      
+      <!-- ==============================
+           1. PRODUCTS SECTION (HOME)
+           ============================== -->
+      <div id="sec-products" class="app-section">
+        
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Welcome to</div>
+              <div class="app-title">New Hope Feed Mill Bangladesh Ltd.</div>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch Cool/Warm Mode">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+            </button>
+          </div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="searchInput" placeholder="Search product or code..." onkeyup="searchProducts()">
+          </div>
+        </header>
+
+        <div class="section-title">
+          Categories <span class="see-all">See All</span>
+        </div>
+        
+        <div class="category-scroll" id="cat-container">
+          <button class="cat-btn active" onclick="filterProducts('Poultry Feed', this)">
+            <div class="cat-icon">🐔</div>
+            <div class="cat-text">Poultry</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Fish Feed', this)">
+            <div class="cat-icon">🐟</div>
+            <div class="cat-text">Fish</div>
+          </button>
+          <button class="cat-btn" onclick="filterProducts('Cattle Feed', this)">
+            <div class="cat-icon">🐄</div>
+            <div class="cat-text">Cattle</div>
+          </button>
+        </div>
+
+        <div class="section-title" style="margin-top: 15px;">
+          Our Products <span class="see-all">See All</span>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- ==============================
+           2. DEPOTS SECTION
+           ============================== -->
+      <div id="sec-depots" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Find Locations</div>
+              <div class="app-title">Company Depots</div>
+            </div>
+          </div>
+        </header>
+        <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Depots...</div>
+        <div id="depot-list"></div>
+      </div>
+
+      <!-- ==============================
+           3. MARKET COVERAGE SECTION
+           ============================== -->
+      <div id="sec-market" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Market Areas</div>
+              <div class="app-title">Coverage & Contacts</div>
+            </div>
+          </div>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="marketSearchInput" placeholder="Search upazila, district, division, person..." onkeyup="searchMarket()">
+          </div>
+        </header>
+        <div id="market-division-filters" class="div-filter-row"></div>
+        <div id="market-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Market Data...</div>
+        <div id="market-list"></div>
+      </div>
+
+      <!-- ==============================
+           4. SOCIAL MEDIA SECTION
+           ============================== -->
+      <div id="sec-social" class="app-section" style="display: none;">
+        <header class="app-header">
+          <div class="header-top">
+            <div>
+              <div class="greeting">Stay Connected</div>
+              <div class="app-title">Follow NH Feed</div>
+            </div>
+          </div>
+        </header>
+        <div class="section-title" style="margin-top: 5px;">Our Social Accounts</div>
+        <p class="social-intro">নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর সর্বশেষ খবর, পণ্য ও আপডেট পেতে আমাদের সোশ্যাল মিডিয়া অ্যাকাউন্টগুলো অনুসরণ করুন।</p>
+        <div class="social-grid">
+          <a class="social-card" style="--social-color:#1877f2" href="https://www.facebook.com/newhopefeed" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Facebook">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.3v3h2.8v8h3.4z"/></svg></span>
+            <span class="social-info"><span class="social-name">Facebook</span><span class="social-handle">@newhopefeed</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#0a66c2" href="https://www.linkedin.com/company/new-hope-feed-mill-bangladesh-ltd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on LinkedIn">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M6.5 8.2A1.7 1.7 0 1 1 6.5 4.8a1.7 1.7 0 0 1 0 3.4zM5 9.5h3v9H5v-9zm4.8 0h2.9v1.2h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7v4.7h-3v-4.2c0-1 0-2.4-1.5-2.4s-1.7 1.1-1.7 2.3v4.3h-3v-9z"/></svg></span>
+            <span class="social-info"><span class="social-name">LinkedIn</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#d62976" href="https://www.instagram.com/newhopefeedmill/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Instagram">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></span>
+            <span class="social-info"><span class="social-name">Instagram</span><span class="social-handle">@newhopefeedmill</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#ff0000" href="https://www.youtube.com/@NewHopeFeedMillBangladeshLtd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on YouTube">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C2 9 2 12 2 12s0 3 .4 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.8.4-4.8.4-4.8s0-3-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg></span>
+            <span class="social-info"><span class="social-name">YouTube</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#111111" href="https://www.tiktok.com/@newhopefeedmillbd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on TikTok">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M16.6 3c.3 1.8 1.3 3.1 3.4 3.2v3a8.3 8.3 0 0 1-3.4-1v6.1a5.7 5.7 0 1 1-4.9-5.7v3.1a2.7 2.7 0 1 0 1.9 2.6V3h3z"/></svg></span>
+            <span class="social-info"><span class="social-name">TikTok</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
+          </a>
+          <a class="social-card" style="--social-color:#e60023" href="https://www.pinterest.com/newhopefeedmillbd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Pinterest">
+            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-1.6 0-3.5.4-4.9l1-4.2s-.3-.7-.3-1.7c0-1.6.9-2.8 2-2.8 1 0 1.4.8 1.4 1.7 0 1-.6 2.4-.9 3.8-.3 1.1.6 2.1 1.7 2.1 2.1 0 0 3.1-.2 3.1-3.8 0-2.5-1.8-4.4-4.5-4.4-3.1 0-4.9 2.3-4.9 4.7 0 .9.3 1.8.8 2.4.1.1.1.2.1.4l-.3 1.2c-.1.4-.4.5-.7.3-1.4-.6-2-2.3-2-4.1 0-3 2.5-6.6 7.4-6.6 4 0 6.7 2.9 6.7 6.1 0 4.2-2.4 7.3-5.9 7.3-1.2 0-2.4-.7-2.8-1.4l-.7 2.7c-.3 1.1-1.1 2.5-1.6 3.3A10 10 0 1 0 12 2z"/></svg></span>
+            <span class="social-info"><span class="social-name">Pinterest</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ==============================
+           4. FAQ & INBOX REPLY SECTION
+           ============================== -->
+      <div id="sec-faq" class="app-section" style="display: none;">
+        <header class="app-header faq-hero">
+          <h1 class="faq-hero-title">How can we help?</h1>
+          <div class="faq-hero-sub">কীভাবে আমরা সাহায্য করতে পারি?</div>
+          <div class="faq-hero-search">
+            <input type="text" id="faqSearchInput" placeholder="Search questions or topics..." autocomplete="off" oninput="faqSearchDebounced()" onkeydown="if(event.key==='Enter') searchFAQ()">
+            <button type="button" onclick="searchFAQ()">Search</button>
+          </div>
+        </header>
+        <div class="faq-trending" id="faq-trending" style="display:none;">
+          <div class="faq-trending-label">Trending Topics:</div>
+          <div class="faq-trending-list" id="faq-trending-list"></div>
+        </div>
+        <div class="faq-toolbar">
+          <span class="faq-count" id="faq-count">Loading questions...</span>
+          <button class="faq-add-btn" type="button" onclick="openFaqModal()">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Add Question & Answer
+          </button>
+        </div>
+        <div id="faq-home" class="faq-cat-grid"></div>
+        <div id="faq-list-wrap" style="display:none;">
+          <div class="faq-listbar">
+            <button type="button" class="faq-back-btn" onclick="faqShowHome()">&larr; All topics</button>
+            <div class="faq-list-title" id="faq-list-title"></div>
+          </div>
+          <div id="faq-list"></div>
+        </div>
+      </div>
+
+    </div> 
+
+    <!-- ==============================
+         NAVIGATION BAR
+         ============================== -->
+    <nav class="bottom-nav">
+      <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; cursor: pointer; user-select: none; align-items:center; gap:8px;" id="web-logo" onclick="goHome()" title="Home" role="button">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
+        NH FEED
+      </div>
+      
+      <button class="nav-item active" id="nav-products-btn" onclick="switchSection('sec-products', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm5.5 11c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zM3 21.5h8v-8H3v8z"/></svg>
+        <span>Products</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-depots', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>Depots</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-market', this)">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span>Market</span>
+      </button>
+      <button class="nav-item" onclick="openMrpModal()">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+        <span>SMS MRP</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-social', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.9v-2.1h-2v2.1A8 8 0 0 1 4.1 13H6v-2H4.1A8 8 0 0 1 11 4.1V6h2V4.1a8 8 0 0 1 6.9 6.9H18v2h1.9a8 8 0 0 1-6.9 6.9zM12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg>
+        <span>Social</span>
+      </button>
+      
+      <button class="nav-item" onclick="switchSection('sec-faq', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
+        <span>FAQ/Reply</span>
+      </button>
+      
+      <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycbzGiRLuc673MddthcifbtMiDja-18Qx7EjYK-CHOaHiB3PWn5Dsx0tTSsjDtv4rE0m6-A/exec', '_blank')">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+        <span>Task Mgr</span>
+      </button>
+      
+      <button class="nav-item" onclick="window.open('https://script.google.com/macros/s/AKfycby64MfacaLt3ZkYc0cFW9HHacJccBkUlt0-ar4gM9vqF04PL7yS93VqI8z6E5BZrnLb9Q/exec', '_blank')">
+        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+        <span>Calendar</span>
+      </button>
+    </nav>
+
+    <!-- ==============================
+         MODALS & DIALOGS
+         ============================== -->
+    <!-- FAQ Answer Modal -->
+    <div id="faq-answer-modal" class="faq-modal" role="dialog" aria-modal="true">
+      <div class="faq-form-card">
+        <button class="faq-modal-close" type="button" onclick="closeFaqAnswer()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-ans-cat" id="faq-ans-cat"></div>
+        <h2 class="faq-ans-q" id="faq-ans-q"></h2>
+        <div class="faq-ans-body" id="faq-ans-body"></div>
+        <div class="faq-form-actions">
+          <button class="faq-form-btn cancel" type="button" onclick="closeFaqAnswer()">Close</button>
+          <button class="faq-form-btn save" type="button" id="faq-ans-copy" onclick="faqCopyCurrent(this)">Copy Answer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modern FAQ Add Modal -->
+    <div id="faq-add-modal" class="faq-modal" role="dialog" aria-modal="true" aria-labelledby="faq-form-title">
+      <div class="faq-form-card">
+        <button class="faq-modal-close" type="button" onclick="closeFaqModal()" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.41 4.3 19.71 2.89 18.3 9.18 12 2.89 5.7 4.3 4.29l6.29 6.3 6.3-6.3z"/></svg>
+        </button>
+        <div class="faq-form-head">
+          <div class="faq-form-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg></div>
+          <div><h2 class="faq-form-title" id="faq-form-title">Add New FAQ Reply</h2><p class="faq-form-subtitle">নতুন প্রশ্ন ও উত্তর যোগ করুন। এটি FAQ/Reply সেকশনে সঙ্গে সঙ্গে দেখা যাবে।</p></div>
+        </div>
+        <form onsubmit="saveNewFaq(event)">
+          <div class="faq-form-group"><label class="faq-form-label" for="new-faq-question">Question / প্রশ্ন</label><input class="faq-form-input" id="new-faq-question" required maxlength="240" placeholder="যেমন: আপনার ডিলার পয়েন্ট কোথায়?" autocomplete="off"></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="new-faq-answer">Answer / উত্তর</label><textarea class="faq-form-textarea" id="new-faq-answer" required maxlength="3000" placeholder="প্রশ্নটির সুন্দর ও সম্পূর্ণ উত্তর লিখুন..."></textarea></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="new-faq-category">Category / বিভাগ <span style="font-weight:600; color:var(--text-muted);">(optional)</span></label><input class="faq-form-input" id="new-faq-category" list="faq-cat-options" maxlength="60" placeholder="যেমন: Price &amp; MRP — ফাঁকা রাখলে অটো বসবে" autocomplete="off"><datalist id="faq-cat-options"></datalist></div>
+          <div class="faq-form-actions"><button class="faq-form-btn cancel" type="button" onclick="closeFaqModal()">Cancel</button><button class="faq-form-btn save" id="faq-save-btn" type="submit">Save FAQ</button></div>
+          <div class="faq-form-status" id="faq-form-status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+
+
+    
+    <!-- Product Detail Modal -->
+    <div id="product-detail-modal" class="modal-overlay">
+      <div class="modal-sheet"> 
+        <div class="detail-img-box" id="detail-img-container">
+          <!-- Navigation Arrows for Swipe/Click effect -->
+          <button class="nav-arrow left" onclick="navigateProduct(-1)">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+          </button>
+          <img id="detail-img" src="" alt="Product">
+          <button class="nav-arrow right" onclick="navigateProduct(1)">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </button>
+        </div>
+        <div class="detail-content">
+          <div class="detail-action-buttons">
+            <button class="back-btn" onclick="closeProductModal()">
+              <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            </button>
+            <button class="action-pill" style="margin:0; align-self:center;" onclick="openCardModal()">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+              Share Card
+            </button>
+            <button class="admin-edit-btn" onclick="openPinModal()">
+              <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
+          </div>
+          <h2 id="detail-title" class="detail-title">Product Name</h2>
+          <div id="detail-category" class="detail-subtitle">Category</div>
+          
+          <div class="section-title" style="margin: 10px 0 15px 0; padding:0;">Nutrition Details</div>
+          <div id="nutrition-view-grid" class="nutrition-grid"></div>
+          <div id="nutrition-edit-grid" class="nutrition-grid" style="display:none;"></div>
+        </div>
+        <div class="detail-bottom-bar">
+          
+          <!-- NEW: PRICE/SMS BUTTON (Replaces Status Box in View Mode) -->
+          <button id="mrp-shortcut-btn" class="action-pill" style="margin:0; padding: 15px 20px; font-size: 15px; background: var(--bg-color); color: var(--brand-primary); border: 2px solid var(--brand-primary); flex: 1; justify-content: center;" onclick="openMrpModalFromProduct()">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+            Price / SMS
+          </button>
+          
+          <!-- Edit Mode Status -->
+          <div class="price-box" id="status-box" style="display:none; flex: 1;">
+            <span class="price-label">Status</span>
+            <span class="price-value" id="modal-status-text" style="font-size:16px; color: var(--brand-secondary);">Edit Mode</span>
+          </div>
+          
+          <button id="save-btn" class="main-action-btn" style="display:none; flex: 1;" onclick="saveUpdatedData()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            Save Changes
+          </button>
+          
+          <button id="close-bottom-btn" class="main-action-btn" style="flex: 1;" onclick="generateSmsForProduct()">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            Price / SMS Generator
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart PIN Dialog -->
+    <div id="smart-pin-modal" class="center-modal">
+      <div class="dialog-box">
+        <div class="dialog-title">Admin Access</div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Enter secure PIN to edit values.</p>
+        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="10">
+        <div id="pinErrorMsg" style="color:red; font-size:13px; min-height:15px; font-weight:bold; margin-bottom:10px;"></div>
+        <div class="btn-group">
+          <button class="dialog-btn btn-cancel" onclick="closePinModal()">Cancel</button>
+          <button class="dialog-btn btn-confirm" onclick="verifyPin()">Verify</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Share Card Dialog -->
+    <div id="card-modal" class="center-modal">
+      <div class="dialog-box" style="max-width:520px; width:94%; max-height:94vh; overflow-y:auto;">
+        <div style="position:absolute; right:15px; top:15px; cursor:pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeCardModal()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div class="dialog-title" style="margin-top:10px;">Share Card</div>
+        <select id="card-product-select" onchange="cardPickProduct(this.value)" style="width:100%; margin-top:15px; padding:12px; border-radius:12px; border:2px solid #eaeaea; background:var(--bg-color); color:var(--text-main); font:inherit; font-weight:700; font-size:14px;"></select>
+        <div style="display:flex; gap:8px; margin-top:12px; justify-content:center; flex-wrap:wrap;" id="card-fmt-row">
+          <button class="mrp-chip active" data-g="fmt" data-v="portrait" onclick="setCardOpt('fmt','portrait')">Portrait 4:5</button>
+          <button class="mrp-chip" data-g="fmt" data-v="square" onclick="setCardOpt('fmt','square')">Square 1:1</button>
+          <button class="mrp-chip" data-g="fmt" data-v="story" onclick="setCardOpt('fmt','story')">Story 9:16</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px; justify-content:center; align-items:center; flex-wrap:wrap;">
+          <button class="mrp-chip active" data-g="lang" data-v="en" onclick="setCardOpt('lang','en')">English</button>
+          <button class="mrp-chip" data-g="lang" data-v="bn" onclick="setCardOpt('lang','bn')">বাংলা</button>
+          <span style="width:1px; height:22px; background:#ddd; margin:0 4px;"></span>
+          <button class="mrp-chip active" data-g="theme" data-v="green" onclick="setCardOpt('theme','green')">Green</button>
+          <button class="mrp-chip" data-g="theme" data-v="orange" onclick="setCardOpt('theme','orange')">Orange</button>
+        </div>
+        <label style="display:flex; align-items:center; justify-content:center; gap:6px; margin-top:10px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="card-price-toggle" onchange="toggleCardPrice(this.checked)"> Show MRP (Bag / KG / Ton)</label>
+<div id="card-status" style="min-height:18px; margin-top:12px; font-size:13px; font-weight:700; color:var(--brand-primary);"></div>
+        <div id="card-preview-wrap" style="margin-top:8px; border-radius:14px; overflow:hidden; border:1px solid #eaeaea; line-height:0; text-align:center; background:#f4f4f4;"></div>
+        <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
+          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="copyCardImage()">Copy</button>
+          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="downloadCard()">Download</button>
+          <button class="dialog-btn btn-confirm" id="card-share-btn" style="flex:1; min-width:100px; display:none;" onclick="shareCard()">Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MRP / SMS Dialog -->
+<div id="mk-msg-modal" class="center-modal">
+      <div class="dialog-box" style="max-width:520px; width:94%; max-height:94vh; overflow-y:auto; text-align:left;">
+        <div style="position:absolute; right:15px; top:15px; cursor:pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMkMsg()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div class="dialog-title" style="margin-top:10px; text-align:center;">Contact Message</div>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:16px; padding:12px 14px; background:var(--bg-color); border-radius:14px;">
+          <div style="flex:1; min-width:0;">
+            <div id="mk-info-name" style="font-weight:800; font-size:14px; color:var(--text-main); line-height:1.35;"></div>
+            <div id="mk-info-area" style="margin-top:3px; font-size:12px; font-weight:600; color:var(--text-muted);"></div>
+          </div>
+          <button type="button" id="mk-copy-num" class="mrp-chip" onclick="mkCopyNumber()" style="white-space:nowrap;"></button>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:14px; justify-content:center; flex-wrap:wrap;">
+          <button class="mrp-chip" data-mklang="bn" onclick="setMkLang('bn')">বাংলা</button>
+          <button class="mrp-chip" data-mklang="en" onclick="setMkLang('en')">English</button>
+          <button class="mrp-chip active" data-mklang="both" onclick="setMkLang('both')">বাংলা + English</button>
+        </div>
+        <div style="display:flex; gap:18px; margin-top:12px; justify-content:center; flex-wrap:wrap;">
+          <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="mk-inc-name" checked onchange="mkRenderMsg()"> Name / নাম</label>
+          <label style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--text-main); cursor:pointer;"><input type="checkbox" id="mk-inc-area" checked onchange="mkRenderMsg()"> Area / এলাকা</label>
+        </div>
+        <textarea id="mk-msg-text" class="sms-box" style="height:260px;" spellcheck="false"></textarea>
+        <button id="mk-copy-msg" class="dialog-btn btn-confirm" style="width:100%; margin-top:12px;" onclick="mkCopyMsg()">Copy Message</button>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button class="dialog-btn" style="background:#25D366; color:#fff; padding:13px 8px; font-size:14px;" onclick="mkWhatsApp()">WhatsApp</button>
+          <button class="dialog-btn btn-cancel" style="padding:13px 8px; font-size:14px;" onclick="mkSms()">SMS</button>
+          <a id="mk-call" class="dialog-btn btn-cancel" href="#" style="padding:13px 8px; font-size:14px; text-align:center; text-decoration:none;">Call</a>
+        </div>
+      </div>
+    </div>
+
+        <div id="mrp-modal" class="center-modal">
+      <div class="dialog-box">
+        <div style="position: absolute; right: 15px; top: 15px; cursor: pointer; padding:5px; background:var(--bg-color); border-radius:50%; width:35px; height:35px; display:flex; justify-content:center; align-items:center;" onclick="closeMrpModal()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <div id="mrp-search-area">
+        <div class="dialog-title" style="margin-top:10px;">Price / SMS Generator</div>
+        <div class="search-box" style="margin-top: 20px; box-shadow:none; border:2px solid #eaeaea;">
+          <input type="text" id="mrpSearchInput" placeholder="Code / Name (e.g. 510 ton, 713 kg)" onkeyup="if(event.key==='Enter') searchMrpBtnClick()">
+        </div>
+        <button class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="searchMrpBtnClick()">Search Price</button>
+        </div>
+        
+        <div id="mrp-unit-chips" style="display:flex; gap:8px; margin-top:15px; justify-content:center; flex-wrap:wrap;">
+          <button class="mrp-chip active" data-unit="all" onclick="setMrpUnit('all')">All</button>
+          <button class="mrp-chip" data-unit="bag" onclick="setMrpUnit('bag')">Bag</button>
+          <button class="mrp-chip" data-unit="kg" onclick="setMrpUnit('kg')">KG</button>
+          <button class="mrp-chip" data-unit="ton" onclick="setMrpUnit('ton')">Ton</button>
+        </div>
+        <div id="mrp-loading" style="display:none; color: var(--brand-primary); margin-top: 15px; font-weight:bold; font-size:14px;">Searching...</div>
+        <div id="mrpResults" style="margin-top: 15px; max-height: 140px; overflow-y: auto;"></div>
+
+        <textarea id="smsText" class="sms-box" placeholder="SMS format will auto-generate here..."></textarea>
+        <button id="copySmsBtn" class="dialog-btn btn-confirm" style="width: 100%; margin-top: 15px;" onclick="copySms()">Copy SMS</button>
+      </div>
+    </div>
+
+    <!-- ==============================
+         JAVASCRIPT LOGIC
+         ============================== -->
+    <script>
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfhAh8yH3Ik5ddJ0zZI1wulphhGNtaKYbRXm4WTCakRTvV_QS-4BXOe4XefgJr4kCy/exec';
+
+      let allProducts = [];
+      let currentCategory = 'Poultry Feed';
+      let currentFilteredProducts = []; 
+      let currentEditingId = null;
+      let currentProductIndex = 0; 
+      const ADMIN_PIN = "1234";
+      let allMarketData = []; 
+      let mkMsgPool = [], mkMsgCur = null, mkMsgLang = 'both';
+      let marketDivisionFilter = 'All';
+      let allFaqData = []; 
+
+      const columnDefs = [
+        {key: 'pack', label: 'Packing Size'}, {key: 'type', label: 'Feed Size'}, 
+        {key: 'mois', label: 'Moisture (Max)'}, {key: 'cp', label: 'Crude Protein'},
+        {key: 'fat', label: 'Fat (Min)'}, {key: 'fib', label: 'Fiber (Max)'},
+        {key: 'ash', label: 'Ash (Max)'}, {key: 'lys', label: 'Lysine (Min)'},
+        {key: 'meth', label: 'Methionine'}, {key: 'cal', label: 'Cal (Min)'},
+        {key: 'pho', label: 'Pho (Min)'}, {key: 'eng', label: 'Energy (Kcal)'},
+        {key: 'carbo', label: 'Carbohydrates (Max)'} 
+      ];
+
+      if(window.innerWidth >= 768) { document.getElementById('web-logo').style.display = 'flex'; }
+
+      function toggleTheme() {
+        document.body.classList.toggle('warm-mode');
+        if(document.body.classList.contains('warm-mode')) {
+          localStorage.setItem('theme', 'warm');
+        } else {
+          localStorage.setItem('theme', 'cool');
+        }
+      }
+      if(localStorage.getItem('theme') === 'warm') { document.body.classList.add('warm-mode'); }
+
+      function switchSection(sectionId, btnElem) {
+        document.querySelectorAll('.app-section').forEach(sec => sec.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
+        btnElem.classList.add('active');
+        window.scrollTo(0,0);
+        
+        if(sectionId === 'sec-faq') {
+          renderFAQ(allFaqData);
+        }
+      }
+
+      // Logo click = Home (opens Products section)
+      function goHome() {
+        closeProductModal();
+        switchSection('sec-products', document.getElementById('nav-products-btn'));
+      }
+
+      // SWR LOCAL CACHING
+      const cachedProducts = localStorage.getItem('nh_products');
+      if (cachedProducts) {
+        try {
+          allProducts = JSON.parse(cachedProducts);
+          document.getElementById('loader-overlay').style.display = 'none';
+          filterProducts('Poultry Feed', document.querySelector('.cat-btn.active'));
+        } catch(e){}
+      }
+
+      fetch(SCRIPT_URL + '?action=getProducts')
+        .then(res => res.json())
+        .then(data => {
+          if(!data.error && Array.isArray(data)) {
+            allProducts = data;
+            localStorage.setItem('nh_products', JSON.stringify(data));
+            if(!cachedProducts) {
+              document.getElementById('loader-overlay').style.display = 'none';
+              filterProducts('Poultry Feed', document.querySelector('.cat-btn.active'));
+            }
+          }
+        }).catch(err => {
+           if(!cachedProducts) {
+             document.getElementById('loading-msg').innerHTML = `<span style="color:red;">Network Error. Please Check Connection.</span>`;
+           }
+        });
+
+      const cachedDepots = localStorage.getItem('nh_depots');
+      if (cachedDepots) {
+        try { renderDepots(JSON.parse(cachedDepots)); } catch(e){}
+      }
+      fetch(SCRIPT_URL + '?action=getDepots')
+        .then(res => res.json())
+        .then(depots => {
+          if(!depots.error && Array.isArray(depots)) {
+            localStorage.setItem('nh_depots', JSON.stringify(depots));
+            renderDepots(depots);
+          }
+        });
+
+      function renderDepots(depots) {
+        document.getElementById('depot-loader').style.display = 'none';
+        const container = document.getElementById('depot-list');
+        let html = '';
+        depots.forEach(depot => {
+          html += `
+            <div class="list-card">
+              <div style="flex:1;">
+                <div class="list-title">🏢 ${depot.name}</div>
+                <div class="list-text"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
+                <div class="list-text"><strong>👤 Person:</strong> <span>${depot.person}</span></div>
+              </div>
+              <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                ${depot.phone}
+              </button>
+            </div>`;
+        });
+        container.innerHTML = html;
+      }
+
+      const cachedMarket = localStorage.getItem('nh_market');
+      if (cachedMarket) {
+        try { 
+          allMarketData = JSON.parse(cachedMarket);
+          renderMarketData(allMarketData); 
+        } catch(e){}
+      }
+      fetch(SCRIPT_URL + '?action=getMarket')
+        .then(res => res.json())
+        .then(data => {
+          if(!data.error && Array.isArray(data)) {
+            allMarketData = data;
+            localStorage.setItem('nh_market', JSON.stringify(data));
+            document.getElementById('market-loader').style.display = 'none';
+            renderMarketData(allMarketData);
+          } else {
+             if(!cachedMarket) document.getElementById('market-loader').innerText = "Coverage data empty.";
+          }
+        }).catch(err => {
+             if(!cachedMarket) document.getElementById('market-loader').innerText = "Failed to load market data.";
+        });
+
+      const cachedFaq = localStorage.getItem('nh_faq');
+      if (cachedFaq) {
+        try { allFaqData = JSON.parse(cachedFaq); } catch(e){}
+      }
+      fetch(SCRIPT_URL + '?action=getFaq')
+        .then(res => res.json())
+        .then(data => {
+          if(!data.error && Array.isArray(data)) {
+            allFaqData = data;
+            localStorage.setItem('nh_faq', JSON.stringify(data));
+            if(document.getElementById('sec-faq').style.display === 'block') {
+              renderFAQ(allFaqData);
+            }
+          }
+        });
+
+      function filterProducts(category, btnElement) {
+        currentCategory = category;
+        document.getElementById('searchInput').value = ''; 
+        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+        if(btnElement) btnElement.classList.add('active');
+        currentFilteredProducts = allProducts.filter(p => p.category === category);
+        renderProductGrid(currentFilteredProducts);
+      }
+
+      function searchProducts() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        if (query.trim() === '') {
+          currentFilteredProducts = allProducts.filter(p => p.category === currentCategory);
+        } else {
+          currentFilteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(query));
+          document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+        }
+        renderProductGrid(currentFilteredProducts);
+      }
+
+      function renderProductGrid(products) {
+        const container = document.getElementById('product-grid');
+        if(products.length === 0) {
+          container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted); font-weight:bold;">No products found.</div>`;
+          return;
+        }
+        let html = '';
+        products.forEach((p, index) => {
+          html += `
+            <div class="product-card" onclick="openProductModal('${p.id}', ${index})">
+              <div class="fav-icon">❤</div>
+              <div class="card-img-box"><img src="${p.imgUrl}" alt=""></div>
+              <h3>${p.name}</h3>
+              <div class="card-bottom">
+                <div class="card-pack">${p.pack !== '-' ? p.pack : 'Bag'}</div>
+                <button class="card-action">+</button>
+              </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+      }
+
+      // ===== MARKET: grouped by area, with Division filter =====
+
+      function mkClean(v) {
+        if (v === null || v === undefined) return '';
+        const t = String(v).trim();
+        return t === '-' ? '' : t;
+      }
+      function mkDivision(item) { return mkClean(item.division !== undefined ? item.division : item.Division); }
+      function mkValidEntries() {
+        // Skip empty placeholder rows (no person and no phone)
+        return allMarketData.filter(i => mkClean(i.person) || mkClean(i.phone));
+      }
+      function mkBadgeClass(div) {
+        const d = div.toLowerCase();
+        if (d.includes('aqua') || d.includes('fish')) return 'aqua';
+        if (d.includes('poultry') || d.includes('cattle')) return 'poultry';
+        return 'other';
+      }
+
+      function renderMarketFilters() {
+        const entries = mkValidEntries();
+        const counts = {};
+        entries.forEach(i => { const d = mkDivision(i); if (d) counts[d] = (counts[d] || 0) + 1; });
+        const box = document.getElementById('market-division-filters');
+        const names = Object.keys(counts);
+        if (names.length === 0) { box.innerHTML = ''; return; }
+        if (marketDivisionFilter !== 'All' && !counts[marketDivisionFilter]) marketDivisionFilter = 'All';
+        let html = `<button class="div-chip ${marketDivisionFilter === 'All' ? 'active' : ''}" data-div="All">All (${entries.length})</button>`;
+        names.forEach(n => {
+          html += `<button class="div-chip ${marketDivisionFilter === n ? 'active' : ''}" data-div="${n.replace(/"/g, '&quot;')}">${n} (${counts[n]})</button>`;
+        });
+        box.innerHTML = html;
+        box.querySelectorAll('.div-chip').forEach(btn => {
+          btn.onclick = () => { marketDivisionFilter = btn.getAttribute('data-div'); renderMarketFilters(); applyMarketFilters(); };
+        });
+      }
+
+      function applyMarketFilters() {
+        const q = document.getElementById('marketSearchInput').value.toLowerCase().trim();
+        const tokens = q ? q.split(/\s+/) : [];
+
+        // 1) filter entries by division chip + search (location, zone, person, phone, division)
+        const filtered = mkValidEntries().filter(i => {
+          const div = mkDivision(i);
+          if (marketDivisionFilter !== 'All' && div !== marketDivisionFilter) return false;
+          if (tokens.length === 0) return true;
+          const hay = [i.district, i.upazila_bn, i.upazila_en, i.zone, i.person, i.phone, div]
+            .map(mkClean).join(' ').toLowerCase();
+          return tokens.every(t => hay.includes(t));
+        });
+
+        // 2) group by area so one market shows every division's person together
+        const groups = new Map();
+        filtered.forEach(i => {
+          const key = [mkClean(i.district), mkClean(i.upazila_en), mkClean(i.upazila_bn)].join('|').toLowerCase();
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(i);
+        });
+
+        mkMsgPool.length = 0;
+        const container = document.getElementById('market-list');
+        if (groups.size === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-weight:bold;">No result found.</div>`;
+          return;
+        }
+
+        const limit = tokens.length ? Infinity : 100; // show everything when searching
+        let html = '';
+        let shown = 0;
+        groups.forEach(list => {
+          if (shown++ >= limit) return;
+          const f = list[0];
+          const district = mkClean(f.district);
+          const upz = mkClean(f.upazila_bn) || mkClean(f.upazila_en);
+          const title = upz ? `${district} ➔ ${upz}` : `${district} <span style="font-weight:600; font-size:12px; color:var(--text-muted);">(District Level)</span>`;
+          const zones = [...new Set(list.map(i => mkClean(i.zone)).filter(Boolean))];
+
+          html += `<div class="list-card market-card"><div class="list-title">${title}</div>`;
+          if (zones.length) {
+            html += `<div class="list-text"><strong>Zone:</strong> <span style="color:var(--brand-secondary); font-weight:bold;">${zones.join(', ')}</span></div>`;
+          }
+          list.forEach(i => {
+            const div = mkDivision(i);
+            const phone = mkClean(i.phone);
+            html += `<div class="market-entry"><div class="market-entry-info">
+                ${div ? `<span class="div-badge ${mkBadgeClass(div)}">${div}</span>` : ''}
+                <span class="market-person">${mkClean(i.person) || '-'}</span>
+              </div>
+              ${phone ? `<button class="action-pill" title="Generate contact message" onclick="openMkMsg(${mkMsgPool.push({ person: mkClean(i.person), phone: phone, div: div, district: district, upzBn: mkClean(i.upazila_bn), upzEn: mkClean(i.upazila_en) }) - 1})"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> ${phone}</button>` : ''}
+            </div>`;
+          });
+          html += `</div>`;
+        });
+        container.innerHTML = html;
+      }
+
+      function renderMarketData(data) {
+        document.getElementById('market-loader').style.display = 'none';
+        renderMarketFilters();
+        applyMarketFilters();
+      }
+
+      function searchMarket() { applyMarketFilters(); }
+
+      function faqEscape(value) {
+        return String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+      }
+
+      // =====================================================
+      //  FAQ — Help Center UI (Hero search + Trending + Topic cards)
+      // =====================================================
+      const FAQ_ICONS = {
+        help: 'M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z',
+        tag: 'M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z',
+        store: 'M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z',
+        truck: 'M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z',
+        verified: 'M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z',
+        box: 'M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z'
+      };
+      // ডিফল্ট টপিক (অটো-ক্যাটাগরি)। শীটের Category কলামে লিখলে সেটাই অগ্রাধিকার পায়।
+      const FAQ_DEFAULT_CATS = [
+        { name: 'Price & MRP', bn: 'মূল্য ও এমআরপি', icon: 'tag', kw: ['price', 'mrp', 'rate', 'cost', 'দাম', 'মূল্য', 'রেট', 'টাকা'] },
+        { name: 'Dealer & Depot', bn: 'ডিলার ও ডিপো', icon: 'store', kw: ['dealer', 'depot', 'distributor', 'agency', 'address', 'ডিলার', 'ডিপো', 'এজেন্সি', 'পরিবেশক', 'ঠিকানা', 'কোথায়'] },
+        { name: 'Order & Delivery', bn: 'অর্ডার ও ডেলিভারি', icon: 'truck', kw: ['order', 'delivery', 'supply', 'stock', 'অর্ডার', 'ডেলিভারি', 'সরবরাহ', 'স্টক', 'পরিবহন'] },
+        { name: 'Quality & Complaint', bn: 'মান ও অভিযোগ', icon: 'verified', kw: ['quality', 'complaint', 'problem', 'defect', 'expire', 'মান', 'অভিযোগ', 'সমস্যা', 'মেয়াদ', 'নষ্ট'] },
+        { name: 'Products & Nutrition', bn: 'পণ্য ও পুষ্টি', icon: 'box', kw: ['feed', 'protein', 'nutrition', 'ingredient', 'broiler', 'layer', 'fish', 'cattle', 'ফিড', 'প্রোটিন', 'পুষ্টি', 'খাদ্য', 'ব্রয়লার', 'লেয়ার', 'মাছ', 'গরু', 'ডোজ'] }
+      ];
+      const FAQ_GENERAL = { name: 'General', bn: 'সাধারণ জিজ্ঞাসা', icon: 'help' };
+
+      let faqView = 'home', faqActiveCat = '', faqShown = [], faqCurrentIdx = -1, faqSearchTimer = null;
+
+      function faqCatMeta(name) {
+        const n = String(name).trim().toLowerCase();
+        return FAQ_DEFAULT_CATS.find(c => c.name.toLowerCase() === n) || (n === 'general' ? FAQ_GENERAL : { name: String(name).trim(), bn: '', icon: 'help' });
+      }
+      function faqGuessCat(item) {
+        const passes = [String(item.q || '').toLowerCase(), (String(item.q || '') + ' ' + String(item.a || '')).toLowerCase()];
+        for (const text of passes) for (const c of FAQ_DEFAULT_CATS) if (c.kw.some(k => text.includes(k))) return c.name;
+        return FAQ_GENERAL.name;
+      }
+      function faqCatOf(item) { return String(item.c || '').trim() || faqGuessCat(item); }
+      function faqShort(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1).trim() + '…' : t; }
+
+      function faqViews() { try { return JSON.parse(localStorage.getItem('nh_faq_views') || '{}'); } catch (e) { return {}; } }
+      function faqBump(q) { const v = faqViews(); v[q] = (v[q] || 0) + 1; try { localStorage.setItem('nh_faq_views', JSON.stringify(v)); } catch (e) {} }
+
+      function faqGroup() {
+        const map = {};
+        allFaqData.forEach((item, i) => { const c = faqCatOf(item); (map[c] = map[c] || []).push(i); });
+        return Object.keys(map).map(name => ({ name, idx: map[name] }))
+          .sort((a, b) => (a.name === FAQ_GENERAL.name) - (b.name === FAQ_GENERAL.name) || b.idx.length - a.idx.length);
+      }
+
+      function faqTrendingIdx() {
+        const flagged = allFaqData.map((x, i) => x.t ? i : -1).filter(i => i >= 0);
+        if (flagged.length) return flagged.slice(0, 6);
+        const v = faqViews();
+        const top = allFaqData.map((x, i) => i).filter(i => v[allFaqData[i].q] > 0).sort((a, b) => v[allFaqData[b].q] - v[allFaqData[a].q]).slice(0, 6);
+        return top.length ? top : allFaqData.map((x, i) => i).slice(0, 5);
+      }
+
+      function renderFAQ() { faqRefresh(); } // পুরোনো কলগুলোর জন্য
+
+      function faqRefresh() {
+        const total = allFaqData.length, cats = faqGroup();
+        const count = document.getElementById('faq-count');
+        const home = document.getElementById('faq-home'), listWrap = document.getElementById('faq-list-wrap'), trending = document.getElementById('faq-trending');
+        const query = document.getElementById('faqSearchInput').value.trim();
+        if (faqView === 'home' && query) faqView = 'search';
+
+        if (faqView === 'home') {
+          home.style.display = total ? 'grid' : 'block'; listWrap.style.display = 'none';
+          if (count) count.innerText = total ? `${total} question${total === 1 ? '' : 's'} · ${cats.length} topic${cats.length === 1 ? '' : 's'}` : 'No questions yet';
+          // Trending
+          const tIdx = total ? faqTrendingIdx() : [];
+          trending.style.display = tIdx.length ? 'flex' : 'none';
+          document.querySelector('#sec-faq .faq-hero').classList.toggle('compact', !tIdx.length);
+          document.getElementById('faq-trending-list').innerHTML = tIdx.map(i => `<button type="button" class="faq-trend-chip" onclick="faqOpenAnswer(${i})">${faqEscape(faqShort(allFaqData[i].q, 34))}</button>`).join('');
+          // Topic cards
+          if (!total) {
+            home.innerHTML = `<div class="faq-empty"><div class="faq-empty-icon">?</div><strong>No FAQ found</strong><div style="margin-top:6px; font-size:13px;">নতুন প্রশ্ন ও উত্তর যোগ করতে উপরের বাটনে ক্লিক করুন।</div></div>`;
+            return;
+          }
+          home.innerHTML = cats.map(c => {
+            const meta = faqCatMeta(c.name), shown = c.idx.slice(0, 5);
+            return `<div class="faq-cat-card">
+              <div class="faq-cat-head"><div class="faq-cat-icon"><svg viewBox="0 0 24 24"><path d="${FAQ_ICONS[meta.icon] || FAQ_ICONS.help}"/></svg></div>
+                <div><div class="faq-cat-title">${faqEscape(meta.name)}</div>${meta.bn ? `<div class="faq-cat-bn">${faqEscape(meta.bn)}</div>` : ''}</div></div>
+              <ul class="faq-cat-links">${shown.map(i => `<li><button type="button" onclick="faqOpenAnswer(${i})">${faqEscape(allFaqData[i].q)}</button></li>`).join('')}</ul>
+              ${c.idx.length > shown.length ? `<button type="button" class="faq-see-all" onclick="faqShowCategory(this.dataset.cat)" data-cat="${faqEscape(c.name)}">See all ${c.idx.length} &rarr;</button>` : ''}
+            </div>`;
+          }).join('');
+          return;
+        }
+
+        // লিস্ট ভিউ: ক্যাটাগরি বা সার্চ রেজাল্ট
+        home.style.display = 'none'; trending.style.display = 'none'; listWrap.style.display = 'block';
+        document.querySelector('#sec-faq .faq-hero').classList.add('compact');
+        let idxs, title;
+        if (faqView === 'cat') {
+          idxs = allFaqData.map((x, i) => i).filter(i => faqCatOf(allFaqData[i]) === faqActiveCat);
+          title = faqEscape(faqActiveCat);
+        } else {
+          const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
+          idxs = allFaqData.map((x, i) => i).filter(i => {
+            const hay = (allFaqData[i].q + ' ' + allFaqData[i].a + ' ' + faqCatOf(allFaqData[i])).toLowerCase();
+            return tokens.every(t => hay.includes(t));
+          });
+          title = `Results for “${faqEscape(query)}”`;
+        }
+        if (count) count.innerText = `${idxs.length} question${idxs.length === 1 ? '' : 's'} found`;
+        document.getElementById('faq-list-title').innerHTML = title;
+        const list = document.getElementById('faq-list');
+        if (!idxs.length) { list.innerHTML = `<div class="faq-empty"><div class="faq-empty-icon">?</div><strong>No matching question</strong><div style="margin-top:6px; font-size:13px;">অন্য শব্দ দিয়ে খুঁজে দেখুন।</div></div>`; return; }
+        list.innerHTML = idxs.map(i => {
+          const it = allFaqData[i];
+          return `<div class="faq-item">
+            <div class="faq-q" role="button" tabindex="0" onclick="faqToggle(this, ${i})" onkeydown="if(event.key==='Enter'||event.key===' ') faqToggle(this, ${i})"><div><span>${faqEscape(it.q)}</span>${faqView === 'search' ? `<div class="faq-meta">${faqEscape(faqCatOf(it))}</div>` : ''}</div><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+            <div class="faq-a"><div title="Double tap to copy" ondblclick="faqCopyIdx(${i}, this.nextElementSibling)">${faqEscape(it.a)}</div><button type="button" class="faq-copy-btn" onclick="faqCopyIdx(${i}, this)">Copy answer</button></div>
+          </div>`;
+        }).join('');
+      }
+
+      function faqToggle(headEl, i) {
+        const item = headEl.parentElement, opening = !item.classList.contains('active');
+        item.classList.toggle('active'); if (opening) faqBump(allFaqData[i].q);
+      }
+      function faqShowHome() { faqView = 'home'; faqActiveCat = ''; document.getElementById('faqSearchInput').value = ''; faqRefresh(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      function faqShowCategory(name) { faqView = 'cat'; faqActiveCat = name; document.getElementById('faqSearchInput').value = ''; faqRefresh(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      function faqSearchDebounced() { clearTimeout(faqSearchTimer); faqSearchTimer = setTimeout(searchFAQ, 180); }
+      function searchFAQ() {
+        const q = document.getElementById('faqSearchInput').value.trim();
+        faqView = q ? 'search' : 'home'; faqActiveCat = ''; faqRefresh();
+      }
+
+      function faqCopyText(text, btn, okLabel, idleLabel) {
+        navigator.clipboard.writeText(text).then(() => {
+          btn.innerText = okLabel; setTimeout(() => { btn.innerText = idleLabel; }, 1500);
+        }).catch(() => { btn.innerText = 'Copy failed'; setTimeout(() => { btn.innerText = idleLabel; }, 1500); });
+      }
+      function faqCopyIdx(i, btn) { faqCopyText(allFaqData[i].a, btn, '✔ Copied', 'Copy answer'); }
+
+      function faqOpenAnswer(i) {
+        const it = allFaqData[i]; if (!it) return;
+        faqCurrentIdx = i; faqBump(it.q);
+        document.getElementById('faq-ans-cat').innerText = faqCatOf(it);
+        document.getElementById('faq-ans-q').innerText = it.q;
+        document.getElementById('faq-ans-body').innerText = it.a;
+        document.getElementById('faq-ans-copy').innerText = 'Copy Answer';
+        document.getElementById('faq-answer-modal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeFaqAnswer() { document.getElementById('faq-answer-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function faqCopyCurrent(btn) { if (faqCurrentIdx >= 0) faqCopyText(allFaqData[faqCurrentIdx].a, btn, '✔ Copied', 'Copy Answer'); }
+
+      function faqFillCatOptions() {
+        const names = new Set(FAQ_DEFAULT_CATS.map(c => c.name)); names.add(FAQ_GENERAL.name);
+        allFaqData.forEach(i => { if (i.c) names.add(i.c); });
+        document.getElementById('faq-cat-options').innerHTML = Array.from(names).map(n => `<option value="${faqEscape(n)}"></option>`).join('');
+      }
+
+      function openFaqModal() {
+        faqFillCatOptions();
+        const modal = document.getElementById('faq-add-modal');
+        modal.classList.add('show');
+        document.getElementById('new-faq-question').focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFaqModal() {
+        const modal = document.getElementById('faq-add-modal');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        document.getElementById('faq-form-status').innerText = '';
+        document.getElementById('faq-save-btn').disabled = false;
+      }
+
+      function saveNewFaq(event) {
+        event.preventDefault();
+        const q = document.getElementById('new-faq-question').value.trim();
+        const a = document.getElementById('new-faq-answer').value.trim();
+        const c = document.getElementById('new-faq-category').value.trim();
+        const btn = document.getElementById('faq-save-btn');
+        const status = document.getElementById('faq-form-status');
+        if (!q || !a) return;
+        btn.disabled = true;
+        status.innerText = 'Saving...';
+        const newItem = { q, a, c, t: false };
+        allFaqData = [newItem, ...allFaqData];
+        localStorage.setItem('nh_faq', JSON.stringify(allFaqData));
+        renderFAQ(allFaqData);
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addFaq', q, a, c, question: q, answer: a, category: c }) })
+          .then(res => res.json())
+          .then(result => {
+            if (result && (result.success || result.status === 'success')) status.innerText = 'Saved successfully';
+            else status.innerText = 'Added to this app';
+            setTimeout(() => { closeFaqModal(); document.getElementById('faqSearchInput').value = ''; faqView = 'home'; faqRefresh(); }, 850);
+          })
+          .catch(() => {
+            status.innerText = 'Added to this app; server sync unavailable';
+            setTimeout(() => { closeFaqModal(); }, 1200);
+          });
+      }
+
+      
+
+      function copyFaqAnswer(elem, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const origHtml = elem.innerHTML;
+          elem.innerHTML = '<div style="color: var(--brand-primary); font-weight: bold; padding: 10px 0; display:flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Text Copied!</div>';
+          setTimeout(() => {
+            elem.innerHTML = origHtml;
+          }, 1500);
+        });
+      }
+
+      function openProductModal(productId, index) {
+        const p = currentFilteredProducts[index];
+        if (!p) return;
+        
+        currentEditingId = p.id;
+        currentProductIndex = index;
+        
+        document.getElementById('detail-img').src = p.imgUrl;
+        document.getElementById('detail-title').innerText = p.name;
+        document.getElementById('detail-category').innerText = p.category;
+        
+        let viewHtml = '';
+        let editHtml = '';
+        
+        columnDefs.forEach(col => {
+          let val = p[col.key];
+          if(val && val.trim() !== '-' && val.trim() !== '') {
+            viewHtml += `<div class="nutri-item"><div class="nutri-label">${col.label}</div><div class="nutri-value">${val}</div></div>`;
+          }
+          editHtml += `<div class="nutri-item"><div class="nutri-label">${col.label}</div><input type="text" id="edit-${col.key}" value="${val}"></div>`;
+        });
+        
+        document.getElementById('nutrition-view-grid').innerHTML = viewHtml;
+        document.getElementById('nutrition-edit-grid').innerHTML = editHtml;
+        
+        document.getElementById('nutrition-view-grid').style.display = 'grid';
+        document.getElementById('nutrition-edit-grid').style.display = 'none';
+        
+        // Show/Hide buttons for View Mode
+        document.getElementById('mrp-shortcut-btn').style.display = 'flex';
+        document.getElementById('mrp-shortcut-btn').innerText = 'Price / SMS'; // Reset text
+        document.getElementById('status-box').style.display = 'none';
+        document.getElementById('save-btn').style.display = 'none';
+        document.getElementById('close-bottom-btn').style.display = 'flex';
+        document.querySelector('.admin-edit-btn').style.display = 'flex';
+        
+        document.getElementById('product-detail-modal').style.display = 'flex';
+      }
+
+      function navigateProduct(direction) {
+        let newIndex = currentProductIndex + direction;
+        if (newIndex < 0) {
+          newIndex = currentFilteredProducts.length - 1;
+        } else if (newIndex >= currentFilteredProducts.length) {
+          newIndex = 0;
+        }
+        openProductModal(currentFilteredProducts[newIndex].id, newIndex);
+      }
+
+      // Swipe functionality for Mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      const imgContainer = document.getElementById('detail-img-container');
+      
+      imgContainer.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      
+      imgContainer.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+      
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) { navigateProduct(1); } // Swipe Left
+        if (touchEndX > touchStartX + 50) { navigateProduct(-1); } // Swipe Right
+      }
+
+      function closeProductModal() {
+        document.getElementById('product-detail-modal').style.display = 'none';
+      }
+
+      function openPinModal() {
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinErrorMsg').innerText = '';
+        document.getElementById('smart-pin-modal').style.display = 'flex';
+      }
+      function closePinModal() { document.getElementById('smart-pin-modal').style.display = 'none'; }
+      
+      function verifyPin() {
+        if (document.getElementById('pinInput').value === ADMIN_PIN) {
+          closePinModal();
+          document.getElementById('nutrition-view-grid').style.display = 'none';
+          document.getElementById('nutrition-edit-grid').style.display = 'grid';
+          
+          // Show/Hide buttons for Edit Mode
+          document.getElementById('mrp-shortcut-btn').style.display = 'none';
+          document.getElementById('status-box').style.display = 'flex';
+          document.getElementById('save-btn').style.display = 'flex';
+          document.getElementById('close-bottom-btn').style.display = 'flex';
+          document.querySelector('.admin-edit-btn').style.display = 'none';
+          
+        } else {
+          document.getElementById('pinErrorMsg').innerText = "Incorrect PIN!";
+        }
+      }
+
+      function saveUpdatedData() {
+        document.getElementById('modal-status-text').innerText = "Saving...";
+        
+        let updatedData = { id: currentEditingId, name: document.getElementById('detail-title').innerText };
+        columnDefs.forEach(col => { updatedData[col.key] = document.getElementById('edit-' + col.key).value; });
+
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'saveNutrition', productData: updatedData })
+        }).then(res => res.json()).then(response => {
+            if(response.success) {
+              const idx = allProducts.findIndex(x => x.id === currentEditingId);
+              if (idx !== -1) { columnDefs.forEach(col => { allProducts[idx][col.key] = updatedData[col.key]; }); }
+              localStorage.setItem('nh_products', JSON.stringify(allProducts));
+              
+              document.getElementById('modal-status-text').innerText = "Saved!"; 
+              document.getElementById('modal-status-text').style.color = "var(--brand-primary)";
+              setTimeout(() => { openProductModal(currentEditingId, currentProductIndex); }, 1500); 
+            } else { document.getElementById('modal-status-text').innerText = "Error Saving"; }
+        }).catch(err => { document.getElementById('modal-status-text').innerText = "Connection Failed"; });
+      }
+
+      // =====================================================
+      //  MRP — NutritionData শীট থেকে Bag / KG / Ton
+      // =====================================================
+      let mrpUnit = 'all';        // all | bag | kg | ton
+      let mrpLastResults = [];
+      let mrpSelected = null;
+      const MRP_UNIT_INFO = {
+        bag: { label: 'Bag', bn: 'ব্যাগ' },
+        kg:  { label: 'KG',  bn: 'কেজি' },
+        ton: { label: 'Ton', bn: 'টন' }
+      };
+
+      function mrpFetch(query, id) {
+        let url = SCRIPT_URL + '?action=searchMrp&query=' + encodeURIComponent(query || '');
+        if (id) url += '&id=' + encodeURIComponent(id);
+        return fetch(url).then(res => res.json());
+      }
+
+      function applyMrpChips() {
+        document.querySelectorAll('#mrp-unit-chips .mrp-chip').forEach(ch => ch.classList.toggle('active', ch.dataset.unit === mrpUnit));
+      }
+
+      function setMrpUnit(u) {
+        mrpUnit = u;
+        applyMrpChips();
+        if (mrpLastResults.length) renderMrpResults();
+        if (mrpSelected) buildSms(mrpSelected);
+      }
+
+      function mrpPriceLine(item) {
+        return ['bag', 'kg', 'ton'].map(u => {
+          const v = item[u] || '---';
+          const on = (mrpUnit === 'all' || mrpUnit === u);
+          const hi = (mrpUnit === u) ? 'color:var(--brand-primary);' : '';
+          return `<span style="opacity:${on ? 1 : 0.35}; ${hi}">${MRP_UNIT_INFO[u].label}: ${faqEscape(v)}</span>`;
+        }).join(' · ');
+      }
+
+      function renderMrpResults() {
+        const box = document.getElementById('mrpResults');
+        box.innerHTML = mrpLastResults.map((m, i) =>
+          `<div class="mrp-result" data-idx="${i}">${faqEscape(m.name)}<div style="font-size:12px; font-weight:600; margin-top:6px;">${mrpPriceLine(m)}</div></div>`
+        ).join('');
+        box.querySelectorAll('.mrp-result').forEach(el => {
+          el.addEventListener('click', () => { mrpSelected = mrpLastResults[Number(el.dataset.idx)]; buildSms(mrpSelected); });
+        });
+      }
+
+      // প্রোডাক্ট পেজের Price বাটন: তিনটি দামই দেখায়
+      function openMrpModalFromProduct() {
+        const btn = document.getElementById('mrp-shortcut-btn');
+        btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px;"></div>`;
+        const pName = document.getElementById('detail-title').innerText;
+        mrpFetch(pName, currentEditingId)
+          .then(data => {
+            if (data.error || !data.results || data.results.length === 0) { btn.innerText = "No Price Found"; return; }
+            const m = data.results[0];
+            btn.innerHTML = `<span style="font-size:13px; line-height:1.35; text-align:center;"><strong>Bag: ${faqEscape(m.bag || '---')}</strong> · KG: ${faqEscape(m.kg || '---')} · Ton: ${faqEscape(m.ton || '---')} <strong>TK</strong></span>`;
+          })
+          .catch(() => { btn.innerText = "Error"; });
+      }
+
+      // বর্তমান প্রোডাক্টের SMS তৈরি
+      function generateSmsForProduct() {
+        const btn = document.getElementById('close-bottom-btn');
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<div class="spinner" style="width:20px; height:20px; border-width: 2px; border-top-color:#fff;"></div>`;
+
+        const pName = document.getElementById('detail-title').innerText;
+        const currentProduct = allProducts.find(p => String(p.id) === String(currentEditingId));
+        const nutritionPack = currentProduct && currentProduct.pack && currentProduct.pack !== '-' ? String(currentProduct.pack).trim() : '';
+        const restore = () => { btn.disabled = false; btn.innerHTML = originalHtml; };
+
+        mrpFetch(pName, currentEditingId)
+          .then(data => {
+            restore();
+            openMrpModal();
+            if (data.error || !data.results || data.results.length === 0) {
+              document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No price found for this product.</div>`;
+              return;
+            }
+            const m = data.results[0];
+            if (!m.pack) m.pack = nutritionPack;
+            mrpLastResults = [m];
+            mrpSelected = m;
+            buildSms(m);
+            document.getElementById('mrp-search-area').style.display = 'none'; // only SMS box + unit chips
+          })
+          .catch(() => {
+            restore();
+            openMrpModal();
+            document.getElementById('mrpResults').innerHTML = `<div style="color:red; font-weight:600;">Connection failed. Try again.</div>`;
+          });
+      }
+
+      function openMrpModal() {
+        mrpUnit = 'all'; mrpLastResults = []; mrpSelected = null; applyMrpChips();
+        document.getElementById('mrp-search-area').style.display = 'block';
+        document.getElementById('mrpSearchInput').value = '';
+        document.getElementById('mrpResults').innerHTML = '';
+        document.getElementById('smsText').value = '';
+        document.getElementById('copySmsBtn').innerText = 'Copy SMS';
+        document.getElementById('mrp-modal').style.display = 'flex';
+      }
+      function closeMrpModal() { document.getElementById('mrp-modal').style.display = 'none'; }
+
+      // সার্চ: "510", "510 ton", "713 কেজি", "broiler starter ব্যাগ" — সবই কাজ করবে
+      function searchMrpBtnClick() {
+        const q = document.getElementById('mrpSearchInput').value.trim();
+        if (!q) return;
+        document.getElementById('mrp-loading').style.display = 'block';
+        mrpSelected = null;
+        mrpFetch(q)
+          .then(data => {
+            document.getElementById('mrp-loading').style.display = 'none';
+            if (data.error || !data.results || data.results.length === 0) {
+              mrpLastResults = [];
+              document.getElementById('mrpResults').innerHTML = `<div style="color:var(--text-muted); font-weight:600;">No product found.</div>`;
+              return;
+            }
+            if (data.unit) { mrpUnit = data.unit; applyMrpChips(); } // লেখা থেকে একক বুঝে নিলে চিপ অটো সিলেক্ট
+            mrpLastResults = data.results;
+            renderMrpResults();
+            if (mrpLastResults.length === 1) { mrpSelected = mrpLastResults[0]; buildSms(mrpSelected); }
+          })
+          .catch(() => { document.getElementById('mrp-loading').style.display = 'none'; });
+      }
+
+      function buildSms(item) {
+        const pack = (item.pack || '').trim();
+        let priceText;
+        if (mrpUnit === 'all') {
+          priceText = `সর্বোচ্চ খুচরা মূল্য (MRP):\n• প্রতি ব্যাগ: ${item.bag || '---'} টাকা\n• প্রতি কেজি: ${item.kg || '---'} টাকা\n• প্রতি টন: ${item.ton || '---'} টাকা`;
+        } else {
+          priceText = `সর্বোচ্চ খুচরা মূল্য (MRP): ${item[mrpUnit] || '---'} টাকা/${MRP_UNIT_INFO[mrpUnit].bn}`;
+        }
+        const weightLine = pack ? `সঠিক ওজন: ${pack}\n` : '';
+        document.getElementById('smsText').value = `সম্মানিত গ্রাহক, আসসালামু আলাইকুম।\nআমাদের সাথে যোগাযোগ করার জন্য আপনাকে আন্তরিক ধন্যবাদ!\n\nপণ্য: ${item.name}\n${weightLine}${priceText}\n(এলাকাভেদে দামের সামান্য তারতম্য হতে পারে)\n\nফিড সংগ্রহ করতে আপনার নিকটস্থ নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর ডিলার পয়েন্টে যোগাযোগ করুন।\n\nবিস্তারিত তথ্যের জন্য হটলাইন নম্বরে কল করুন।\n📞 হটলাইন সার্ভিস: +880 1742-510889\n\nধন্যবাদান্তে,\nনিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড`;
+      }
+
+      // =====================================================
+      //  SHARE CARD — প্রোডাক্ট পোস্ট কার্ড (Canvas → PNG)
+      // =====================================================
+      const CARD_FONT = "'Segoe UI', Roboto, 'Noto Sans Bengali', 'Nirmala UI', 'Hind Siliguri', Helvetica, Arial, sans-serif";
+      const CARD_FORMATS = {
+        portrait: { W: 1080, H: 0,    mode: 'stack', safeT: 0,  safeB: 0 },
+        square:   { W: 1080, H: 1080, mode: 'split', safeT: 0,  safeB: 0 },
+        story:    { W: 1080, H: 1920, mode: 'stack', safeT: 90, safeB: 110 } // Story-তে উপরে/নিচে UI ঢাকা পড়ে, তাই সেফ জোন
+      };
+      const CARD_EN = { header: 'NEW HOPE FEED MILL BANGLADESH LTD.', sub: 'Product Information', nutri: 'Nutrition Details',
+        mrp: 'MRP (Tk)  ·  price may vary slightly by area', units: ['Per Bag', 'Per KG', 'Per Ton'], hotline: 'Hotline: ', noimg: 'Image not available' };
+      const CARD_BN = { header: 'নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড', sub: 'পণ্যের তথ্য', nutri: 'পুষ্টিগুণ',
+        mrp: 'এমআরপি (টাকা)  ·  এলাকাভেদে সামান্য তারতম্য হতে পারে', units: ['ব্যাগ প্রতি', 'কেজি প্রতি', 'টন প্রতি'], hotline: 'হটলাইন: ', noimg: 'ছবি পাওয়া যায়নি',
+        labels: { pack: 'প্যাকিং সাইজ', type: 'ফিড সাইজ', mois: 'আর্দ্রতা (সর্বোচ্চ)', cp: 'ক্রুড প্রোটিন', fat: 'ফ্যাট (সর্বনিম্ন)', fib: 'ফাইবার (সর্বোচ্চ)',
+                  ash: 'ছাই (সর্বোচ্চ)', lys: 'লাইসিন (সর্বনিম্ন)', meth: 'মেথিওনিন', cal: 'ক্যালসিয়াম (সর্বনিম্ন)', pho: 'ফসফরাস (সর্বনিম্ন)',
+                  eng: 'এনার্জি (কিলোক্যালরি)', carbo: 'শর্করা (সর্বোচ্চ)' },
+        cats: { 'Poultry Feed': 'পোল্ট্রি ফিড', 'Cattle Feed': 'ক্যাটল ফিড', 'Fish Feed': 'ফিশ ফিড' } };
+      function cardBnDigits(v) { return String(v).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]); }
+      const CARD_THEMES = {
+        green:  { main: '#00a651', dark: '#007a3d', tint: '#e8f7ef' },
+        orange: { main: '#f05a28', dark: '#c8431a', tint: '#fdeee8' }
+      };
+      const cardImgCache = {}, cardMrpCache = {};
+      let cardProduct = null, cardTheme = 'green', cardFormat = 'portrait', cardLang = 'en', cardShowPrice = false, cardCanvas = null, cardTok = 0;
+
+      function cardLoadImg(src, cors) {
+        return new Promise((res, rej) => { const i = new Image(); if (cors) i.crossOrigin = 'anonymous'; i.onload = () => res(i); i.onerror = rej; i.src = src; });
+      }
+      function cardFetchImage(p) {
+        if (cardImgCache[p.id]) return Promise.resolve(cardImgCache[p.id]);
+        return fetch(SCRIPT_URL + '?action=getImage&id=' + encodeURIComponent(p.id)).then(r => r.json())
+          .then(d => { if (!d.data) throw new Error('no data'); return cardLoadImg('data:' + d.mime + ';base64,' + d.data); })
+          .catch(() => cardLoadImg(p.imgUrl, true).catch(() => null))
+          .then(img => { if (img) cardImgCache[p.id] = img; return img; });
+      }
+      function cardFetchMrp(p) {
+        if (cardMrpCache[p.id]) return Promise.resolve(cardMrpCache[p.id]);
+        return mrpFetch(p.name, p.id).then(d => {
+          const m = d && d.results && d.results[0] ? d.results[0] : null;
+          if (m) cardMrpCache[p.id] = m;
+          return m;
+        }).catch(() => null);
+      }
+
+      function openCardModal() {
+        cardProduct = allProducts.find(p => String(p.id) === String(currentEditingId)) || currentFilteredProducts[currentProductIndex];
+        if (!cardProduct) return;
+        const sel = document.getElementById('card-product-select');
+        sel.innerHTML = allProducts.map(p => `<option value="${faqEscape(p.id)}">${faqEscape(p.name)}</option>`).join('');
+        sel.value = cardProduct.id;
+        document.getElementById('card-share-btn').style.display = (navigator.canShare && navigator.share) ? 'block' : 'none';
+        document.getElementById('card-modal').style.display = 'flex';
+        renderCard();
+      }
+      function closeCardModal() { document.getElementById('card-modal').style.display = 'none'; }
+      function cardPickProduct(id) { cardProduct = allProducts.find(p => String(p.id) === String(id)); renderCard(); }
+      function setCardOpt(group, v) {
+        if (group === 'fmt') cardFormat = v; else if (group === 'lang') cardLang = v; else cardTheme = v;
+        document.querySelectorAll('#card-modal .mrp-chip[data-g="' + group + '"]').forEach(ch => ch.classList.toggle('active', ch.dataset.v === v));
+        renderCard();
+      }
+      function toggleCardPrice(on) { cardShowPrice = on; renderCard(); }
+
+      function cardRR(ctx, x, y, w, h, r) {
+        ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+      }
+      function cardWrap(ctx, text, maxW) {
+        const words = text.split(' '), lines = []; let cur = '';
+        words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; });
+        if (cur) lines.push(cur); return lines;
+      }
+      function cardFit(ctx, text, maxW, start, min, weight) {
+        let s = start; ctx.font = `${weight} ${s}px ${CARD_FONT}`;
+        while (ctx.measureText(text).width > maxW && s > min) { s -= 2; ctx.font = `${weight} ${s}px ${CARD_FONT}`; }
+      }
+
+      async function renderCard() {
+        const p = cardProduct; if (!p) return;
+        const tok = ++cardTok, status = document.getElementById('card-status');
+        status.innerText = 'Preparing card...';
+        const [img, mrp] = await Promise.all([cardFetchImage(p), cardShowPrice ? cardFetchMrp(p) : Promise.resolve(null)]);
+        if (tok !== cardTok) return; // নতুন রিকোয়েস্ট এসে গেছে
+
+        const th = CARD_THEMES[cardTheme], fmt = CARD_FORMATS[cardFormat], bn = cardLang === 'bn', T = bn ? CARD_BN : CARD_EN;
+        const split = fmt.mode === 'split', W = fmt.W, pad = 60, innerW = W - pad * 2;
+        const num = v => bn ? cardBnDigits(v) : String(v);
+
+        // কোড ও নাম আলাদা: "510 - Broiler Starter Feed - Blue"
+        let code = '', title = p.name.trim();
+        const mm = title.match(/^([A-Za-z0-9]{1,6})\s*[-–—]\s*(.+)$/);
+        if (mm) { code = mm[1]; title = mm[2]; }
+        const items = columnDefs.map(c => ({ label: bn ? T.labels[c.key] : c.label, value: num(String(p[c.key] || '').trim()), raw: String(p[c.key] || '').trim() }))
+                                .filter(i => i.raw && i.raw !== '-');
+        const category = bn ? (T.cats[p.category] || p.category) : p.category;
+
+        // লেআউট প্যারামিটার
+        let cols = split ? 4 : 3, cellH = split ? (mrp ? 76 : 86) : 120;
+        const gap = split ? 12 : 20;
+        let cellW = (innerW - gap * (cols - 1)) / cols, rows = Math.ceil(items.length / cols);
+        const titleSize = split ? 46 : 56, lineH = split ? 56 : 68;
+        const imgS = split ? (mrp ? 300 : 380) : 0, colX = pad + imgS + 36;
+        const tW = split ? W - pad - colX : innerW;
+        const headerH = split ? 96 : 130 + fmt.safeT, footH = split ? 70 : 110 + fmt.safeB;
+        const priceH = split ? 120 : 170;
+
+        const m = document.createElement('canvas').getContext('2d');
+        m.font = `800 ${titleSize}px ${CARD_FONT}`;
+        let lines = cardWrap(m, title, tW);
+        if (split && lines.length > 4) { lines = lines.slice(0, 4); lines[3] = lines[3].replace(/\s*\S*$/, '') + '…'; }
+
+        let H, imgY, imgH, titleY, catY, secY, gridY, priceY;
+        const secBlock = items.length ? (split ? 56 : 70) : 0; let gridBlock = rows * (cellH + gap);
+        if (split) {
+          H = fmt.H; imgY = headerH + 24; imgH = imgS; secY = imgY + imgS + 24; gridY = secY + secBlock; priceY = gridY + gridBlock + 8;
+        } else {
+          const titleBlock = lines.length * lineH + 8, catBlock = 96, priceBlock = mrp ? 10 + priceH + 30 : 0;
+          const fixedH = headerH + 30 + 45 + titleBlock + catBlock + secBlock + priceBlock + 20 + footH;
+          // জায়গা কম পড়লে (Story-তে অনেক আইটেম + MRP) গ্রিড ৪ কলামে নিয়ে যাই
+          if (fmt.H && fixedH + gridBlock + 380 > fmt.H) {
+            cols = 4; cellH = 104; cellW = (innerW - gap * (cols - 1)) / cols; rows = Math.ceil(items.length / cols); gridBlock = rows * (cellH + gap);
+          }
+          const base = fixedH + gridBlock;
+          imgH = fmt.H ? Math.max(240, Math.min(900, fmt.H - base)) : 540;
+          H = fmt.H || (base + imgH);
+          imgY = headerH + 30; titleY = imgY + imgH + 45; catY = titleY + titleBlock; secY = catY + catBlock; gridY = secY + secBlock; priceY = gridY + gridBlock + 10;
+        }
+        const footY = H - footH;
+
+        const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+        const ctx = cv.getContext('2d');
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+        // হেডার
+        const grad = ctx.createLinearGradient(0, 0, W, headerH); grad.addColorStop(0, th.main); grad.addColorStop(1, th.dark);
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, W, headerH);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        cardFit(ctx, T.header, W - pad * 2, split ? 34 : 38, 22, 800); ctx.fillText(T.header, W / 2, split ? 44 : fmt.safeT + 62);
+        ctx.globalAlpha = 0.85; ctx.font = `600 ${split ? 22 : 26}px ${CARD_FONT}`; ctx.fillText(T.sub, W / 2, split ? 76 : fmt.safeT + 102); ctx.globalAlpha = 1;
+
+        // ছবির প্যানেল
+        const pw = split ? imgS : innerW;
+        ctx.fillStyle = th.tint; cardRR(ctx, pad, imgY, pw, imgH, split ? 28 : 36); ctx.fill();
+        if (img) {
+          const bx = pad + 30, by = imgY + 30, bw0 = pw - 60, bh0 = imgH - 60;
+          const r = Math.min(bw0 / img.width, bh0 / img.height), dw = img.width * r, dh = img.height * r;
+          ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 12;
+          ctx.drawImage(img, bx + (bw0 - dw) / 2, by + (bh0 - dh) / 2, dw, dh);
+          ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+        } else { ctx.fillStyle = '#999'; ctx.font = `600 26px ${CARD_FONT}`; ctx.fillText(T.noimg, pad + pw / 2, imgY + imgH / 2); }
+
+        // কোড ব্যাজ
+        const badgeFont = split ? 36 : 40, badgeH = split ? 56 : 66;
+        let badgeBottom = 0, bx0, by0;
+        if (code) {
+          ctx.font = `800 ${badgeFont}px ${CARD_FONT}`; const bw = ctx.measureText(code).width + 52;
+          bx0 = split ? colX : pad + 24; by0 = split ? imgY : imgY + 24;
+          ctx.fillStyle = th.main; cardRR(ctx, bx0, by0, bw, badgeH, badgeH / 2); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(code, bx0 + bw / 2, by0 + badgeH * 0.7);
+          badgeBottom = by0 + badgeH;
+        }
+
+        // নাম + ক্যাটাগরি
+        ctx.textAlign = 'left'; ctx.fillStyle = '#1b1b1b'; ctx.font = `800 ${titleSize}px ${CARD_FONT}`;
+        const tx = split ? colX : pad, ty = split ? (code ? badgeBottom + 20 : imgY) : titleY;
+        lines.forEach((ln, i) => ctx.fillText(ln, tx, ty + titleSize * 0.95 + i * lineH));
+        if (category) {
+          ctx.font = `700 ${split ? 24 : 26}px ${CARD_FONT}`; const cw = ctx.measureText(category).width + 48, chH = split ? 50 : 56;
+          const cy0 = split ? ty + lines.length * lineH + 12 : catY;
+          ctx.fillStyle = th.tint; cardRR(ctx, tx, cy0, cw, chH, chH / 2); ctx.fill();
+          ctx.fillStyle = th.dark; ctx.fillText(category, tx + 24, cy0 + chH * 0.68);
+        }
+
+        // নিউট্রিশন গ্রিড
+        if (items.length) {
+          ctx.fillStyle = th.main; ctx.font = `800 ${split ? 30 : 36}px ${CARD_FONT}`; ctx.fillText(T.nutri, pad, secY + (split ? 30 : 36));
+          ctx.fillRect(pad, secY + (split ? 40 : 50), 90, 5);
+          items.forEach((it, i) => {
+            const cx = pad + (i % cols) * (cellW + gap), cy = gridY + Math.floor(i / cols) * (cellH + gap);
+            ctx.fillStyle = th.tint; cardRR(ctx, cx, cy, cellW, cellH, split ? 14 : 18); ctx.fill();
+            ctx.fillStyle = th.main; ctx.fillRect(cx, cy + cellH * 0.18, 6, cellH * 0.64);
+            ctx.fillStyle = '#6b6b6b'; cardFit(ctx, it.label, cellW - 36, split ? 17 : 22, 12, 600); ctx.fillText(it.label, cx + 20, cy + cellH * 0.36);
+            ctx.fillStyle = '#1b1b1b'; cardFit(ctx, it.value, cellW - 36, split ? 30 : 38, 16, 800); ctx.fillText(it.value, cx + 20, cy + cellH * 0.8);
+          });
+        }
+
+        // MRP স্ট্রিপ (ঐচ্ছিক)
+        if (mrp) {
+          const o = split ? { cap: 30, lab: 66, val: 106, cf: 19, lf: 20, vf: 38, dv: 46, dh: 60 } : { cap: 40, lab: 92, val: 142, cf: 24, lf: 24, vf: 46, dv: 66, dh: 90 };
+          ctx.fillStyle = th.dark; cardRR(ctx, pad, priceY, innerW, priceH, 22); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.globalAlpha = 0.85; ctx.font = `700 ${o.cf}px ${CARD_FONT}`;
+          ctx.fillText(T.mrp, W / 2, priceY + o.cap); ctx.globalAlpha = 1;
+          const cw = innerW / 3;
+          [[T.units[0], mrp.bag], [T.units[1], mrp.kg], [T.units[2], mrp.ton]].forEach((c, i) => {
+            const cx = pad + cw * i + cw / 2, v = c[1] ? num(c[1]) : '---';
+            ctx.font = `600 ${o.lf}px ${CARD_FONT}`; ctx.globalAlpha = 0.85; ctx.fillText(c[0], cx, priceY + o.lab); ctx.globalAlpha = 1;
+            cardFit(ctx, v, cw - 30, o.vf, 24, 800); ctx.fillText(v, cx, priceY + o.val);
+            if (i) { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(pad + cw * i, priceY + o.dv, 2, o.dh); ctx.fillStyle = '#fff'; }
+          });
+        }
+
+        // ফুটার
+        ctx.fillStyle = th.main; ctx.fillRect(0, footY, W, footH);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `800 ${split ? 30 : 36}px ${CARD_FONT}`;
+        ctx.fillText(T.hotline + num('+880 1742-510889'), W / 2, footY + (split ? 46 : 68));
+
+        cv.style.cssText = 'display:block; margin:0 auto; width:auto; max-width:100%; height:auto; max-height:58vh;';
+        cardCanvas = cv;
+        const wrap = document.getElementById('card-preview-wrap'); wrap.innerHTML = ''; wrap.appendChild(cv);
+        status.innerText = (cardShowPrice && !mrp) ? 'MRP not found for this product.' : '';
+      }
+
+      function cardFileName() {
+        const base = (cardProduct ? cardProduct.name : 'product').replace(/[^\w\u0980-\u09FF]+/g, '_').replace(/^_|_$/g, '');
+        return 'NewHope_' + base + '_' + cardFormat + (cardLang === 'bn' ? '_bn' : '') + '.png';
+      }
+      function cardBlob() { return new Promise(res => cardCanvas.toBlob(res, 'image/png')); }
+
+      async function downloadCard() {
+        if (!cardCanvas) return;
+        const blob = await cardBlob(), a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = cardFileName(); document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        document.getElementById('card-status').innerText = '✔ Downloaded';
+      }
+      async function copyCardImage() {
+        const status = document.getElementById('card-status');
+        if (!cardCanvas) return;
+        try {
+          const blob = await cardBlob();
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          status.innerText = '✔ Image copied — paste it in WhatsApp / Messenger / Facebook';
+        } catch (e) { status.innerText = 'Copy not supported in this browser. Please use Download.'; }
+      }
+      async function shareCard() {
+        if (!cardCanvas) return;
+        try {
+          const blob = await cardBlob(), file = new File([blob], cardFileName(), { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: cardProduct ? cardProduct.name : 'New Hope' });
+          else document.getElementById('card-status').innerText = 'Sharing not supported. Please use Download.';
+        } catch (e) { /* user cancelled */ }
+      }
+
+      // =====================================================
+      //  MARKET — ফোন বাটনে ক্লিক করলে অটো মেসেজ (বাংলা / English / উভয়)
+      // =====================================================
+      function mkFirstNumber(p) {
+        const m = String(p).match(/\+?\d[\d\s-]{7,}\d/);
+        return (m ? m[0] : String(p)).replace(/[^\d+]/g, '');
+      }
+      function mkUniq(parts) {
+        const seen = new Set();
+        return parts.filter(x => { const k = String(x || '').trim().toLowerCase(); if (!k || seen.has(k)) return false; seen.add(k); return true; });
+      }
+      function mkAreaText(c, lang) {
+        return lang === 'bn' ? (c.upzBn || c.district) : mkUniq([c.upzEn, c.district]).join(', ');
+      }
+      function mkNameText(c) {
+        const d = c.div && !c.person.toLowerCase().includes(c.div.toLowerCase()) ? ` (${c.div})` : '';
+        return (c.person || '') + d;
+      }
+
+      function mkBuildMsg() {
+        const c = mkMsgCur; if (!c) return '';
+        const incName = document.getElementById('mk-inc-name').checked && c.person;
+        const incArea = document.getElementById('mk-inc-area').checked;
+        const bn = ['সম্মানিত গ্রাহক,', 'আসসালামু আলাইকুম। নিউ হোপ (New Hope)-এর সাথে যোগাযোগ করার জন্য আপনাকে অসংখ্য ধন্যবাদ!',
+                    'বিস্তারিত তথ্য জানতে অনুগ্রহ করে আপনার এলাকার দায়িত্বপ্রাপ্ত প্রতিনিধির সাথে যোগাযোগ করুন:'];
+        if (incName) bn.push('👤 নাম: ' + mkNameText(c));
+        if (incArea && mkAreaText(c, 'bn')) bn.push('📍 এলাকা: ' + mkAreaText(c, 'bn'));
+        bn.push('📞 মোবাইল: ' + c.phone, '', 'ধন্যবাদ!');
+        const en = ['Dear Valued Customer,', 'Assalamu Alaikum. Thank you very much for contacting New Hope!',
+                    'For more details, please contact the representative in charge of your area:'];
+        if (incName) en.push('👤 Name: ' + mkNameText(c));
+        if (incArea && mkAreaText(c, 'en')) en.push('📍 Area: ' + mkAreaText(c, 'en'));
+        en.push('📞 Mobile: ' + c.phone, '', 'Thank you!');
+        const B = bn.join('\n'), E = en.join('\n');
+        return mkMsgLang === 'bn' ? B : mkMsgLang === 'en' ? E : B + '\n\n━━━━━━━━━━\n\n' + E;
+      }
+      function mkRenderMsg() {
+        document.getElementById('mk-msg-text').value = mkBuildMsg();
+        document.getElementById('mk-copy-msg').innerText = 'Copy Message';
+      }
+      function openMkMsg(idx) {
+        mkMsgCur = mkMsgPool[idx]; if (!mkMsgCur) return;
+        const c = mkMsgCur;
+        document.getElementById('mk-info-name').innerText = mkNameText(c) || '—';
+        document.getElementById('mk-info-area').innerText = mkUniq([c.upzBn, c.upzEn, c.district]).join(' · ');
+        document.getElementById('mk-copy-num').innerText = '📋 ' + c.phone;
+        document.getElementById('mk-call').href = 'tel:' + mkFirstNumber(c.phone);
+        setMkLang('both');
+        document.getElementById('mk-msg-modal').style.display = 'flex';
+      }
+      function closeMkMsg() { document.getElementById('mk-msg-modal').style.display = 'none'; }
+      function setMkLang(l) {
+        mkMsgLang = l;
+        document.querySelectorAll('#mk-msg-modal .mrp-chip[data-mklang]').forEach(ch => ch.classList.toggle('active', ch.dataset.mklang === l));
+        mkRenderMsg();
+      }
+      function mkFlash(btn, ok, idle) { btn.innerText = ok; setTimeout(() => { btn.innerText = idle; }, 1600); }
+      function mkCopyText(text, btn, ok, idle) {
+        const fallback = () => { const t = document.getElementById('mk-msg-text'); t.select(); try { document.execCommand('copy'); mkFlash(btn, ok, idle); } catch (e) { mkFlash(btn, 'Copy failed', idle); } };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => mkFlash(btn, ok, idle)).catch(fallback); else fallback();
+      }
+      function mkCopyMsg() { const v = document.getElementById('mk-msg-text').value; if (v) mkCopyText(v, document.getElementById('mk-copy-msg'), '✔ Copied!', 'Copy Message'); }
+      function mkCopyNumber() { if (mkMsgCur) mkCopyText(mkMsgCur.phone, document.getElementById('mk-copy-num'), '✔ Copied', '📋 ' + mkMsgCur.phone); }
+      function mkWhatsApp() { const v = document.getElementById('mk-msg-text').value; if (v) window.open('https://wa.me/?text=' + encodeURIComponent(v), '_blank'); }
+      function mkSms() { const v = document.getElementById('mk-msg-text').value; if (v) window.location.href = 'sms:?&body=' + encodeURIComponent(v); }
+
+      // =====================================================
+      //  সব পপআপ: বাইরে (ব্যাকড্রপে) ক্লিক/ট্যাপ করলে বা Esc চাপলে বন্ধ হবে
+      // =====================================================
+      const POPUPS = [ // উপরের স্তর আগে (Esc একবারে একটি করে বন্ধ করে)
+        { id: 'faq-answer-modal',     close: () => closeFaqAnswer(),   open: el => el.classList.contains('show') },
+        { id: 'faq-add-modal',        close: () => closeFaqModal(),    open: el => el.classList.contains('show') },
+        { id: 'smart-pin-modal',      close: () => closePinModal() },
+        { id: 'card-modal',           close: () => closeCardModal() },
+        { id: 'mk-msg-modal',         close: () => closeMkMsg() },
+        { id: 'mrp-modal',            close: () => closeMrpModal() },
+        // এডিট মোডে (সেভ না করা পরিবর্তন হারাতে পারে) প্রোডাক্ট পেজ আপনাআপনি বন্ধ হবে না
+        { id: 'product-detail-modal', close: () => closeProductModal(), guard: () => document.getElementById('nutrition-edit-grid').style.display === 'grid' }
+      ];
+      function popupIsOpen(p) {
+        const el = document.getElementById(p.id); if (!el) return false;
+        return p.open ? p.open(el) : getComputedStyle(el).display !== 'none';
+      }
+      let popupDownTarget = null;
+      // টেক্সট সিলেক্ট করতে গিয়ে মাউস বাইরে ছেড়ে দিলে যেন বন্ধ না হয়: শুরু ও শেষ দুটোই ব্যাকড্রপে হতে হবে
+      document.addEventListener('pointerdown', e => { popupDownTarget = e.target; }, true);
+      document.addEventListener('click', e => {
+        const p = POPUPS.find(x => x.id === e.target.id);
+        if (!p || popupDownTarget !== e.target || !popupIsOpen(p) || (p.guard && p.guard())) return;
+        p.close();
+      }, true);
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        const p = POPUPS.find(x => popupIsOpen(x) && !(x.guard && x.guard()));
+        if (p) p.close();
+      });
+
+      function copyNumber(btn, text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const origHtml = btn.innerHTML;
+          btn.innerHTML = '✅ Copied!';
+          setTimeout(() => btn.innerHTML = origHtml, 2000);
+        });
+      }
+      function copySms() {
+        const box = document.getElementById('smsText');
+        if(!box.value) return;
+        box.select(); navigator.clipboard.writeText(box.value);
+        document.getElementById('copySmsBtn').innerText = '✔ Copied!';
+      }
+    </script>
+    
+    <!-- Service Worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); });
+      }
+    </script>
+
+  </body>
+</html>
