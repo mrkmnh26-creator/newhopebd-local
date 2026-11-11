@@ -206,6 +206,58 @@
       #sec-faq .faq-hero.compact { padding-bottom: 30px; margin-bottom: 20px; }
       @media (min-width: 768px) { #sec-faq .faq-hero { padding: 44px 40px 72px; } #sec-faq .faq-hero.compact { padding-bottom: 36px; } #sec-faq .faq-trending { margin: -44px 20px 22px; } .faq-hero-title { font-size: 34px; } }
       @media (max-width: 430px) { .faq-trending { padding: 12px 14px; gap: 12px; } .faq-trending-label { padding-right: 12px; font-size: 13px; } .faq-hero-title { font-size: 24px; } }
+
+      /* ===== Report builder + Leads ===== */
+      #sec-report, #sec-leads { padding-bottom: 130px; }
+      .sec-hero { margin-bottom: 18px; padding: 30px 20px 34px; text-align: center; }
+      .rp-chiprow { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px 12px; scrollbar-width: none; }
+      .rp-chiprow::-webkit-scrollbar { display: none; }
+      .rp-tools { display: flex; align-items: center; gap: 10px; padding: 0 20px 14px; flex-wrap: wrap; }
+      .rp-tools button, .ld-btn { border: 1px solid #e4ebe6; background: var(--card-bg); color: var(--text-main); font: inherit; font-size: 12.5px; font-weight: 800; padding: 8px 14px; border-radius: 999px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+      .rp-tools button:hover, .ld-btn:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+      .rp-tools span { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-left: auto; }
+      .rp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 12px; padding: 0 20px; }
+      .rp-row { display: flex; align-items: center; gap: 12px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; padding: 10px 14px; cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,.04); transition: .2s ease; }
+      .rp-row.sel { border-color: var(--brand-primary); background: var(--icon-bg); }
+      .rp-check { width: 24px; height: 24px; flex: 0 0 24px; border-radius: 8px; border: 2px solid #cfd8d2; display: grid; place-items: center; color: #fff; font-size: 14px; font-weight: 900; }
+      .rp-row.sel .rp-check { background: var(--brand-primary); border-color: var(--brand-primary); }
+      .rp-thumb { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 12px; object-fit: cover; background: var(--bg-color); }
+      .rp-info { flex: 1; min-width: 0; }
+      .rp-name { font-size: 14px; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+      .rp-sub { margin-top: 2px; font-size: 11.5px; font-weight: 600; color: var(--text-muted); }
+      .rp-bar { position: sticky; bottom: 104px; z-index: 20; margin: 16px 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card-bg); border-radius: 20px; padding: 12px 14px 12px 20px; box-shadow: 0 10px 30px rgba(0,0,0,.14); font-size: 14px; font-weight: 700; color: var(--text-main); }
+      .rp-bar .faq-form-btn { flex: 0 0 auto; padding: 12px 20px; }
+      .rp-preview { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+      .rp-preview canvas { width: 100%; height: auto; border-radius: 10px; border: 1px solid #e4ebe6; background: #fff; display: block; }
+      .rp-sel-item { display: flex; align-items: center; gap: 8px; padding: 7px 4px; border-bottom: 1px solid #f0f0f0; font-size: 13px; font-weight: 700; color: var(--text-main); }
+      .rp-sel-item span { flex: 1; min-width: 0; }
+      .rp-sel-item button { border: 0; background: var(--bg-color); color: var(--text-main); width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-weight: 800; }
+      .rp-checks { display: flex; gap: 14px; flex-wrap: wrap; }
+      .rp-checks label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--text-main); cursor: pointer; }
+      .ld-lock { max-width: 380px; margin: 10px auto; padding: 26px 22px; background: var(--card-bg); border-radius: 24px; text-align: center; box-shadow: 0 8px 28px rgba(0,0,0,.06); }
+      .ld-lock h3 { margin: 0 0 6px; color: var(--text-main); }
+      .ld-lock p { margin: 0 0 16px; font-size: 13px; color: var(--text-muted); }
+      .ld-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; padding: 0 20px; }
+      .ld-card { background: var(--card-bg); border-radius: 20px; padding: 18px; box-shadow: 0 4px 16px rgba(0,0,0,.05); border: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 9px; }
+      .ld-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+      .ld-name { font-size: 16px; font-weight: 850; color: var(--text-main); }
+      .ld-meta { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+      .ld-status { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .ld-status.s-New { background: #fff2dd; color: #b26a00; } .ld-status.s-Forwarded { background: #e3f0ff; color: #1b62c4; } .ld-status.s-Done { background: var(--icon-bg); color: var(--brand-primary); }
+      .ld-line { font-size: 13.5px; font-weight: 600; color: var(--text-main); line-height: 1.45; }
+      .ld-line a { color: var(--brand-primary); font-weight: 800; text-decoration: none; }
+      .ld-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+      .ld-chip { font-size: 11.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: var(--icon-bg); color: var(--brand-primary); }
+      .ld-note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; background: var(--bg-color); padding: 10px 12px; border-radius: 12px; white-space: pre-wrap; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+      .ld-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; align-items: center; }
+      .ld-btn.primary { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+      .ld-btn.primary:hover { color: #fff; opacity: .9; }
+      .ld-actions select { border: 1px solid #e4ebe6; border-radius: 999px; padding: 7px 10px; font: inherit; font-size: 12px; font-weight: 800; background: var(--card-bg); color: var(--text-main); margin-left: auto; }
+      .ld-rep-chip { display: inline-block; margin: 0 6px 6px 0; padding: 7px 12px; border-radius: 12px; border: 2px solid #e4ebe6; background: var(--bg-color); color: var(--text-main); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; text-align: left; }
+      .ld-rep-chip.active { border-color: var(--brand-primary); background: var(--icon-bg); color: var(--brand-primary); }
+      #report-modal .faq-form-actions, #lead-modal .faq-form-actions { position: sticky; bottom: -22px; background: var(--card-bg); padding: 12px 0 8px; margin-top: 12px; z-index: 5; }
+      .ld-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      @media (max-width: 430px) { .ld-grid2 { grid-template-columns: 1fr; gap: 0; } }
       @media (max-width: 430px) { .faq-toolbar { align-items: flex-start; flex-direction: column; } .faq-add-btn { width: 100%; justify-content: center; } .faq-form-card { padding: 23px 17px 18px; border-radius: 24px; } }
 
       /* Floating Bottom Nav - Updated for 8 items */
@@ -517,6 +569,51 @@
       <!-- ==============================
            4. FAQ & INBOX REPLY SECTION
            ============================== -->
+      <!-- ===== PRODUCT REPORT ===== -->
+      <div id="sec-report" class="app-section" style="display: none;">
+        <header class="app-header sec-hero">
+          <h1 class="faq-hero-title">Product Report</h1>
+          <div class="faq-hero-sub">প্রোডাক্ট বেছে নিয়ে কাস্টমারের জন্য স্ট্যান্ডার্ড প্রাইস লিস্ট বানান</div>
+          <div class="faq-hero-search"><input type="text" id="rp-search" placeholder="Search product name or code..." autocomplete="off" oninput="rpSearch(this.value)"></div>
+        </header>
+        <div class="rp-chiprow" id="rp-cats"></div>
+        <div class="rp-tools">
+          <button type="button" onclick="rpSelectShown()">Select all shown</button>
+          <button type="button" onclick="rpClear()">Clear selection</button>
+          <span id="rp-shown"></span>
+        </div>
+        <div class="rp-list" id="rp-list"></div>
+        <div class="rp-bar" id="rp-bar"><div><b id="rp-count">0</b> selected</div><button class="faq-form-btn save" type="button" onclick="rpOpen()">Create Report &rarr;</button></div>
+      </div>
+
+      <!-- ===== CUSTOMER / FARMER INQUIRIES ===== -->
+      <div id="sec-leads" class="app-section" style="display: none;">
+        <header class="app-header sec-hero">
+          <h1 class="faq-hero-title">Customer Inquiries</h1>
+          <div class="faq-hero-sub">কাস্টমার ও ফার্মারের তথ্য সংরক্ষণ করে ডিপার্টমেন্টে শেয়ার করুন</div>
+          <div class="faq-hero-search" id="ld-search-wrap" style="display:none;">
+            <input type="text" id="ld-search" placeholder="Search name, mobile, area, product..." autocomplete="off" oninput="leadsSearch(this.value)">
+            <button type="button" onclick="openLeadModal()">+ New</button>
+          </div>
+        </header>
+        <div id="ld-lock" class="ld-lock">
+          <h3>Staff access</h3>
+          <p>কাস্টমারের ব্যক্তিগত তথ্য সুরক্ষিত। চালিয়ে যেতে PIN দিন।</p>
+          <input type="password" id="ld-pin" class="faq-form-input" placeholder="PIN" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter') leadsUnlock()" style="text-align:center; margin-bottom:12px;">
+          <button class="faq-form-btn save" style="width:100%;" type="button" onclick="leadsUnlock()">Unlock</button>
+          <div class="faq-form-status" id="ld-lock-status"></div>
+        </div>
+        <div id="ld-main" style="display:none;">
+          <div class="rp-chiprow" id="ld-status-chips"></div>
+          <div class="rp-tools">
+            <select id="ld-dept-filter" class="faq-form-input" style="width:auto; padding:8px 12px; border-radius:999px; font-weight:800; font-size:12.5px;" onchange="leadsDeptFilter(this.value)"></select>
+            <button type="button" onclick="leadsLoad()">&#8635; Refresh</button>
+            <span id="ld-count"></span>
+          </div>
+          <div class="ld-list" id="ld-list"></div>
+        </div>
+      </div>
+
       <div id="sec-faq" class="app-section" style="display: none;">
         <header class="app-header faq-hero">
           <h1 class="faq-hero-title">How can we help?</h1>
@@ -584,6 +681,14 @@
         <span>FAQ/Reply</span>
       </button>
       
+      <button class="nav-item" onclick="switchSection('sec-report', this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        <span>Report</span>
+      </button>
+      <button class="nav-item" onclick="switchSection('sec-leads', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <span>Leads</span>
+      </button>
       <button class="nav-item" onclick="window.open('https://kmmamun.github.io/TaskManager/', '_blank')">
         <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
         <span>Task Mgr</span>
@@ -598,6 +703,91 @@
     <!-- ==============================
          MODALS & DIALOGS
          ============================== -->
+    <!-- Report Modal -->
+    <div id="report-modal" class="faq-modal" role="dialog" aria-modal="true">
+      <div class="faq-form-card" style="width:min(100%, 780px); max-height:94vh;">
+        <button class="faq-modal-close" type="button" onclick="rpClose()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-form-head"><div class="faq-form-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+          <div><h2 class="faq-form-title">Product Report</h2><p class="faq-form-subtitle" id="rp-sub"></p></div></div>
+        <div class="faq-form-group"><label class="faq-form-label" for="rp-customer">Prepared for / কার জন্য <span style="font-weight:600; color:var(--text-muted);">(optional)</span></label>
+          <input class="faq-form-input" id="rp-customer" maxlength="80" placeholder="e.g. Rahman Poultry Group" oninput="rpOpt()"></div>
+        <div class="faq-form-group"><label class="faq-form-label">Language / ভাষা</label>
+          <div style="display:flex; gap:8px;"><button class="mrp-chip active" data-rplang="en" onclick="rpLang('en')">English</button><button class="mrp-chip" data-rplang="bn" onclick="rpLang('bn')">বাংলা</button></div></div>
+        <div class="faq-form-group"><label class="faq-form-label">Columns / কী কী দেখাবে</label>
+          <div class="rp-checks">
+            <label><input type="checkbox" id="rp-c-pack" checked onchange="rpOpt()"> Pack</label>
+            <label><input type="checkbox" id="rp-c-specs" checked onchange="rpOpt()"> Key specs</label>
+            <label><input type="checkbox" id="rp-c-bag" checked onchange="rpOpt()"> MRP / Bag</label>
+            <label><input type="checkbox" id="rp-c-kg" checked onchange="rpOpt()"> MRP / KG</label>
+            <label><input type="checkbox" id="rp-c-ton" checked onchange="rpOpt()"> MRP / Ton</label>
+          </div></div>
+        <div class="faq-form-group"><label class="faq-form-label" for="rp-note">Note / মন্তব্য <span style="font-weight:600; color:var(--text-muted);">(optional)</span></label>
+          <textarea class="faq-form-textarea" id="rp-note" maxlength="300" style="min-height:70px;" placeholder="e.g. Prices valid until 30 Nov 2026" oninput="rpOpt()"></textarea></div>
+        <div class="faq-form-group"><label class="faq-form-label">Selected products — order / ক্রম</label><div id="rp-sel-list"></div></div>
+        <div class="faq-form-label">Preview</div>
+        <div class="rp-preview" id="rp-preview"></div>
+        <div class="faq-form-status" id="rp-status"></div>
+        <div class="faq-form-actions" style="flex-wrap:wrap;">
+          <button class="faq-form-btn save" style="min-width:140px;" type="button" onclick="rpDownloadPdf()">Download PDF</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="rpDownloadPng()">PNG</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="rpCopyText(this)">Copy Text</button>
+          <button class="faq-form-btn" style="min-width:110px; background:#25D366; color:#fff;" type="button" onclick="rpWhatsApp()">WhatsApp</button>
+          <button class="faq-form-btn cancel" id="rp-share-btn" style="min-width:110px; display:none;" type="button" onclick="rpShare()">Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Form Modal -->
+    <div id="lead-modal" class="faq-modal" role="dialog" aria-modal="true">
+      <div class="faq-form-card" style="width:min(100%, 600px); max-height:94vh;">
+        <button class="faq-modal-close" type="button" onclick="closeLeadModal()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-form-head"><div class="faq-form-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+          <div><h2 class="faq-form-title" id="ld-form-title">New Inquiry</h2><p class="faq-form-subtitle">কাস্টমার/ফার্মারের তথ্য সংরক্ষণ করুন</p></div></div>
+        <div class="ld-grid2">
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-name">Name / নাম</label><input class="faq-form-input" id="lf-name" maxlength="100" placeholder="Customer / farmer name"></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-mobile">Mobile / মোবাইল *</label><input class="faq-form-input" id="lf-mobile" inputmode="tel" maxlength="20" placeholder="01XXXXXXXXX" oninput="leadMobileHint()"><div id="lf-dup" style="margin-top:6px; font-size:12px; font-weight:700; color:#b26a00;"></div></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-district">District / জেলা</label><input class="faq-form-input" id="lf-district" list="lf-dist-list" maxlength="60" oninput="leadAreaChanged()" autocomplete="off"><datalist id="lf-dist-list"></datalist></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-upazila">Upazila / উপজেলা</label><input class="faq-form-input" id="lf-upazila" list="lf-upz-list" maxlength="60" oninput="leadAreaChanged()" autocomplete="off"><datalist id="lf-upz-list"></datalist></div>
+        </div>
+        <div class="faq-form-group"><label class="faq-form-label" for="lf-area">Area detail / গ্রাম-ইউনিয়ন-বাজার</label><input class="faq-form-input" id="lf-area" maxlength="150" placeholder="Village / union / bazar / landmark"></div>
+        <div class="faq-form-group"><label class="faq-form-label">Inquiry type / বিষয়</label><div id="lf-type-chips" style="display:flex; gap:8px; flex-wrap:wrap;"></div></div>
+        <div class="faq-form-group"><label class="faq-form-label">Livestock / প্রাণী</label><div id="lf-live-chips" style="display:flex; gap:8px; flex-wrap:wrap;"></div></div>
+        <div class="ld-grid2">
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-product">Product interest / আগ্রহী প্রোডাক্ট</label><select class="faq-form-input" id="lf-product"></select></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-source">Source / সূত্র</label><select class="faq-form-input" id="lf-source"></select></div>
+        </div>
+        <div class="faq-form-group"><label class="faq-form-label" for="lf-note">Note / কী জানতে চান</label><textarea class="faq-form-textarea" id="lf-note" maxlength="1500" style="min-height:90px;" placeholder="Inquiry / advice needed..."></textarea></div>
+        <div class="faq-form-group"><label class="faq-form-label">Area representative / এলাকার প্রতিনিধি <span style="font-weight:600; color:var(--text-muted);">(Market data থেকে)</span></label><div id="lf-rep-box"></div></div>
+        <div class="faq-form-group"><label class="faq-form-label" for="lf-dept">Forward to department / ডিপার্টমেন্ট</label><select class="faq-form-input" id="lf-dept"></select></div>
+        <div class="faq-form-status" id="lf-status"></div>
+        <div class="faq-form-actions" style="flex-wrap:wrap;">
+          <button class="faq-form-btn cancel" type="button" onclick="closeLeadModal()">Cancel</button>
+          <button class="faq-form-btn cancel" id="lf-save" type="button" onclick="leadSave(false)">Save</button>
+          <button class="faq-form-btn save" id="lf-save-card" type="button" onclick="leadSave(true)">Save &amp; Card</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Referral Card Modal -->
+    <div id="lead-card-modal" class="faq-modal" role="dialog" aria-modal="true">
+      <div class="faq-form-card" style="width:min(100%, 560px); max-height:94vh;">
+        <button class="faq-modal-close" type="button" onclick="closeLeadCard()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-form-head"><div class="faq-form-icon"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></div>
+          <div><h2 class="faq-form-title">Referral Card</h2><p class="faq-form-subtitle">ডিপার্টমেন্টে পাঠানোর জন্য রেডি কার্ড</p></div></div>
+        <div class="faq-form-group"><label class="faq-form-label" for="lc-dept">Forward to / কোন ডিপার্টমেন্ট</label><select class="faq-form-input" id="lc-dept" onchange="leadRenderCard()"></select></div>
+        <div style="display:flex; gap:8px; margin-bottom:12px;"><button class="mrp-chip active" data-lclang="en" onclick="leadCardLangSet('en')">English</button><button class="mrp-chip" data-lclang="bn" onclick="leadCardLangSet('bn')">বাংলা</button></div>
+        <label class="rp-checks" style="margin-bottom:10px;"><span style="display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--text-main);"><input type="checkbox" id="lc-mark" checked> Mark as Forwarded after sharing</span></label>
+        <div id="lc-preview" style="border-radius:12px; overflow:hidden; border:1px solid #e4ebe6; line-height:0; background:#f4f4f4;"></div>
+        <div class="faq-form-status" id="lc-status"></div>
+        <div class="faq-form-actions" style="flex-wrap:wrap;">
+          <button class="faq-form-btn save" style="min-width:120px;" type="button" onclick="leadCardCopy(this)">Copy Text</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="leadCardDownload()">Download</button>
+          <button class="faq-form-btn" style="min-width:110px; background:#25D366; color:#fff;" type="button" onclick="leadCardWhatsApp()">WhatsApp</button>
+          <button class="faq-form-btn cancel" id="lc-share-btn" style="min-width:110px; display:none;" type="button" onclick="leadCardShare()">Share</button>
+        </div>
+      </div>
+    </div>
+
     <!-- FAQ Answer Modal -->
     <div id="faq-answer-modal" class="faq-modal" role="dialog" aria-modal="true">
       <div class="faq-form-card">
@@ -848,6 +1038,8 @@
         if(sectionId === 'sec-faq') {
           renderFAQ(allFaqData);
         }
+        if (sectionId === 'sec-report') rpRender();
+        if (sectionId === 'sec-leads') leadsOnEnter();
       }
 
       // Logo click = Home (opens Products section)
@@ -1886,6 +2078,9 @@
       //  সব পপআপ: বাইরে (ব্যাকড্রপে) ক্লিক/ট্যাপ করলে বা Esc চাপলে বন্ধ হবে
       // =====================================================
       const POPUPS = [ // উপরের স্তর আগে (Esc একবারে একটি করে বন্ধ করে)
+        { id: 'lead-card-modal',      close: () => closeLeadCard(),    open: el => el.classList.contains('show') },
+        { id: 'lead-modal',           close: () => closeLeadModal(),   open: el => el.classList.contains('show') },
+        { id: 'report-modal',         close: () => rpClose(),          open: el => el.classList.contains('show') },
         { id: 'faq-answer-modal',     close: () => closeFaqAnswer(),   open: el => el.classList.contains('show') },
         { id: 'faq-add-modal',        close: () => closeFaqModal(),    open: el => el.classList.contains('show') },
         { id: 'smart-pin-modal',      close: () => closePinModal() },
@@ -1912,6 +2107,556 @@
         const p = POPUPS.find(x => popupIsOpen(x) && !(x.guard && x.guard()));
         if (p) p.close();
       });
+
+      // =====================================================
+      //  PRODUCT REPORT — প্রোডাক্ট বেছে স্ট্যান্ডার্ড প্রাইস লিস্ট (PDF / PNG / Text)
+      // =====================================================
+      const RP_SPECS = [['cp', 'Protein', 'প্রোটিন'], ['fat', 'Fat', 'ফ্যাট'], ['fib', 'Fiber', 'ফাইবার'], ['eng', 'Energy', 'এনার্জি'], ['mois', 'Moisture', 'আর্দ্রতা']];
+      let rpSel = [], rpCat = 'All', rpQuery = '', rpLangV = 'en', rpPages = [], rpTimer = null;
+      try { rpSel = JSON.parse(localStorage.getItem('nh_report_sel') || '[]'); } catch (e) { rpSel = []; }
+
+      function rpProd(id) { return allProducts.find(p => String(p.id) === String(id)); }
+      function rpSave() { try { localStorage.setItem('nh_report_sel', JSON.stringify(rpSel)); } catch (e) {} }
+      function rpShown() {
+        const q = rpQuery.toLowerCase();
+        return allProducts.filter(p => (rpCat === 'All' || p.category === rpCat) && (!q || (p.name + ' ' + p.category).toLowerCase().includes(q)));
+      }
+      function rpSearch(v) { rpQuery = v.trim(); rpRender(); }
+      function rpSetCat(c) { rpCat = c; rpRender(); }
+
+      function rpRender() {
+        rpSel = rpSel.filter(id => rpProd(id)); // মুছে যাওয়া প্রোডাক্ট বাদ
+        const cats = ['All'].concat(Array.from(new Set(allProducts.map(p => p.category).filter(Boolean))));
+        document.getElementById('rp-cats').innerHTML = cats.map(c => {
+          const n = c === 'All' ? allProducts.length : allProducts.filter(p => p.category === c).length;
+          return `<button type="button" class="div-chip ${rpCat === c ? 'active' : ''}" data-cat="${faqEscape(c)}" onclick="rpSetCat(this.dataset.cat)">${faqEscape(c)} (${n})</button>`;
+        }).join('');
+        const list = document.getElementById('rp-list'), shown = rpShown();
+        document.getElementById('rp-shown').innerText = allProducts.length ? `${shown.length} shown` : '';
+        if (!allProducts.length) { list.innerHTML = `<div class="faq-empty" style="grid-column:1/-1;"><strong>Loading products...</strong></div>`; rpBar(); return; }
+        list.innerHTML = shown.map(p => `
+          <div class="rp-row ${rpSel.includes(p.id) ? 'sel' : ''}" data-id="${faqEscape(p.id)}" onclick="rpToggle(this.dataset.id)">
+            <div class="rp-check">${rpSel.includes(p.id) ? '✓' : ''}</div>
+            <img class="rp-thumb" loading="lazy" alt="" src="${faqEscape(p.imgUrl)}">
+            <div class="rp-info"><div class="rp-name">${faqEscape(p.name)}</div><div class="rp-sub">${faqEscape(p.category)}${p.bag ? ' · Bag ' + faqEscape(p.bag) : ''}</div></div>
+          </div>`).join('') || `<div class="faq-empty" style="grid-column:1/-1;"><strong>No product found</strong></div>`;
+        rpBar();
+      }
+      function rpBar() { document.getElementById('rp-count').innerText = rpSel.length; }
+      function rpToggle(id) {
+        const i = rpSel.indexOf(id); if (i >= 0) rpSel.splice(i, 1); else rpSel.push(id);
+        rpSave();
+        const row = document.querySelector(`#rp-list .rp-row[data-id="${CSS.escape(id)}"]`);
+        if (row) { const on = rpSel.includes(id); row.classList.toggle('sel', on); row.querySelector('.rp-check').innerText = on ? '✓' : ''; }
+        rpBar();
+      }
+      function rpSelectShown() { rpShown().forEach(p => { if (!rpSel.includes(p.id)) rpSel.push(p.id); }); rpSave(); rpRender(); }
+      function rpClear() { rpSel = []; rpSave(); rpRender(); }
+
+      function rpOpen() {
+        if (!rpSel.length) { const b = document.getElementById('rp-bar'); b.style.outline = '2px solid #e53935'; setTimeout(() => { b.style.outline = ''; }, 900); return; }
+        document.getElementById('rp-share-btn').style.display = (navigator.canShare && navigator.share) ? 'block' : 'none';
+        document.getElementById('report-modal').classList.add('show'); document.body.style.overflow = 'hidden';
+        rpSelList(); rpBuild();
+      }
+      function rpClose() { document.getElementById('report-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function rpLang(l) {
+        rpLangV = l;
+        document.querySelectorAll('#report-modal [data-rplang]').forEach(b => b.classList.toggle('active', b.dataset.rplang === l));
+        rpBuild();
+      }
+      function rpOpt() { clearTimeout(rpTimer); rpTimer = setTimeout(rpBuild, 200); }
+      function rpSelList() {
+        document.getElementById('rp-sub').innerText = `${rpSel.length} product${rpSel.length === 1 ? '' : 's'} selected`;
+        document.getElementById('rp-sel-list').innerHTML = rpSel.map((id, i) => {
+          const p = rpProd(id); if (!p) return '';
+          return `<div class="rp-sel-item"><span>${i + 1}. ${faqEscape(p.name)}</span>
+            <button type="button" onclick="rpMove(${i},-1)" ${i === 0 ? 'disabled style="opacity:.3"' : ''}>▲</button>
+            <button type="button" onclick="rpMove(${i},1)" ${i === rpSel.length - 1 ? 'disabled style="opacity:.3"' : ''}>▼</button>
+            <button type="button" onclick="rpRemove(${i})">✕</button></div>`;
+        }).join('');
+      }
+      function rpMove(i, d) { const j = i + d; if (j < 0 || j >= rpSel.length) return; [rpSel[i], rpSel[j]] = [rpSel[j], rpSel[i]]; rpSave(); rpSelList(); rpBuild(); }
+      function rpRemove(i) { rpSel.splice(i, 1); rpSave(); if (!rpSel.length) { rpClose(); rpRender(); return; } rpSelList(); rpBuild(); rpRender(); }
+
+      function rpGetOpts() {
+        const c = id => document.getElementById(id).checked;
+        return { lang: rpLangV, pack: c('rp-c-pack'), specs: c('rp-c-specs'), bag: c('rp-c-bag'), kg: c('rp-c-kg'), ton: c('rp-c-ton'),
+                 customer: document.getElementById('rp-customer').value.trim(), note: document.getElementById('rp-note').value.trim() };
+      }
+      function rpSplitName(name) {
+        const m = String(name).trim().match(/^([A-Za-z0-9]{1,6})\s*[-–—]\s*(.+)$/);
+        return m ? { code: m[1], title: m[2] } : { code: '', title: String(name).trim() };
+      }
+      function rpDate(bn) {
+        const n = new Date();
+        if (!bn) return n.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const M = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+        return cardBnDigits(n.getDate()) + ' ' + M[n.getMonth()] + ' ' + cardBnDigits(n.getFullYear());
+      }
+      // স্পেক: 21.00% -> 21%, 5.50% -> 5.5%
+      function rpPct(v) { return String(v).trim().replace(/(\.\d*?)0+(?=%|$)/, '$1').replace(/\.(?=%|$)/, ''); }
+      // দাম: Bag/KG = ২ দশমিক, Ton = পূর্ণসংখ্যা (ভগ্নাংশ থাকলে ২ দশমিক)
+      function rpMoney(key, v) {
+        const n = parseFloat(String(v || '').replace(/,/g, '')); if (isNaN(n)) return '';
+        const frac = key === 'ton' ? (Number.isInteger(n) ? 0 : 2) : 2;
+        return n.toLocaleString('en-US', { minimumFractionDigits: frac, maximumFractionDigits: frac });
+      }
+      // আইটেম না ভেঙে লাইনে সাজানো
+      function rpWrapItems(ctx, items, maxW, sep) {
+        const lines = []; let cur = '';
+        items.forEach(it => { const t = cur ? cur + sep + it : it; if (cur && ctx.measureText(t).width > maxW) { lines.push(cur); cur = it; } else cur = t; });
+        if (cur) lines.push(cur); return lines;
+      }
+      const RP_T = {
+        en: { company: 'NEW HOPE FEED MILL BANGLADESH LTD.', title: 'Product Price List', date: 'Date: ', to: 'Prepared for: ', code: 'Code', name: 'Product', pack: 'Pack', specs: 'Key Specs', bag: 'Bag (Tk)', kg: 'KG (Tk)', ton: 'Ton (Tk)', disc: 'Prices are MRP in Taka and may vary slightly by area.', hotline: 'Hotline: ', page: 'Page ' },
+        bn: { company: 'নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড', title: 'প্রোডাক্ট মূল্য তালিকা', date: 'তারিখ: ', to: 'প্রাপক: ', code: 'কোড', name: 'প্রোডাক্ট', pack: 'প্যাক', specs: 'প্রধান বৈশিষ্ট্য', bag: 'ব্যাগ (টাকা)', kg: 'কেজি (টাকা)', ton: 'টন (টাকা)', disc: 'দাম এমআরপি (টাকায়); এলাকাভেদে সামান্য তারতম্য হতে পারে।', hotline: 'হটলাইন: ', page: 'পৃষ্ঠা ' }
+      };
+
+      function rpBuild() {
+        rpPages = rpDrawPages();
+        const box = document.getElementById('rp-preview'); box.innerHTML = '';
+        rpPages.forEach(cv => { const c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; c.getContext('2d').drawImage(cv, 0, 0); box.appendChild(c); });
+        document.getElementById('rp-status').innerText = rpPages.length > 1 ? `${rpPages.length} pages` : '';
+      }
+
+      function rpDrawPages() {
+        const o = rpGetOpts(), bn = o.lang === 'bn', T = RP_T[o.lang], th = CARD_THEMES.green;
+        const num = v => bn ? cardBnDigits(v) : String(v);
+        const items = rpSel.map(rpProd).filter(Boolean);
+        const W = 1240, H = 1754, M = 50, U = W - M * 2, ROW = 112, TH = 64;
+        const cols = [{ k: 'idx', w: 46, t: '#' }, { k: 'code', w: 104, t: T.code }, { k: 'name', w: 0, t: T.name }];
+        if (o.pack) cols.push({ k: 'pack', w: 104, t: T.pack });
+        if (o.specs) cols.push({ k: 'specs', w: 270, t: T.specs });
+        if (o.bag) cols.push({ k: 'bag', w: 146, t: T.bag });
+        if (o.kg) cols.push({ k: 'kg', w: 108, t: T.kg });
+        if (o.ton) cols.push({ k: 'ton', w: 134, t: T.ton });
+        const sp = cols.find(c => c.k === 'specs');
+        let fixed = cols.reduce((a, c) => a + c.w, 0), nameW = U - fixed;
+        if (nameW < 280 && sp) { sp.w = Math.max(190, sp.w - (280 - nameW)); fixed = cols.reduce((a, c) => a + c.w, 0); nameW = U - fixed; }
+        cols.find(c => c.k === 'name').w = nameW;
+        let x = M; cols.forEach(c => { c.x = x; x += c.w; });
+
+        const m = document.createElement('canvas').getContext('2d');
+        const rows = items.map((p, i) => {
+          const { code, title } = rpSplitName(p.name);
+          m.font = `700 25px ${CARD_FONT}`; const nameLines = cardWrap(m, title, nameW - 24).slice(0, 3);
+          const parts = RP_SPECS.map(([k, en, b]) => { const v = String(p[k] || '').trim(); return v && v !== '-' ? `${bn ? b : en} ${num(rpPct(v))}` : ''; }).filter(Boolean);
+          m.font = `500 20px ${CARD_FONT}`; const specLines = sp ? rpWrapItems(m, parts, sp.w - 22, '  ·  ').slice(0, 3) : [];
+          return { i, p, code, nameLines, cat: p.category || '', pack: String(p.pack || '').trim(), specLines };
+        });
+
+        const hdr1 = 200, hdrN = 110, foot = 120;
+        const cap1 = Math.floor((H - hdr1 - TH - foot) / ROW), capN = Math.floor((H - hdrN - TH - foot) / ROW);
+        const pages = []; let idx = 0;
+        while (idx < rows.length) { const cap = pages.length ? capN : cap1; pages.push(rows.slice(idx, idx + cap)); idx += cap; }
+        if (!pages.length) pages.push([]);
+        // নোটের জায়গা
+        m.font = `500 24px ${CARD_FONT}`;
+        const noteLines = o.note ? cardWrap(m, o.note, U - 40).slice(0, 4) : [];
+        const noteH = noteLines.length ? noteLines.length * 32 + 44 : 0;
+        const lastCap = pages.length === 1 ? cap1 : capN;
+        if (noteH && pages[pages.length - 1].length * ROW + noteH > lastCap * ROW) pages.push([]);
+
+        return pages.map((chunk, pi) => {
+          const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+          const ctx = cv.getContext('2d'); ctx.textBaseline = 'alphabetic';
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+          const first = pi === 0, hdrH = first ? hdr1 : hdrN, bandH = first ? 170 : 90;
+          const g = ctx.createLinearGradient(0, 0, W, bandH); g.addColorStop(0, th.main); g.addColorStop(1, th.dark);
+          ctx.fillStyle = g; ctx.fillRect(0, 0, W, bandH);
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'left';
+          cardFit(ctx, T.company, 760, first ? 38 : 30, 22, 800); ctx.fillText(T.company, M, first ? 66 : 44);
+          ctx.font = `600 ${first ? 28 : 22}px ${CARD_FONT}`; ctx.fillText(T.title, M, first ? 108 : 74);
+          ctx.textAlign = 'right'; ctx.font = `600 ${first ? 24 : 20}px ${CARD_FONT}`; ctx.fillText(T.date + rpDate(bn), W - M, first ? 66 : 44);
+          if (first && o.customer) { ctx.font = `700 26px ${CARD_FONT}`; cardFit(ctx, T.to + o.customer, 700, 26, 18, 700); ctx.fillText(T.to + o.customer, W - M, 108); }
+          if (first) { ctx.textAlign = 'left'; ctx.globalAlpha = .85; ctx.font = `600 22px ${CARD_FONT}`; ctx.fillText(`${items.length} ${bn ? 'টি প্রোডাক্ট' : (items.length === 1 ? 'product' : 'products')}`.replace(/^\d+/, d => num(d)), M, 148); ctx.globalAlpha = 1; }
+          // টেবিল হেডার
+          ctx.fillStyle = th.dark; ctx.fillRect(M, hdrH, U, TH);
+          ctx.fillStyle = '#fff'; ctx.font = `800 22px ${CARD_FONT}`;
+          cols.forEach(c => { const center = !['name', 'specs'].includes(c.k); ctx.textAlign = center ? 'center' : 'left'; ctx.fillText(c.t, center ? c.x + c.w / 2 : c.x + 12, hdrH + 41); });
+          // সারি
+          chunk.forEach((r, ri) => {
+            const y = hdrH + TH + ri * ROW;
+            ctx.fillStyle = ri % 2 ? '#f4faf7' : '#ffffff'; ctx.fillRect(M, y, U, ROW);
+            ctx.fillStyle = '#e1ece6'; ctx.fillRect(M, y + ROW - 1, U, 1);
+            cols.forEach(c => {
+              const cx = c.x + c.w / 2; ctx.textAlign = 'center';
+              if (c.k === 'idx') { ctx.fillStyle = '#7a7a7a'; ctx.font = `700 22px ${CARD_FONT}`; ctx.fillText(num(r.i + 1), cx, y + ROW / 2 + 8); }
+              else if (c.k === 'code') { ctx.fillStyle = th.dark; cardFit(ctx, r.code || '—', c.w - 14, 30, 16, 800); ctx.fillText(r.code || '—', cx, y + ROW / 2 + 10); }
+              else if (c.k === 'name') {
+                ctx.textAlign = 'left'; ctx.fillStyle = '#1b1b1b'; ctx.font = `700 25px ${CARD_FONT}`;
+                const showCat = r.nameLines.length <= 2, total = r.nameLines.length * 31 + (showCat ? 26 : 0), y0 = y + (ROW - total) / 2 + 24;
+                r.nameLines.forEach((ln, li) => ctx.fillText(ln, c.x + 12, y0 + li * 31));
+                if (showCat) { ctx.fillStyle = '#7a7a7a'; ctx.font = `600 19px ${CARD_FONT}`; ctx.fillText(r.cat, c.x + 12, y0 + r.nameLines.length * 31 - 2); }
+              }
+              else if (c.k === 'pack') { ctx.fillStyle = '#333'; cardFit(ctx, r.pack && r.pack !== '-' ? num(r.pack) : '—', c.w - 12, 22, 14, 600); ctx.fillText(r.pack && r.pack !== '-' ? num(r.pack) : '—', cx, y + ROW / 2 + 8); }
+              else if (c.k === 'specs') {
+                ctx.textAlign = 'left'; ctx.fillStyle = '#444'; ctx.font = `500 20px ${CARD_FONT}`;
+                const y0 = y + (ROW - r.specLines.length * 27) / 2 + 20; r.specLines.forEach((ln, li) => ctx.fillText(ln, c.x + 12, y0 + li * 27));
+                if (!r.specLines.length) { ctx.fillStyle = '#aaa'; ctx.fillText('—', c.x + 12, y + ROW / 2 + 7); }
+              }
+              else { const v = rpMoney(c.k, r.p[c.k]); ctx.fillStyle = v ? '#111' : '#aaa'; cardFit(ctx, v ? num(v) : '---', c.w - 14, 27, 16, 800); ctx.fillText(v ? num(v) : '---', cx, y + ROW / 2 + 9); }
+            });
+          });
+          // নোট (শেষ পৃষ্ঠায়)
+          if (noteLines.length && pi === pages.length - 1) {
+            const ny = hdrH + TH + chunk.length * ROW + 24;
+            ctx.fillStyle = th.tint; cardRR(ctx, M, ny, U, noteH - 12, 14); ctx.fill();
+            ctx.fillStyle = '#333'; ctx.textAlign = 'left'; ctx.font = `500 24px ${CARD_FONT}`;
+            noteLines.forEach((ln, li) => ctx.fillText(ln, M + 20, ny + 38 + li * 32));
+          }
+          // ফুটার
+          ctx.fillStyle = '#7a7a7a'; ctx.textAlign = 'left'; ctx.font = `500 19px ${CARD_FONT}`; ctx.fillText(T.disc, M, H - 98);
+          ctx.fillStyle = th.main; ctx.fillRect(0, H - 80, W, 80);
+          ctx.fillStyle = '#fff'; ctx.font = `800 28px ${CARD_FONT}`; ctx.textAlign = 'left'; ctx.fillText(T.hotline + num('+880 1742-510889'), M, H - 31);
+          ctx.textAlign = 'right'; ctx.font = `700 22px ${CARD_FONT}`; ctx.fillText(`${T.page}${num(pi + 1)} / ${num(pages.length)}`, W - M, H - 31);
+          return cv;
+        });
+      }
+
+      function rpText() {
+        const o = rpGetOpts(), bn = o.lang === 'bn', T = RP_T[o.lang], num = v => bn ? cardBnDigits(v) : String(v);
+        const L = [`*${T.company}*`, `${T.title} — ${rpDate(bn)}`];
+        if (o.customer) L.push(T.to + o.customer);
+        L.push('');
+        rpSel.map(rpProd).filter(Boolean).forEach((p, i) => {
+          L.push(`${num(i + 1)}) *${p.name}*`);
+          const info = [];
+          if (o.pack && p.pack && p.pack !== '-') info.push(`${T.pack}: ${num(p.pack)}`);
+          if (o.specs) RP_SPECS.forEach(([k, en, b]) => { const v = String(p[k] || '').trim(); if (v && v !== '-') info.push(`${bn ? b : en} ${num(rpPct(v))}`); });
+          if (info.length) L.push('   ' + info.join(' | '));
+          const pr = [];
+          if (o.bag && p.bag) pr.push(`${bn ? 'ব্যাগ' : 'Bag'}: ${num(rpMoney('bag', p.bag))}`);
+          if (o.kg && p.kg) pr.push(`${bn ? 'কেজি' : 'KG'}: ${num(rpMoney('kg', p.kg))}`);
+          if (o.ton && p.ton) pr.push(`${bn ? 'টন' : 'Ton'}: ${num(rpMoney('ton', p.ton))}`);
+          if (pr.length) L.push(`   💰 ${bn ? 'এমআরপি (টাকা)' : 'MRP (Tk)'} — ` + pr.join(' | '));
+          L.push('');
+        });
+        if (o.note) L.push(`📝 ${o.note}`, '');
+        L.push(T.disc, `📞 ${T.hotline}${num('+880 1742-510889')}`);
+        return L.join('\n');
+      }
+
+      function rpFileBase() { const d = new Date(); return 'NewHope_ProductReport_' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); }
+      function fileDownload(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); }
+      function canvasBlob(cv, type, q) { return new Promise(res => cv.toBlob(res, type || 'image/png', q)); }
+
+      // ছোট PDF রাইটার: প্রতিটি পৃষ্ঠা এক একটি JPEG ছবি (A4)
+      function pdfFromCanvases(canvases) {
+        const enc = new TextEncoder(), chunks = [], offs = []; let pos = 0;
+        const add = b => { if (typeof b === 'string') b = enc.encode(b); chunks.push(b); pos += b.length; };
+        const n = canvases.length;
+        add('%PDF-1.4\n');
+        offs[1] = pos; add('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+        offs[2] = pos; add(`2 0 obj\n<< /Type /Pages /Kids [${canvases.map((_, i) => (3 + 3 * i) + ' 0 R').join(' ')}] /Count ${n} >>\nendobj\n`);
+        canvases.forEach((cv, i) => {
+          const pg = 3 + 3 * i, ct = 4 + 3 * i, im = 5 + 3 * i;
+          const bin = atob(cv.toDataURL('image/jpeg', 0.92).split(',')[1]), bytes = new Uint8Array(bin.length);
+          for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+          const stream = 'q 595 0 0 842 0 0 cm /Im0 Do Q';
+          offs[pg] = pos; add(`${pg} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 ${im} 0 R >> >> /Contents ${ct} 0 R >>\nendobj\n`);
+          offs[ct] = pos; add(`${ct} 0 obj\n<< /Length ${stream.length} >>\nstream\n${stream}\nendstream\nendobj\n`);
+          offs[im] = pos; add(`${im} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${cv.width} /Height ${cv.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`); add(bytes); add('\nendstream\nendobj\n');
+        });
+        const total = 3 * n + 3, xref = pos; let x = `xref\n0 ${total}\n0000000000 65535 f \n`;
+        for (let k = 1; k < total; k++) x += String(offs[k]).padStart(10, '0') + ' 00000 n \n';
+        add(x + `trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+        return new Blob(chunks, { type: 'application/pdf' });
+      }
+
+      function rpDownloadPdf() { if (!rpPages.length) return; fileDownload(pdfFromCanvases(rpPages), rpFileBase() + '.pdf'); document.getElementById('rp-status').innerText = '✔ PDF downloaded'; }
+      async function rpDownloadPng() {
+        for (let i = 0; i < rpPages.length; i++) { fileDownload(await canvasBlob(rpPages[i]), rpFileBase() + (rpPages.length > 1 ? '_p' + (i + 1) : '') + '.png'); await new Promise(r => setTimeout(r, 350)); }
+        document.getElementById('rp-status').innerText = '✔ PNG downloaded';
+      }
+      function rpCopyText(btn) {
+        const t = rpText(), idle = btn.innerText, ok = () => { btn.innerText = '✔ Copied'; setTimeout(() => { btn.innerText = idle; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok).catch(() => { btn.innerText = 'Copy failed'; });
+        else { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) {} ta.remove(); }
+      }
+      function rpWhatsApp() { window.open('https://wa.me/?text=' + encodeURIComponent(rpText()), '_blank'); }
+      async function rpShare() {
+        try {
+          const file = new File([pdfFromCanvases(rpPages)], rpFileBase() + '.pdf', { type: 'application/pdf' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: 'New Hope Product Price List' });
+          else document.getElementById('rp-status').innerText = 'Sharing not supported here. Use Download PDF.';
+        } catch (e) { /* cancelled */ }
+      }
+
+      // =====================================================
+      //  LEADS — কাস্টমার/ফার্মার ইনকোয়ারি সংরক্ষণ + রেফারেল কার্ড
+      // =====================================================
+      const LEAD_DEPARTMENTS = ['Sales', 'Technical Service', 'Marketing', 'Dealer Development', 'Customer Service']; // এখানে বদলালেই ডিপার্টমেন্ট তালিকা বদলাবে
+      const LEAD_TYPES = [['Product', 'পণ্য'], ['Price', 'দাম'], ['Advice', 'পরামর্শ'], ['Complaint', 'অভিযোগ'], ['Dealership', 'ডিলারশিপ'], ['Other', 'অন্যান্য']];
+      const LEAD_LIVE = [['Poultry', 'পোল্ট্রি'], ['Cattle', 'গবাদিপশু'], ['Fish', 'মাছ'], ['Other', 'অন্যান্য']];
+      const LEAD_SOURCES = [['Phone', 'ফোন'], ['WhatsApp', 'হোয়াটসঅ্যাপ'], ['Facebook', 'ফেসবুক'], ['Field Visit', 'মাঠ পরিদর্শন'], ['Other', 'অন্যান্য']];
+      const LEAD_DEPT_BN = { 'Sales': 'বিক্রয়', 'Technical Service': 'টেকনিক্যাল সার্ভিস', 'Marketing': 'মার্কেটিং', 'Dealer Development': 'ডিলার ডেভেলপমেন্ট', 'Customer Service': 'কাস্টমার সার্ভিস' };
+      const lbn = (arr, v) => (arr.find(a => a[0] === v) || [v, v])[1];
+
+      let leadsAll = [], leadsStatus = 'All', leadsDept = '', leadsQuery = '', leadEditId = '', leadForm = { type: 'Product', livestock: 'Poultry' }, leadRep = null;
+      let leadCardCur = null, leadCardLang = 'en', leadCardCanvas = null;
+
+      function leadPin() { return sessionStorage.getItem('nh_leads_pin') || ''; }
+      function leadApi(action, extra) {
+        return fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action, pin: leadPin() }, extra || {})) }).then(r => r.json());
+      }
+      function leadsLock(msg) {
+        sessionStorage.removeItem('nh_leads_pin');
+        document.getElementById('ld-lock').style.display = 'block'; document.getElementById('ld-main').style.display = 'none'; document.getElementById('ld-search-wrap').style.display = 'none';
+        document.getElementById('ld-lock-status').innerText = msg || '';
+      }
+      function leadsOnEnter() { if (leadPin()) leadsLoad(); else leadsLock(''); }
+      function leadsUnlock() {
+        const v = document.getElementById('ld-pin').value.trim(); if (!v) return;
+        sessionStorage.setItem('nh_leads_pin', v);
+        document.getElementById('ld-lock-status').innerText = 'Checking...';
+        leadsLoad();
+      }
+      function leadsLoad() {
+        document.getElementById('ld-count').innerText = 'Loading...';
+        leadApi('inquiryList').then(res => {
+          if (!res || !res.success) {
+            if (res && res.error === 'Invalid PIN') { leadsLock('❌ ভুল PIN'); document.getElementById('ld-pin').value = ''; }
+            else { leadsLock('Error: ' + ((res && res.error) || 'Server not updated? Re-deploy Code.gs')); }
+            return;
+          }
+          leadsAll = res.items || [];
+          document.getElementById('ld-lock').style.display = 'none'; document.getElementById('ld-main').style.display = 'block'; document.getElementById('ld-search-wrap').style.display = 'flex';
+          document.getElementById('ld-pin').value = '';
+          leadsRender();
+        }).catch(() => { document.getElementById('ld-lock-status').innerText = 'Connection failed'; document.getElementById('ld-count').innerText = ''; });
+      }
+      function leadsSearch(v) { leadsQuery = v.trim().toLowerCase(); leadsRender(); }
+      function leadsDeptFilter(v) { leadsDept = v; leadsRender(); }
+      function leadsSetStatus(s) { leadsStatus = s; leadsRender(); }
+
+      function leadLoc(l) { return [l.area, l.upazila, l.district].filter(Boolean).join(', '); }
+      function leadsRender() {
+        const counts = { All: leadsAll.length, New: 0, Forwarded: 0, Done: 0 };
+        leadsAll.forEach(l => { if (counts[l.status] !== undefined) counts[l.status]++; });
+        document.getElementById('ld-status-chips').innerHTML = ['All', 'New', 'Forwarded', 'Done'].map(s => `<button type="button" class="div-chip ${leadsStatus === s ? 'active' : ''}" onclick="leadsSetStatus('${s}')">${s} (${counts[s]})</button>`).join('');
+        const df = document.getElementById('ld-dept-filter');
+        df.innerHTML = `<option value="">All departments</option>` + LEAD_DEPARTMENTS.map(d => `<option ${leadsDept === d ? 'selected' : ''}>${faqEscape(d)}</option>`).join('');
+        const q = leadsQuery;
+        const list = leadsAll.filter(l => (leadsStatus === 'All' || l.status === leadsStatus) && (!leadsDept || l.department === leadsDept) &&
+          (!q || [l.id, l.name, l.mobile, l.district, l.upazila, l.area, l.product, l.note, l.type, l.livestock, l.repName].join(' ').toLowerCase().includes(q)));
+        document.getElementById('ld-count').innerText = `${list.length} of ${leadsAll.length}`;
+        const box = document.getElementById('ld-list');
+        if (!list.length) { box.innerHTML = `<div class="faq-empty" style="grid-column:1/-1; margin:0;"><div class="faq-empty-icon">☎</div><strong>${leadsAll.length ? 'No matching inquiry' : 'No inquiry yet'}</strong><div style="margin-top:6px; font-size:13px;">উপরের “+ New” বাটনে ক্লিক করে প্রথম ইনকোয়ারি যোগ করুন।</div></div>`; return; }
+        box.innerHTML = list.map(l => `
+          <div class="ld-card">
+            <div class="ld-top"><div><div class="ld-name">${faqEscape(l.name || '(No name)')}</div><div class="ld-meta">${faqEscape(l.id)} · ${faqEscape(l.created)}</div></div>
+              <span class="ld-status s-${faqEscape(l.status)}">${faqEscape(l.status)}${l.status === 'Forwarded' && l.department ? ' → ' + faqEscape(l.department) : ''}</span></div>
+            <div class="ld-line">📞 <a href="tel:${faqEscape(l.mobile)}">${faqEscape(l.mobile)}</a></div>
+            ${leadLoc(l) ? `<div class="ld-line">📍 ${faqEscape(leadLoc(l))}</div>` : ''}
+            <div class="ld-chips">${[l.type, l.livestock, l.product].filter(Boolean).map(c => `<span class="ld-chip">${faqEscape(c)}</span>`).join('')}</div>
+            ${l.note ? `<div class="ld-note">${faqEscape(l.note)}</div>` : ''}
+            ${l.repName ? `<div class="ld-line" style="font-size:12.5px; color:var(--text-muted);">👥 Rep: ${faqEscape(l.repName)}${l.repPhone ? ' · ' + faqEscape(l.repPhone) : ''}</div>` : ''}
+            <div class="ld-actions">
+              <button type="button" class="ld-btn primary" onclick="leadOpenCard('${faqEscape(l.id)}')">Share Card</button>
+              <a class="ld-btn" href="https://wa.me/88${faqEscape(l.mobile)}" target="_blank" rel="noopener">WhatsApp</a>
+              <button type="button" class="ld-btn" onclick="openLeadModal('${faqEscape(l.id)}')">Edit</button>
+              <button type="button" class="ld-btn" onclick="leadDelete('${faqEscape(l.id)}')">Delete</button>
+              <select onchange="leadSetStatus('${faqEscape(l.id)}', this.value)">${['New', 'Forwarded', 'Done'].map(s => `<option ${l.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>
+            </div>
+          </div>`).join('');
+      }
+      function leadReplace(item) { const i = leadsAll.findIndex(x => x.id === item.id); if (i >= 0) leadsAll[i] = item; else leadsAll.unshift(item); leadsRender(); }
+      function leadSetStatus(id, st) { leadApi('inquiryUpdate', { id: id, fields: { status: st } }).then(r => { if (r && r.success) leadReplace(r.item); else leadsLoad(); }); }
+      function leadDelete(id) {
+        const l = leadsAll.find(x => x.id === id); if (!l || !confirm(`Delete inquiry ${id} (${l.name || l.mobile})?`)) return;
+        leadApi('inquiryDelete', { id: id }).then(r => { if (r && r.success) { leadsAll = leadsAll.filter(x => x.id !== id); leadsRender(); } });
+      }
+
+      // ---- ফর্ম ----
+      function leadNormMobile(v) {
+        let s = cardBnDigits ? String(v).replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d)) : String(v);
+        s = s.replace(/\D/g, ''); if (s.indexOf('880') === 0) s = s.slice(2); if (s.length === 10 && s[0] === '1') s = '0' + s;
+        return /^01[3-9]\d{8}$/.test(s) ? s : '';
+      }
+      function leadChips(boxId, arr, key) {
+        document.getElementById(boxId).innerHTML = arr.map(a => `<button type="button" class="mrp-chip ${leadForm[key] === a[0] ? 'active' : ''}" onclick="leadPick('${key}','${a[0]}')">${a[0]} <small style="opacity:.7">${a[1]}</small></button>`).join('');
+      }
+      function leadPick(key, v) { leadForm[key] = v; leadChips('lf-type-chips', LEAD_TYPES, 'type'); leadChips('lf-live-chips', LEAD_LIVE, 'livestock'); leadRepUpdate(); }
+      function leadMarketRows() { return (allMarketData || []).map(e => ({ person: mkClean(e.person), phone: mkClean(e.phone), div: mkClean(e.division), district: mkClean(e.district), ue: mkClean(e.upazila_en), ub: mkClean(e.upazila_bn) })).filter(e => e.person || e.phone); }
+      function leadAreaChanged() { leadFillLists(); leadRepUpdate(); }
+      function leadFillLists() {
+        const rows = leadMarketRows(), dv = document.getElementById('lf-district').value.trim().toLowerCase();
+        const dists = Array.from(new Set(rows.map(r => r.district).filter(Boolean))).sort();
+        document.getElementById('lf-dist-list').innerHTML = dists.map(d => `<option value="${faqEscape(d)}">`).join('');
+        const upz = new Set(); rows.forEach(r => { if (!dv || r.district.toLowerCase() === dv) { if (r.ue) upz.add(r.ue); if (r.ub) upz.add(r.ub); } });
+        document.getElementById('lf-upz-list').innerHTML = Array.from(upz).sort().map(u => `<option value="${faqEscape(u)}">`).join('');
+      }
+      function leadRepUpdate() {
+        const dv = document.getElementById('lf-district').value.trim().toLowerCase(), uv = document.getElementById('lf-upazila').value.trim().toLowerCase();
+        const box = document.getElementById('lf-rep-box'); let rows = leadMarketRows();
+        let m = uv ? rows.filter(r => r.ue.toLowerCase() === uv || r.ub.toLowerCase() === uv) : [];
+        if (!m.length && dv) m = rows.filter(r => r.district.toLowerCase() === dv);
+        if (!m.length) { box.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">জেলা/উপজেলা দিলে এখানে এলাকার প্রতিনিধি দেখাবে।</div>`; return; }
+        const want = leadForm.livestock === 'Fish' ? ['aquatic'] : (leadForm.livestock === 'Other' ? [] : ['poultry', 'cattle']);
+        if (want.length) { const f = m.filter(r => want.some(w => r.div.toLowerCase().includes(w))); if (f.length) m = f; }
+        const seen = new Set(); m = m.filter(r => { const k = r.person + r.phone; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 8);
+        if (!leadRep || !m.some(r => r.person === leadRep.name && r.phone === leadRep.phone)) leadRep = null;
+        window.__leadRepList = m;
+        box.innerHTML = m.map((r, i) => `<button type="button" class="ld-rep-chip ${leadRep && leadRep.name === r.person && leadRep.phone === r.phone ? 'active' : ''}" onclick="leadPickRep(${i})">${faqEscape(r.person || '—')}${r.phone ? '<br><small>' + faqEscape(r.phone) + '</small>' : ''}</button>`).join('');
+      }
+      function leadPickRep(i) {
+        const r = (window.__leadRepList || [])[i]; if (!r) return;
+        leadRep = (leadRep && leadRep.name === r.person && leadRep.phone === r.phone) ? null : { name: r.person, phone: r.phone };
+        leadRepUpdate();
+      }
+      function leadMobileHint() {
+        const n = leadNormMobile(document.getElementById('lf-mobile').value), el = document.getElementById('lf-dup'); el.innerText = '';
+        if (!n) return;
+        const d = leadsAll.filter(l => l.mobile === n && l.id !== leadEditId);
+        if (d.length) el.innerText = `⚠ এই নম্বরে আগে ${d.length}টি ইনকোয়ারি আছে (সর্বশেষ: ${d[0].created}, ${d[0].status})`;
+      }
+      function openLeadModal(id) {
+        const l = id ? leadsAll.find(x => x.id === id) : null; leadEditId = l ? l.id : '';
+        document.getElementById('ld-form-title').innerText = l ? 'Edit Inquiry' : 'New Inquiry';
+        const set = (k, v) => { document.getElementById(k).value = v || ''; };
+        set('lf-name', l && l.name); set('lf-mobile', l && l.mobile); set('lf-district', l && l.district); set('lf-upazila', l && l.upazila); set('lf-area', l && l.area); set('lf-note', l && l.note);
+        leadForm = { type: l && l.type || 'Product', livestock: l && l.livestock || 'Poultry' };
+        leadRep = l && l.repName ? { name: l.repName, phone: l.repPhone } : null;
+        document.getElementById('lf-product').innerHTML = `<option value="">— None —</option>` + allProducts.map(p => `<option ${l && l.product === p.name ? 'selected' : ''}>${faqEscape(p.name)}</option>`).join('');
+        document.getElementById('lf-source').innerHTML = LEAD_SOURCES.map(s => `<option value="${s[0]}" ${l && l.source === s[0] ? 'selected' : ''}>${s[0]} / ${s[1]}</option>`).join('');
+        document.getElementById('lf-dept').innerHTML = `<option value="">— Not yet —</option>` + LEAD_DEPARTMENTS.map(d => `<option ${l && l.department === d ? 'selected' : ''}>${faqEscape(d)}</option>`).join('');
+        document.getElementById('lf-status').innerText = ''; document.getElementById('lf-dup').innerText = '';
+        leadPick('type', leadForm.type); leadFillLists(); leadRepUpdate();
+        document.getElementById('lead-modal').classList.add('show'); document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById(l ? 'lf-name' : 'lf-mobile').focus(), 120);
+      }
+      function closeLeadModal() { document.getElementById('lead-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function leadSave(thenCard) {
+        const st = document.getElementById('lf-status'), mobile = leadNormMobile(document.getElementById('lf-mobile').value);
+        if (!mobile) { st.style.color = '#e53935'; st.innerText = 'সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)'; document.getElementById('lf-mobile').focus(); return; }
+        const v = k => document.getElementById(k).value.trim(), dept = v('lf-dept');
+        const item = { name: v('lf-name'), mobile: mobile, district: v('lf-district'), upazila: v('lf-upazila'), area: v('lf-area'), type: leadForm.type, livestock: leadForm.livestock,
+          product: v('lf-product'), source: v('lf-source'), note: v('lf-note'), department: dept, repName: leadRep ? leadRep.name : '', repPhone: leadRep ? leadRep.phone : '' };
+        const btns = [document.getElementById('lf-save'), document.getElementById('lf-save-card')]; btns.forEach(b => b.disabled = true);
+        st.style.color = ''; st.innerText = 'Saving...';
+        const call = leadEditId ? leadApi('inquiryUpdate', { id: leadEditId, fields: item }) : leadApi('inquiryAdd', { item: item });
+        call.then(res => {
+          btns.forEach(b => b.disabled = false);
+          if (!res || !res.success) { st.style.color = '#e53935'; st.innerText = (res && res.error) || 'Save failed'; if (res && res.error === 'Invalid PIN') { closeLeadModal(); leadsLock('❌ ভুল PIN'); } return; }
+          leadReplace(res.item); closeLeadModal();
+          if (thenCard) leadOpenCard(res.item.id);
+        }).catch(() => { btns.forEach(b => b.disabled = false); st.style.color = '#e53935'; st.innerText = 'Connection failed'; });
+      }
+
+      // ---- রেফারেল কার্ড ----
+      const LC_T = {
+        en: { title: 'Customer Inquiry Referral', to: 'Forward to', ref: 'Ref', name: 'Customer', mobile: 'Mobile', loc: 'Location', type: 'Inquiry', live: 'Livestock', prod: 'Product Interest', src: 'Source', note: 'Note / Requirement', rep: 'Area Representative', ask: 'Please contact the customer and update the status.', hotline: 'Hotline: ', none: '—' },
+        bn: { title: 'কাস্টমার ইনকোয়ারি রেফারেল', to: 'প্রেরণ', ref: 'রেফ', name: 'কাস্টমার', mobile: 'মোবাইল', loc: 'এলাকা', type: 'বিষয়', live: 'প্রাণী', prod: 'আগ্রহী প্রোডাক্ট', src: 'সূত্র', note: 'নোট / প্রয়োজন', rep: 'এলাকার প্রতিনিধি', ask: 'অনুগ্রহ করে কাস্টমারের সাথে যোগাযোগ করুন এবং স্ট্যাটাস আপডেট করুন।', hotline: 'হটলাইন: ', none: '—' }
+      };
+      function leadVals(l, bn) {
+        return { type: bn ? lbn(LEAD_TYPES, l.type) : l.type, live: bn ? lbn(LEAD_LIVE, l.livestock) : l.livestock, src: bn ? lbn(LEAD_SOURCES, l.source) : l.source,
+                 dept: (bn ? LEAD_DEPT_BN[document.getElementById('lc-dept').value] : '') || document.getElementById('lc-dept').value };
+      }
+      function leadOpenCard(id) {
+        const l = leadsAll.find(x => x.id === id); if (!l) return; leadCardCur = l;
+        document.getElementById('lc-dept').innerHTML = `<option value="">— Select department —</option>` + LEAD_DEPARTMENTS.map(d => `<option ${l.department === d ? 'selected' : ''}>${faqEscape(d)}</option>`).join('');
+        document.getElementById('lc-share-btn').style.display = (navigator.canShare && navigator.share) ? 'block' : 'none';
+        document.getElementById('lc-status').innerText = ''; document.getElementById('lc-mark').checked = true;
+        document.getElementById('lead-card-modal').classList.add('show'); document.body.style.overflow = 'hidden';
+        leadCardLangSet(leadCardLang);
+      }
+      function closeLeadCard() { document.getElementById('lead-card-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function leadCardLangSet(l) {
+        leadCardLang = l; document.querySelectorAll('#lead-card-modal [data-lclang]').forEach(b => b.classList.toggle('active', b.dataset.lclang === l)); leadRenderCard();
+      }
+      function leadRenderCard() {
+        const l = leadCardCur; if (!l) return;
+        const bn = leadCardLang === 'bn', T = LC_T[leadCardLang], th = CARD_THEMES.green, V = leadVals(l, bn), W = 1080, P = 56, IW = W - P * 2;
+        const big = document.createElement('canvas'); big.width = W; big.height = 3000;
+        const ctx = big.getContext('2d'); ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, 3000);
+        const g = ctx.createLinearGradient(0, 0, W, 170); g.addColorStop(0, th.main); g.addColorStop(1, th.dark); ctx.fillStyle = g; ctx.fillRect(0, 0, W, 170);
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; cardFit(ctx, bn ? CARD_BN.header : CARD_EN.header, IW, 34, 20, 800); ctx.fillText(bn ? CARD_BN.header : CARD_EN.header, P, 64);
+        ctx.font = `600 28px ${CARD_FONT}`; ctx.fillText(T.title, P, 108);
+        ctx.font = `700 24px ${CARD_FONT}`; ctx.globalAlpha = .9; ctx.fillText(`${T.ref}: ${l.id}  ·  ${bn ? cardBnDigits(l.created) : l.created}`, P, 146); ctx.globalAlpha = 1;
+        let y = 200;
+        // To strip
+        ctx.fillStyle = th.tint; cardRR(ctx, P, y, IW, 92, 22); ctx.fill();
+        ctx.fillStyle = th.dark; ctx.font = `700 24px ${CARD_FONT}`; ctx.fillText(T.to.toUpperCase(), P + 28, y + 36);
+        ctx.fillStyle = '#1b1b1b'; cardFit(ctx, V.dept || T.none, IW - 56, 36, 20, 800); ctx.fillText(V.dept || T.none, P + 28, y + 76);
+        y += 92 + 34;
+        // customer
+        ctx.fillStyle = '#7a7a7a'; ctx.font = `700 22px ${CARD_FONT}`; ctx.fillText(T.name, P, y); y += 52;
+        ctx.fillStyle = '#1b1b1b'; cardFit(ctx, l.name || T.none, IW, 52, 28, 800); ctx.fillText(l.name || T.none, P, y); y += 40;
+        ctx.fillStyle = '#7a7a7a'; ctx.font = `700 22px ${CARD_FONT}`; ctx.fillText(T.mobile, P, y); y += 66;
+        ctx.fillStyle = th.main; ctx.font = `800 66px ${CARD_FONT}`; ctx.fillText(l.mobile, P, y); y += 50;
+        // rows
+        const row = (label, value) => {
+          if (!value) return;
+          ctx.fillStyle = th.main; ctx.fillRect(P, y - 22, 6, 0); ctx.fillStyle = '#7a7a7a'; ctx.font = `700 21px ${CARD_FONT}`; ctx.fillText(label, P, y);
+          ctx.fillStyle = '#1b1b1b'; ctx.font = `700 31px ${CARD_FONT}`; const lines = cardWrap(ctx, value, IW).slice(0, 3);
+          lines.forEach((ln, i) => ctx.fillText(ln, P, y + 42 + i * 40)); y += 42 + lines.length * 40 + 22;
+        };
+        ctx.fillStyle = '#e6efe9'; ctx.fillRect(P, y - 18, IW, 2); y += 22;
+        row(T.loc, leadLoc(l)); row(T.type, V.type); row(T.live, V.live); row(T.prod, l.product); row(T.src, V.src);
+        // note
+        if (l.note) {
+          ctx.font = `600 28px ${CARD_FONT}`; const nl = []; l.note.split('\n').forEach(p => cardWrap(ctx, p, IW - 48).forEach(x => nl.push(x))); const lines = nl.slice(0, 10), h = lines.length * 38 + 78;
+          ctx.fillStyle = '#f6f8f7'; cardRR(ctx, P, y, IW, h, 20); ctx.fill();
+          ctx.fillStyle = '#7a7a7a'; ctx.font = `700 21px ${CARD_FONT}`; ctx.fillText(T.note, P + 24, y + 38);
+          ctx.fillStyle = '#222'; ctx.font = `600 28px ${CARD_FONT}`; lines.forEach((ln, i) => ctx.fillText(ln, P + 24, y + 80 + i * 38)); y += h + 24;
+        }
+        // rep
+        if (l.repName || l.repPhone) {
+          ctx.fillStyle = th.tint; cardRR(ctx, P, y, IW, 118, 20); ctx.fill();
+          ctx.fillStyle = th.dark; ctx.font = `700 21px ${CARD_FONT}`; ctx.fillText(T.rep, P + 24, y + 36);
+          ctx.fillStyle = '#1b1b1b'; cardFit(ctx, l.repName || T.none, IW - 48, 30, 18, 800); ctx.fillText(l.repName || T.none, P + 24, y + 74);
+          ctx.fillStyle = th.main; ctx.font = `800 28px ${CARD_FONT}`; ctx.fillText(l.repPhone || '', P + 24, y + 108); y += 118 + 24;
+        }
+        // footer
+        y += 6; ctx.fillStyle = '#666'; ctx.font = `600 22px ${CARD_FONT}`; cardWrap(ctx, T.ask, IW).forEach((ln, i) => ctx.fillText(ln, P, y + 6 + i * 30)); y += 48;
+        ctx.fillStyle = th.main; ctx.fillRect(0, y, W, 96); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = `800 32px ${CARD_FONT}`;
+        ctx.fillText(T.hotline + (bn ? cardBnDigits('+880 1742-510889') : '+880 1742-510889'), W / 2, y + 60);
+        const H = y + 96, out = document.createElement('canvas'); out.width = W; out.height = H; out.getContext('2d').drawImage(big, 0, 0, W, H, 0, 0, W, H);
+        out.style.cssText = 'display:block; width:100%; height:auto; max-height:60vh; object-fit:contain; margin:0 auto;';
+        leadCardCanvas = out; const box = document.getElementById('lc-preview'); box.innerHTML = ''; box.appendChild(out);
+      }
+      function leadCardText() {
+        const l = leadCardCur, bn = leadCardLang === 'bn', T = LC_T[leadCardLang], V = leadVals(l, bn);
+        const L = [`📋 *${T.title}*`, `${T.ref}: ${l.id}`, `${T.to}: *${V.dept || T.none}*`, '', `👤 ${T.name}: ${l.name || T.none}`, `📞 ${T.mobile}: ${l.mobile}`];
+        if (leadLoc(l)) L.push(`📍 ${T.loc}: ${leadLoc(l)}`);
+        L.push(`❓ ${T.type}: ${V.type}${V.live ? ' | ' + V.live : ''}`);
+        if (l.product) L.push(`🛒 ${T.prod}: ${l.product}`);
+        if (l.source) L.push(`☎ ${T.src}: ${V.src}`);
+        if (l.note) L.push(`📝 ${T.note}: ${l.note}`);
+        if (l.repName || l.repPhone) L.push(`👥 ${T.rep}: ${l.repName || ''}${l.repPhone ? ' (' + l.repPhone + ')' : ''}`);
+        L.push('', T.ask);
+        return L.join('\n');
+      }
+      function leadCardGuard() {
+        if (!document.getElementById('lc-dept').value) { const s = document.getElementById('lc-status'); s.style.color = '#e53935'; s.innerText = 'আগে ডিপার্টমেন্ট বাছাই করুন'; return false; }
+        const st = document.getElementById('lc-status'); st.style.color = ''; st.innerText = ''; return true;
+      }
+      function leadAfterShare() {
+        const dept = document.getElementById('lc-dept').value, l = leadCardCur;
+        if (!document.getElementById('lc-mark').checked || !l) { document.getElementById('lc-status').innerText = '✔ Done'; return; }
+        leadApi('inquiryUpdate', { id: l.id, fields: { department: dept, status: 'Forwarded' } }).then(r => {
+          if (r && r.success) { leadReplace(r.item); leadCardCur = r.item; document.getElementById('lc-status').innerText = '✔ Done · Marked as Forwarded → ' + dept; }
+          else document.getElementById('lc-status').innerText = '✔ Shared (status update failed)';
+        });
+      }
+      function leadCardCopy(btn) {
+        if (!leadCardGuard()) return; const t = leadCardText(), idle = btn.innerText;
+        const ok = () => { btn.innerText = '✔ Copied'; setTimeout(() => { btn.innerText = idle; }, 1500); leadAfterShare(); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok).catch(() => { btn.innerText = 'Copy failed'; });
+        else { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) {} ta.remove(); }
+      }
+      async function leadCardDownload() { if (!leadCardGuard()) return; fileDownload(await canvasBlob(leadCardCanvas), `NewHope_${leadCardCur.id}.png`); leadAfterShare(); }
+      function leadCardWhatsApp() { if (!leadCardGuard()) return; window.open('https://wa.me/?text=' + encodeURIComponent(leadCardText()), '_blank'); leadAfterShare(); }
+      async function leadCardShare() {
+        if (!leadCardGuard()) return;
+        try {
+          const file = new File([await canvasBlob(leadCardCanvas)], `NewHope_${leadCardCur.id}.png`, { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: leadCardText() }); leadAfterShare(); }
+          else document.getElementById('lc-status').innerText = 'Sharing not supported here. Use Download.';
+        } catch (e) { /* cancelled */ }
+      }
 
       function copyNumber(btn, text) {
         navigator.clipboard.writeText(text).then(() => {
