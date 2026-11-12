@@ -426,6 +426,23 @@
       .div-badge.aqua { background: #e3f2fd; color: #1976d2; }
       .div-badge.other { background: #fff3e0; color: #f05a28; }
       .market-entry .action-pill { margin-top: 0; align-self: center; flex-shrink: 0; }
+    
+      /* ===== Footer ===== */
+      .site-footer { background: var(--brand-primary); color: #fff; margin: 40px 0 0; padding: 34px 20px 120px; text-align: center; }
+      .sf-inner { max-width: 1200px; margin: 0 auto; }
+      .sf-brand { font-size: 17px; font-weight: 800; }
+      .sf-sub { margin-top: 4px; font-size: 12.5px; opacity: .85; font-weight: 500; }
+      .sf-social { display: flex; justify-content: center; gap: 12px; margin: 20px 0 18px; flex-wrap: wrap; }
+      .sf-icon { width: 44px; height: 44px; border-radius: 50%; background: #fff; display: grid; place-items: center; transition: transform .2s ease; }
+      .sf-icon svg { width: 22px; height: 22px; fill: var(--c); }
+      .sf-icon:hover { transform: translateY(-3px); }
+      .sf-line { font-size: 14px; font-weight: 600; }
+      .sf-line a { color: #fff; font-weight: 800; text-decoration: none; }
+      .sf-copy { margin-top: 12px; font-size: 11.5px; opacity: .75; }
+      @media (min-width: 768px) { .site-footer { padding-bottom: 36px; } }
+      .ld-phone { position: relative; }
+      .ld-phone > span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 800; font-size: 14px; color: var(--text-muted); pointer-events: none; }
+      .ld-phone > input { padding-left: 52px; }
     </style>
   </head>
   <body>
@@ -527,45 +544,7 @@
       <!-- ==============================
            4. SOCIAL MEDIA SECTION
            ============================== -->
-      <div id="sec-social" class="app-section" style="display: none;">
-        <header class="app-header">
-          <div class="header-top">
-            <div>
-              <div class="greeting">Stay Connected</div>
-              <div class="app-title">Follow New Hope</div>
-            </div>
-          </div>
-        </header>
-        <div class="section-title" style="margin-top: 5px;">Our Social Accounts</div>
-        <p class="social-intro">নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড-এর সর্বশেষ খবর, পণ্য ও আপডেট পেতে আমাদের সোশ্যাল মিডিয়া অ্যাকাউন্টগুলো অনুসরণ করুন।</p>
-        <div class="social-grid">
-          <a class="social-card" style="--social-color:#1877f2" href="https://www.facebook.com/newhopefeed" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Facebook">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.3v3h2.8v8h3.4z"/></svg></span>
-            <span class="social-info"><span class="social-name">Facebook</span><span class="social-handle">@newhopefeed</span></span><span class="social-arrow">›</span>
-          </a>
-          <a class="social-card" style="--social-color:#0a66c2" href="https://www.linkedin.com/company/new-hope-feed-mill-bangladesh-ltd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on LinkedIn">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M6.5 8.2A1.7 1.7 0 1 1 6.5 4.8a1.7 1.7 0 0 1 0 3.4zM5 9.5h3v9H5v-9zm4.8 0h2.9v1.2h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7v4.7h-3v-4.2c0-1 0-2.4-1.5-2.4s-1.7 1.1-1.7 2.3v4.3h-3v-9z"/></svg></span>
-            <span class="social-info"><span class="social-name">LinkedIn</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
-          </a>
-          <a class="social-card" style="--social-color:#d62976" href="https://www.instagram.com/newhopefeedmill/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Instagram">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></span>
-            <span class="social-info"><span class="social-name">Instagram</span><span class="social-handle">@newhopefeedmill</span></span><span class="social-arrow">›</span>
-          </a>
-          <a class="social-card" style="--social-color:#ff0000" href="https://www.youtube.com/@NewHopeFeedMillBangladeshLtd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on YouTube">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C2 9 2 12 2 12s0 3 .4 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.8.4-4.8.4-4.8s0-3-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg></span>
-            <span class="social-info"><span class="social-name">YouTube</span><span class="social-handle">New Hope Feed Mill Bangladesh Ltd.</span></span><span class="social-arrow">›</span>
-          </a>
-          <a class="social-card" style="--social-color:#111111" href="https://www.tiktok.com/@newhopefeedmillbd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on TikTok">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M16.6 3c.3 1.8 1.3 3.1 3.4 3.2v3a8.3 8.3 0 0 1-3.4-1v6.1a5.7 5.7 0 1 1-4.9-5.7v3.1a2.7 2.7 0 1 0 1.9 2.6V3h3z"/></svg></span>
-            <span class="social-info"><span class="social-name">TikTok</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
-          </a>
-          <a class="social-card" style="--social-color:#e60023" href="https://www.pinterest.com/newhopefeedmillbd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Pinterest">
-            <span class="social-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-1.6 0-3.5.4-4.9l1-4.2s-.3-.7-.3-1.7c0-1.6.9-2.8 2-2.8 1 0 1.4.8 1.4 1.7 0 1-.6 2.4-.9 3.8-.3 1.1.6 2.1 1.7 2.1 2.1 0 0 3.1-.2 3.1-3.8 0-2.5-1.8-4.4-4.5-4.4-3.1 0-4.9 2.3-4.9 4.7 0 .9.3 1.8.8 2.4.1.1.1.2.1.4l-.3 1.2c-.1.4-.4.5-.7.3-1.4-.6-2-2.3-2-4.1 0-3 2.5-6.6 7.4-6.6 4 0 6.7 2.9 6.7 6.1 0 4.2-2.4 7.3-5.9 7.3-1.2 0-2.4-.7-2.8-1.4l-.7 2.7c-.3 1.1-1.1 2.5-1.6 3.3A10 10 0 1 0 12 2z"/></svg></span>
-            <span class="social-info"><span class="social-name">Pinterest</span><span class="social-handle">@newhopefeedmillbd</span></span><span class="social-arrow">›</span>
-          </a>
-        </div>
-      </div>
-
+      
       <!-- ==============================
            4. FAQ & INBOX REPLY SECTION
            ============================== -->
@@ -593,7 +572,6 @@
           <div class="faq-hero-sub">কাস্টমার ও ফার্মারের তথ্য সংরক্ষণ করে ডিপার্টমেন্টে শেয়ার করুন</div>
           <div class="faq-hero-search" id="ld-search-wrap" style="display:none;">
             <input type="text" id="ld-search" placeholder="Search name, mobile, area, product..." autocomplete="off" oninput="leadsSearch(this.value)">
-            <button type="button" onclick="openLeadModal()">+ New</button>
           </div>
         </header>
         <div id="ld-lock" class="ld-lock">
@@ -604,7 +582,7 @@
           <div class="faq-form-status" id="ld-lock-status"></div>
         </div>
         <div id="ld-main" style="display:none;">
-          <div class="rp-chiprow" id="ld-status-chips"></div>
+          <div class="rp-chiprow" id="ld-status-chips" style="flex-wrap:wrap; overflow:visible;"></div>
           <div class="rp-tools">
             <select id="ld-dept-filter" class="faq-form-input" style="width:auto; padding:8px 12px; border-radius:999px; font-weight:800; font-size:12.5px;" onchange="leadsDeptFilter(this.value)"></select>
             <button type="button" onclick="leadsLoad()">&#8635; Refresh</button>
@@ -649,6 +627,17 @@
     <!-- ==============================
          NAVIGATION BAR
          ============================== -->
+        <!-- ===== Site Footer ===== -->
+    <footer class="site-footer">
+      <div class="sf-inner">
+        <div class="sf-brand">New Hope Feed Mill Bangladesh Ltd.</div>
+        <div class="sf-sub">Quality feed for poultry, cattle &amp; fish — নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড</div>
+        <div class="sf-social"><a class="sf-icon" style="--c:#1877f2" href="https://www.facebook.com/newhopefeed" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.6-1.5h1.7V4.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.3v3h2.8v8h3.4z"/></svg></a><a class="sf-icon" style="--c:#0a66c2" href="https://www.linkedin.com/company/new-hope-feed-mill-bangladesh-ltd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.5 8.2A1.7 1.7 0 1 1 6.5 4.8a1.7 1.7 0 0 1 0 3.4zM5 9.5h3v9H5v-9zm4.8 0h2.9v1.2h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7v4.7h-3v-4.2c0-1 0-2.4-1.5-2.4s-1.7 1.1-1.7 2.3v4.3h-3v-9z"/></svg></a><a class="sf-icon" style="--c:#d62976" href="https://www.instagram.com/newhopefeedmill/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.2-3.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></a><a class="sf-icon" style="--c:#ff0000" href="https://www.youtube.com/@NewHopeFeedMillBangladeshLtd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on YouTube" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C2 9 2 12 2 12s0 3 .4 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.8.4-4.8.4-4.8s0-3-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg></a><a class="sf-icon" style="--c:#111111" href="https://www.tiktok.com/@newhopefeedmillbd" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on TikTok" title="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 3c.3 1.8 1.3 3.1 3.4 3.2v3a8.3 8.3 0 0 1-3.4-1v6.1a5.7 5.7 0 1 1-4.9-5.7v3.1a2.7 2.7 0 1 0 1.9 2.6V3h3z"/></svg></a><a class="sf-icon" style="--c:#e60023" href="https://www.pinterest.com/newhopefeedmillbd/" target="_blank" rel="noopener noreferrer" aria-label="Visit New Hope Feed on Pinterest" title="Pinterest"><svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg></a></div>
+        <div class="sf-line">Hotline: <a href="tel:+8801742510889">+880 1742-510889</a></div>
+        <div class="sf-copy">&copy; 2026 New Hope Feed Mill Bangladesh Ltd.</div>
+      </div>
+    </footer>
+
     <nav class="bottom-nav">
       <div style="margin-right: auto; font-weight: 900; font-size: 20px; color: var(--brand-primary); display: none; cursor: pointer; user-select: none; align-items:center; gap:8px;" id="web-logo" onclick="goHome()" title="Home" role="button">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg>
@@ -667,14 +656,8 @@
         <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         <span>Market</span>
       </button>
-      <button class="nav-item" onclick="openMrpModal()">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
-        <span>SMS MRP</span>
-      </button>
-      <button class="nav-item" onclick="switchSection('sec-social', this)">
-        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.9v-2.1h-2v2.1A8 8 0 0 1 4.1 13H6v-2H4.1A8 8 0 0 1 11 4.1V6h2V4.1a8 8 0 0 1 6.9 6.9H18v2h1.9a8 8 0 0 1-6.9 6.9zM12 7a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg>
-        <span>Social</span>
-      </button>
+      
+      
       
       <button class="nav-item" onclick="switchSection('sec-faq', this)">
         <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/></svg>
@@ -730,6 +713,7 @@
         <div class="faq-form-actions" style="flex-wrap:wrap;">
           <button class="faq-form-btn save" style="min-width:140px;" type="button" onclick="rpDownloadPdf()">Download PDF</button>
           <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="rpDownloadPng()">PNG</button>
+          <button class="faq-form-btn cancel" id="rp-copy-png" style="min-width:110px;" type="button" onclick="rpCopyPng(0, this)">Copy PNG</button>
           <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="rpCopyText(this)">Copy Text</button>
           <button class="faq-form-btn" style="min-width:110px; background:#25D366; color:#fff;" type="button" onclick="rpWhatsApp()">WhatsApp</button>
           <button class="faq-form-btn cancel" id="rp-share-btn" style="min-width:110px; display:none;" type="button" onclick="rpShare()">Share</button>
@@ -745,7 +729,7 @@
           <div><h2 class="faq-form-title" id="ld-form-title">New Inquiry</h2><p class="faq-form-subtitle">কাস্টমার/ফার্মারের তথ্য সংরক্ষণ করুন</p></div></div>
         <div class="ld-grid2">
           <div class="faq-form-group"><label class="faq-form-label" for="lf-name">Name / নাম</label><input class="faq-form-input" id="lf-name" maxlength="100" placeholder="Customer / farmer name"></div>
-          <div class="faq-form-group"><label class="faq-form-label" for="lf-mobile">Mobile / মোবাইল *</label><input class="faq-form-input" id="lf-mobile" inputmode="tel" maxlength="20" placeholder="01XXXXXXXXX" oninput="leadMobileHint()"><div id="lf-dup" style="margin-top:6px; font-size:12px; font-weight:700; color:#b26a00;"></div></div>
+          <div class="faq-form-group"><label class="faq-form-label" for="lf-mobile">Mobile / মোবাইল *</label><div class="ld-phone"><span>+88</span><input class="faq-form-input" id="lf-mobile" inputmode="tel" maxlength="20" placeholder="01XXXXXXXXX" oninput="leadMobileHint()"></div><div id="lf-dup" style="margin-top:6px; font-size:12px; font-weight:700; color:#b26a00;"></div></div>
           <div class="faq-form-group"><label class="faq-form-label" for="lf-district">District / জেলা</label><input class="faq-form-input" id="lf-district" list="lf-dist-list" maxlength="60" oninput="leadAreaChanged()" autocomplete="off"><datalist id="lf-dist-list"></datalist></div>
           <div class="faq-form-group"><label class="faq-form-label" for="lf-upazila">Upazila / উপজেলা</label><input class="faq-form-input" id="lf-upazila" list="lf-upz-list" maxlength="60" oninput="leadAreaChanged()" autocomplete="off"><datalist id="lf-upz-list"></datalist></div>
         </div>
@@ -781,6 +765,7 @@
         <div class="faq-form-status" id="lc-status"></div>
         <div class="faq-form-actions" style="flex-wrap:wrap;">
           <button class="faq-form-btn save" style="min-width:120px;" type="button" onclick="leadCardCopy(this)">Copy Text</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="leadCardCopyPng(this)">Copy PNG</button>
           <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="leadCardDownload()">Download</button>
           <button class="faq-form-btn" style="min-width:110px; background:#25D366; color:#fff;" type="button" onclick="leadCardWhatsApp()">WhatsApp</button>
           <button class="faq-form-btn cancel" id="lc-share-btn" style="min-width:110px; display:none;" type="button" onclick="leadCardShare()">Share</button>
@@ -922,7 +907,7 @@
 <div id="card-status" style="min-height:18px; margin-top:12px; font-size:13px; font-weight:700; color:var(--brand-primary);"></div>
         <div id="card-preview-wrap" style="margin-top:8px; border-radius:14px; overflow:hidden; border:1px solid #eaeaea; line-height:0; text-align:center; background:#f4f4f4;"></div>
         <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
-          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="copyCardImage()">Copy</button>
+          <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="copyCardImage()">Copy PNG</button>
           <button class="dialog-btn btn-confirm" style="flex:1; min-width:100px;" onclick="downloadCard()">Download</button>
           <button class="dialog-btn btn-confirm" id="card-share-btn" style="flex:1; min-width:100px; display:none;" onclick="shareCard()">Share</button>
         </div>
@@ -2217,8 +2202,17 @@
         rpPages = rpDrawPages();
         const box = document.getElementById('rp-preview'); box.innerHTML = '';
         rpPages.forEach(cv => { const c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; c.getContext('2d').drawImage(cv, 0, 0); box.appendChild(c); });
+        if (rpPages.length > 1) {
+          // প্রতিটি পৃষ্ঠার নিচে আলাদা Copy বাটন (ক্লিপবোর্ডে একবারে একটি ছবি যায়)
+          Array.from(box.querySelectorAll('canvas')).forEach((c, i) => {
+            const b = document.createElement('button'); b.type = 'button'; b.className = 'faq-form-btn cancel'; b.style.cssText = 'margin-top:-4px;';
+            b.innerText = `Copy PNG — Page ${i + 1}`; b.onclick = () => rpCopyPng(i, b, `Copy PNG — Page ${i + 1}`); c.insertAdjacentElement('afterend', b);
+          });
+        }
+        document.getElementById('rp-copy-png').innerText = rpPages.length > 1 ? 'Copy PNG (p.1)' : 'Copy PNG';
         document.getElementById('rp-status').innerText = rpPages.length > 1 ? `${rpPages.length} pages` : '';
       }
+      function rpCopyPng(i, btn, idle) { if (rpPages[i]) copyCanvasPng(rpPages[i], btn, idle || btn.innerText, document.getElementById('rp-status')); }
 
       function rpDrawPages() {
         const o = rpGetOpts(), bn = o.lang === 'bn', T = RP_T[o.lang], th = CARD_THEMES.green;
@@ -2338,6 +2332,17 @@
         return L.join('\n');
       }
 
+      // ক্যানভাস ছবিকে PNG হিসেবে ক্লিপবোর্ডে কপি (Facebook / WhatsApp / Messenger-এ সরাসরি পেস্ট করা যায়)
+      async function copyCanvasPng(cv, btn, idle, statusEl) {
+        const say = (t, ms) => { if (btn) { btn.innerText = t; setTimeout(() => { btn.innerText = idle; }, ms || 1800); } if (statusEl) statusEl.innerText = t; };
+        if (btn) btn.innerText = 'Copying…';
+        try {
+          if (!(navigator.clipboard && window.ClipboardItem)) throw new Error('unsupported');
+          const blob = await canvasBlob(cv, 'image/png');
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          say('✔ PNG copied', 1800); return true;
+        } catch (e) { say('Copy not supported here — use Download', 2600); return false; }
+      }
       function rpFileBase() { const d = new Date(); return 'NewHope_ProductReport_' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); }
       function fileDownload(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); }
       function canvasBlob(cv, type, q) { return new Promise(res => cv.toBlob(res, type || 'image/png', q)); }
@@ -2421,7 +2426,7 @@
             else { leadsLock('Error: ' + ((res && res.error) || 'Server not updated? Re-deploy Code.gs')); }
             return;
           }
-          leadsAll = res.items || [];
+          leadsAll = (res.items || []).map(leadFixItem);
           document.getElementById('ld-lock').style.display = 'none'; document.getElementById('ld-main').style.display = 'block'; document.getElementById('ld-search-wrap').style.display = 'flex';
           document.getElementById('ld-pin').value = '';
           leadsRender();
@@ -2435,7 +2440,7 @@
       function leadsRender() {
         const counts = { All: leadsAll.length, New: 0, Forwarded: 0, Done: 0 };
         leadsAll.forEach(l => { if (counts[l.status] !== undefined) counts[l.status]++; });
-        document.getElementById('ld-status-chips').innerHTML = ['All', 'New', 'Forwarded', 'Done'].map(s => `<button type="button" class="div-chip ${leadsStatus === s ? 'active' : ''}" onclick="leadsSetStatus('${s}')">${s} (${counts[s]})</button>`).join('');
+        document.getElementById('ld-status-chips').innerHTML = ['All', 'New', 'Forwarded', 'Done'].map(s => `<button type="button" class="div-chip ${leadsStatus === s ? 'active' : ''}" onclick="leadsSetStatus('${s}')">${s} (${counts[s]})</button>`).join('') + `<button type="button" class="ld-btn primary" style="padding:9px 18px;" onclick="openLeadModal()">+ New</button>`;
         const df = document.getElementById('ld-dept-filter');
         df.innerHTML = `<option value="">All departments</option>` + LEAD_DEPARTMENTS.map(d => `<option ${leadsDept === d ? 'selected' : ''}>${faqEscape(d)}</option>`).join('');
         const q = leadsQuery;
@@ -2462,7 +2467,9 @@
             </div>
           </div>`).join('');
       }
-      function leadReplace(item) { const i = leadsAll.findIndex(x => x.id === item.id); if (i >= 0) leadsAll[i] = item; else leadsAll.unshift(item); leadsRender(); }
+      function leadMobileFix(m) { const d = String(m || '').replace(/\D/g, ''); return (d.length === 10 && d[0] === '1') ? '0' + d : String(m || ''); }
+      function leadFixItem(l) { l.mobile = leadMobileFix(l.mobile); return l; }
+      function leadReplace(item) { leadFixItem(item); const i = leadsAll.findIndex(x => x.id === item.id); if (i >= 0) leadsAll[i] = item; else leadsAll.unshift(item); leadsRender(); }
       function leadSetStatus(id, st) { leadApi('inquiryUpdate', { id: id, fields: { status: st } }).then(r => { if (r && r.success) leadReplace(r.item); else leadsLoad(); }); }
       function leadDelete(id) {
         const l = leadsAll.find(x => x.id === id); if (!l || !confirm(`Delete inquiry ${id} (${l.name || l.mobile})?`)) return;
@@ -2647,6 +2654,7 @@
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok).catch(() => { btn.innerText = 'Copy failed'; });
         else { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) {} ta.remove(); }
       }
+      async function leadCardCopyPng(btn) { if (!leadCardGuard()) return; if (await copyCanvasPng(leadCardCanvas, btn, 'Copy PNG', null)) leadAfterShare(); }
       async function leadCardDownload() { if (!leadCardGuard()) return; fileDownload(await canvasBlob(leadCardCanvas), `NewHope_${leadCardCur.id}.png`); leadAfterShare(); }
       function leadCardWhatsApp() { if (!leadCardGuard()) return; window.open('https://wa.me/?text=' + encodeURIComponent(leadCardText()), '_blank'); leadAfterShare(); }
       async function leadCardShare() {
