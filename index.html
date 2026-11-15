@@ -518,11 +518,12 @@
            ============================== -->
       <div id="sec-depots" class="app-section" style="display: none;">
         <header class="app-header">
-          <div class="header-top">
+          <div class="header-top" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
             <div>
               <div class="greeting">Find Locations</div>
               <div class="app-title">Company Depots</div>
             </div>
+            <button type="button" onclick="openDepotModal('all')" style="border:0; background:#fff; color:var(--brand-primary); font:inherit; font-weight:800; font-size:13px; padding:11px 18px; border-radius:999px; cursor:pointer; white-space:nowrap;">Share All</button>
           </div>
         </header>
         <div id="depot-loader" style="text-align:center; padding: 20px; font-weight:bold; color:var(--text-muted);">Loading Depots...</div>
@@ -780,6 +781,32 @@
       </div>
     </div>
 
+    <!-- Depot Share Modal -->
+    <div id="depot-modal" class="faq-modal" role="dialog" aria-modal="true">
+      <div class="faq-form-card" style="width:min(100%, 600px); max-height:94vh;">
+        <button class="faq-modal-close" type="button" onclick="closeDepotModal()" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <div class="faq-form-head"><div class="faq-form-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <div><h2 class="faq-form-title" id="dp-title">Share Depot</h2><p class="faq-form-subtitle" id="dp-sub"></p></div></div>
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+          <button class="mrp-chip" data-dplang="bn" onclick="depotSetLang('bn')">বাংলা</button>
+          <button class="mrp-chip" data-dplang="en" onclick="depotSetLang('en')">English</button>
+          <button class="mrp-chip active" data-dplang="both" onclick="depotSetLang('both')">বাংলা + English</button>
+        </div>
+        <textarea class="faq-form-textarea" id="dp-text" style="min-height:210px;" spellcheck="false"></textarea>
+        <div class="faq-form-label" style="margin-top:14px;">Card preview</div>
+        <div id="dp-preview" style="border-radius:12px; overflow:hidden; border:1px solid #e4ebe6; line-height:0; background:#f4f4f4;"></div>
+        <div class="faq-form-status" id="dp-status"></div>
+        <div class="faq-form-actions" style="flex-wrap:wrap;">
+          <button class="faq-form-btn save" style="min-width:120px;" type="button" onclick="depotCopyText(this)">Copy Text</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="depotCopyPng(this)">Copy PNG</button>
+          <button class="faq-form-btn cancel" style="min-width:110px;" type="button" onclick="depotDownload()">Download</button>
+          <button class="faq-form-btn" style="min-width:110px; background:#25D366; color:#fff;" type="button" onclick="depotWhatsApp()">WhatsApp</button>
+          <button class="faq-form-btn cancel" id="dp-share-btn" style="min-width:100px; display:none;" type="button" onclick="depotShare()">Share</button>
+          <a class="faq-form-btn cancel" id="dp-call" href="#" style="min-width:100px; text-decoration:none; text-align:center; display:none;">Call</a>
+        </div>
+      </div>
+    </div>
+
     <!-- FAQ Answer Modal -->
     <div id="faq-answer-modal" class="faq-modal" role="dialog" aria-modal="true">
       <div class="faq-form-card">
@@ -995,6 +1022,7 @@
       const ADMIN_PIN = "1234";
       let allMarketData = []; 
       let mkMsgPool = [], mkMsgCur = null, mkMsgLang = 'both';
+      let depotData = [], depotMode = 'one', depotIdx = 0, depotLang = 'both', depotCanvas = null;
       let marketDivisionFilter = 'All';
       let allFaqData = []; 
 
@@ -1084,7 +1112,8 @@
         document.getElementById('depot-loader').style.display = 'none';
         const container = document.getElementById('depot-list');
         let html = '';
-        depots.forEach(depot => {
+        depotData = depots;
+        depots.forEach((depot, di) => {
           html += `
             <div class="list-card">
               <div style="flex:1;">
@@ -1092,10 +1121,13 @@
                 <div class="list-text"><strong>📍 Address:</strong> <span>${depot.address}</span></div>
                 <div class="list-text"><strong>👤 Person:</strong> <span>${depot.person}</span></div>
               </div>
-              <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">
+<div style="display:flex; flex-direction:column; gap:8px; align-items:stretch;">
+                            <button onclick="copyNumber(this, '${depot.phone}')" class="action-pill">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                 ${depot.phone}
               </button>
+              <button type="button" class="action-pill" style="background:var(--icon-bg); color:var(--brand-primary); box-shadow:none; justify-content:center;" onclick="openDepotModal(${di})">Share</button>
+              </div>
             </div>`;
         });
         container.innerHTML = html;
@@ -2070,6 +2102,7 @@
       //  সব পপআপ: বাইরে (ব্যাকড্রপে) ক্লিক/ট্যাপ করলে বা Esc চাপলে বন্ধ হবে
       // =====================================================
       const POPUPS = [ // উপরের স্তর আগে (Esc একবারে একটি করে বন্ধ করে)
+        { id: 'depot-modal',          close: () => closeDepotModal(), open: el => el.classList.contains('show') },
         { id: 'lead-card-modal',      close: () => closeLeadCard(),    open: el => el.classList.contains('show') },
         { id: 'lead-modal',           close: () => closeLeadModal(),   open: el => el.classList.contains('show') },
         { id: 'report-modal',         close: () => rpClose(),          open: el => el.classList.contains('show') },
@@ -2675,6 +2708,117 @@
           const file = new File([await canvasBlob(leadCardCanvas)], `NewHope_${leadCardCur.id}.png`, { type: 'image/png' });
           if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: leadCardText() }); leadAfterShare(); }
           else document.getElementById('lc-status').innerText = 'Sharing not supported here. Use Download.';
+        } catch (e) { /* cancelled */ }
+      }
+
+      // =====================================================
+      //  DEPOTS — শেয়ার: টেক্সট (বাংলা/English), কার্ড ছবি (Copy PNG / Download), WhatsApp
+      // =====================================================
+      const DP_L = {
+        bn: { co: 'নিউ হোপ ফিড মিল বাংলাদেশ লিমিটেড', depot: 'ডিপো', depots: 'কোম্পানি ডিপো', addr: 'ঠিকানা', person: 'দায়িত্বপ্রাপ্ত', mobile: 'মোবাইল', pill: 'কোম্পানি ডিপো', list: 'আমাদের ডিপো তালিকা' },
+        en: { co: 'New Hope Feed Mill Bangladesh Ltd.', depot: 'Depot', depots: 'Company Depots', addr: 'Address', person: 'Person', mobile: 'Mobile', pill: 'Company Depot', list: 'Our Depot List' }
+      };
+      function dpItems() { return depotMode === 'all' ? depotData : [depotData[depotIdx]].filter(Boolean); }
+      function dpText() {
+        const items = dpItems(); if (!items.length) return '';
+        const one = lang => {
+          const L = DP_L[lang], out = [];
+          if (items.length === 1) {
+            const d = items[0];
+            out.push(`🏢 *${L.co}*`, `*${d.name}*`, `📍 ${L.addr}: ${d.address}`, `👤 ${L.person}: ${d.person}`, `📞 ${L.mobile}: ${d.phone}`);
+          } else {
+            out.push(`🏢 *${L.co}*`, `*${L.list}*`, '');
+            items.forEach((d, i) => { out.push(`${i + 1}. *${d.name}*`, `   📍 ${d.address}`, `   👤 ${d.person}`, `   📞 ${d.phone}`, ''); });
+            out.pop();
+          }
+          return out.join('\n');
+        };
+        return depotLang === 'bn' ? one('bn') : depotLang === 'en' ? one('en') : one('bn') + '\n\n━━━━━━━━━━\n\n' + one('en');
+      }
+      function openDepotModal(which) {
+        depotMode = which === 'all' ? 'all' : 'one'; depotIdx = which === 'all' ? 0 : Number(which);
+        if (!dpItems().length) return;
+        document.getElementById('dp-title').innerText = depotMode === 'all' ? 'Share All Depots' : dpItems()[0].name;
+        document.getElementById('dp-sub').innerText = depotMode === 'all' ? `${depotData.length} depots` : 'Depot contact';
+        const call = document.getElementById('dp-call');
+        if (depotMode === 'one') { call.style.display = 'inline-block'; call.href = 'tel:' + mkFirstNumber(dpItems()[0].phone); } else call.style.display = 'none';
+        document.getElementById('dp-share-btn').style.display = (navigator.canShare && navigator.share) ? 'block' : 'none';
+        document.getElementById('dp-status').innerText = '';
+        document.getElementById('depot-modal').classList.add('show'); document.body.style.overflow = 'hidden';
+        depotSetLang(depotLang);
+      }
+      function closeDepotModal() { document.getElementById('depot-modal').classList.remove('show'); document.body.style.overflow = ''; }
+      function depotSetLang(l) {
+        depotLang = l;
+        document.querySelectorAll('#depot-modal [data-dplang]').forEach(b => b.classList.toggle('active', b.dataset.dplang === l));
+        document.getElementById('dp-text').value = dpText();
+        depotDraw();
+      }
+
+      function depotDraw() {
+        if (!rpLogo.complete) rpLogo.onload = () => depotDraw();
+        const items = dpItems(), bn = depotLang === 'bn', L = DP_L[bn ? 'bn' : 'en'], T = bn ? CARD_BN : CARD_EN;
+        const th = CARD_THEMES.green, W = 1080, pad = 60, IW = W - pad * 2, INK = '#14281d', MUT = '#6b7c72', LINE = '#e3eae5';
+        const big = document.createElement('canvas'); big.width = W; big.height = 5200;
+        const ctx = big.getContext('2d'); ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, 5200);
+        // হেডার
+        const logoH = 96, lw = logoH * (rpLogo.naturalWidth || 1) / (rpLogo.naturalHeight || 1);
+        if (rpLogo.complete && rpLogo.naturalWidth) ctx.drawImage(rpLogo, pad, 28, lw, logoH);
+        ctx.textAlign = 'right'; ctx.fillStyle = INK; cardFit(ctx, T.header, IW - lw - 40, 28, 16, 800); ctx.fillText(T.header, W - pad, 28 + logoH / 2 - 2);
+        ctx.fillStyle = MUT; ctx.font = `600 22px ${CARD_FONT}`; ctx.fillText(L.depots, W - pad, 28 + logoH / 2 + 30);
+        const hdr = 28 + logoH + 26; ctx.fillStyle = LINE; ctx.fillRect(pad, hdr, IW, 2);
+        let y = hdr + 56; ctx.textAlign = 'left';
+
+        if (items.length === 1) {
+          const d = items[0];
+          ctx.font = `800 26px ${CARD_FONT}`; const cw = ctx.measureText(L.depot).width + 50;
+          ctx.fillStyle = th.main; cardRR(ctx, pad, y, cw, 54, 27); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(L.depot, pad + cw / 2, y + 37);
+          y += 54 + 30; ctx.textAlign = 'left'; ctx.fillStyle = INK; ctx.font = `800 66px ${CARD_FONT}`;
+          cardWrap(ctx, d.name, IW).forEach(ln => { ctx.fillText(ln, pad, y + 56); y += 76; });
+          ctx.fillStyle = th.main; ctx.fillRect(pad, y + 8, 70, 5); y += 52;
+          const row = (label, value, size, color) => {
+            ctx.fillStyle = MUT; ctx.font = `700 22px ${CARD_FONT}`; ctx.fillText(label, pad, y); y += 14;
+            ctx.fillStyle = color || INK; ctx.font = `800 ${size}px ${CARD_FONT}`;
+            cardWrap(ctx, value || '—', IW).slice(0, 4).forEach(ln => { y += size + 12; ctx.fillText(ln, pad, y); });
+            y += 26; ctx.fillStyle = LINE; ctx.fillRect(pad, y, IW, 2); y += 40;
+          };
+          row(L.addr, d.address, 34); row(L.person, d.person, 34); row(L.mobile, d.phone, 70, th.main);
+        } else {
+          ctx.fillStyle = INK; ctx.font = `800 54px ${CARD_FONT}`; ctx.fillText(L.list, pad, y + 40); ctx.fillStyle = th.main; ctx.fillRect(pad, y + 58, 70, 5); y += 100;
+          items.forEach(d => {
+            ctx.fillStyle = INK; ctx.font = `800 30px ${CARD_FONT}`; ctx.textAlign = 'left'; cardFit(ctx, d.name, IW - 300, 30, 18, 800); ctx.fillText(d.name, pad, y + 28);
+            ctx.textAlign = 'right'; ctx.fillStyle = th.dark; ctx.font = `800 28px ${CARD_FONT}`; ctx.fillText(d.phone, W - pad, y + 28);
+            ctx.textAlign = 'left'; ctx.fillStyle = MUT; ctx.font = `500 22px ${CARD_FONT}`; let yy = y + 28 + 8;
+            cardWrap(ctx, d.address || '', IW).slice(0, 3).forEach(ln => { yy += 30; ctx.fillText(ln, pad, yy); });
+            ctx.fillStyle = '#1d3b2c'; ctx.font = `600 22px ${CARD_FONT}`; yy += 32; ctx.fillText(`${L.person}: ${d.person || '—'}`, pad, yy);
+            y = yy + 24; ctx.fillStyle = LINE; ctx.fillRect(pad, y, IW, 2); y += 32;
+          });
+        }
+        // ফুটার পিল
+        const pillH = 84, gap = 20, w1 = (IW - gap) * 0.44, w2 = IW - gap - w1; y += 20;
+        ctx.strokeStyle = th.main; ctx.lineWidth = 3; cardRR(ctx, pad + 1.5, y + 1.5, w1 - 3, pillH - 3, pillH / 2); ctx.stroke();
+        ctx.textAlign = 'center'; ctx.fillStyle = th.dark; cardFit(ctx, L.pill, w1 - 40, 28, 16, 800); ctx.fillText(L.pill, pad + w1 / 2, y + pillH * 0.64);
+        ctx.fillStyle = th.main; cardRR(ctx, pad + w1 + gap, y, w2, pillH, pillH / 2); ctx.fill();
+        const hot = T.hotline + (bn ? cardBnDigits('+880 1742-510889') : '+880 1742-510889');
+        ctx.fillStyle = '#fff'; cardFit(ctx, hot, w2 - 40, 31, 16, 800); ctx.fillText(hot, pad + w1 + gap + w2 / 2, y + pillH * 0.64);
+        const H = y + pillH + 56, out = document.createElement('canvas'); out.width = W; out.height = H; out.getContext('2d').drawImage(big, 0, 0, W, H, 0, 0, W, H);
+        out.style.cssText = 'display:block; margin:0 auto; width:auto; max-width:100%; height:auto; max-height:50vh;';
+        depotCanvas = out; const box = document.getElementById('dp-preview'); box.innerHTML = ''; box.appendChild(out);
+      }
+
+      function depotCopyText(btn) {
+        const t = document.getElementById('dp-text').value, idle = btn.innerText, ok = () => { btn.innerText = '✔ Copied'; setTimeout(() => { btn.innerText = idle; }, 1600); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok).catch(() => { btn.innerText = 'Copy failed'; });
+        else { const ta = document.getElementById('dp-text'); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) {} }
+      }
+      function depotCopyPng(btn) { if (depotCanvas) copyCanvasPng(depotCanvas, btn, 'Copy PNG', document.getElementById('dp-status')); }
+      async function depotDownload() { if (depotCanvas) { fileDownload(await canvasBlob(depotCanvas), 'NewHope_' + (depotMode === 'all' ? 'Depots' : dpItems()[0].name.replace(/[^\w]+/g, '_')) + '.png'); document.getElementById('dp-status').innerText = '✔ Downloaded'; } }
+      function depotWhatsApp() { window.open('https://wa.me/?text=' + encodeURIComponent(document.getElementById('dp-text').value), '_blank'); }
+      async function depotShare() {
+        try {
+          const file = new File([await canvasBlob(depotCanvas)], 'NewHope_Depot.png', { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: document.getElementById('dp-text').value });
+          else document.getElementById('dp-status').innerText = 'Sharing not supported here. Use Copy / Download.';
         } catch (e) { /* cancelled */ }
       }
 
