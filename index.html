@@ -452,6 +452,13 @@
     
       html body .bottom-nav > div:first-child { white-space: nowrap; flex: 0 0 auto; }
       @media (min-width: 768px) and (max-width: 1360px) { html body .nav-item { padding-left: 9px; padding-right: 9px; } html body .nav-item span { font-size: 12px; } }
+    
+      /* ডেস্কটপ মেনু: কনটেন্ট কলামের (হিরো প্যানেলের) প্রস্থের ভেতরে সাজানো */
+      @media (min-width: 768px) {
+        html body .bottom-nav { position: fixed; justify-content: space-between; gap: 0;
+          padding-left: max(190px, calc((100% - 1160px) / 2)); padding-right: max(30px, calc((100% - 1160px) / 2)); }
+        html body .bottom-nav > #web-logo { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); margin: 0 !important; }
+      }
     </style>
   </head>
   <body>
